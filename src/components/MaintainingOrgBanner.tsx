@@ -7,7 +7,7 @@ import styled from 'styled-components'
 const MaintainingOrgBanner: React.FC<{}> = function () {
   return (
     <UnstyledLink to="https://open.ribose.com">
-      <MaintainingOrgLogo src={organizationLogoImage} className="org-logo" />
+      <MaintainingOrgLogo src={organizationLogoImage} />
     </UnstyledLink>
   )
 }
@@ -15,7 +15,7 @@ const MaintainingOrgBanner: React.FC<{}> = function () {
 
 const MaintainingOrgLogo = styled.img`
   height: 16px;
-  margin-bottom: 1rem;
+  padding-left: .5rem;
 `
 
 

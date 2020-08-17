@@ -48,16 +48,19 @@ export default () => {
 
 
 const Header = styled(RouterLink)`
-  height: 4rem;
-  padding-top: 1rem;
-  margin-top: 0px;
-  justify-content: flex-start;
+  height: 3rem;
+
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: center;
+
+  @media screen and (min-width: 800px) {
+    justify-content: flex-start;
+  }
 `
 
 
 const Symbol = styled.img`
-  max-height: 100%;
-  max-width: 100%;
+  height: 3rem;
 `
