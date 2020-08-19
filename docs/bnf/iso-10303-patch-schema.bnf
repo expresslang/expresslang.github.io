@@ -1,0 +1,19 @@
+;; iso-10303 patch_schema
+
+;; These are in addition to the ISO 10303-11 BNF productions.
+
+DELETE = 'delete' .
+END_PATCH_SCHEMA = 'end_patch_schema' .
+PATCH_SCHEMA = 'patch_schema' .
+RENAME = 'rename' .
+TARGET = 'target' .
+
+decl_head = CONSTANT constant_id | ENTITY entity_id | FUNCTION function_id | PROCEDURE procedure_id
+          | RULE rule_id | SUBTYPE_CONSTRAINT subtype_constraint_id | TYPE type_id .
+patch_cmd_delete = DELETE decl_head ';' .
+patch_cmd_rename = RENAME decl_head AS simple_id ';' .
+patch_command = patch_cmd_delete | patch_cmd_rename .
+patch_constant_decl = CONSTANT constant_id ':' instantiable_type ':=' expression ';'
+patch_schema_body = { patch_command | patch_constant_decl | declaration | rule_decl } .
+patch_schema_decl = PATCH_SCHEMA schema_id TARGET schema_id ';' patch_schema_body END_PATCH_SCHEMA ';' .
+syntax = patch_schema_decl | schema_decl .
