@@ -4,7 +4,7 @@ import { Link } from 'components/linksButtons'
 export default () => (
   <div style={{ textAlign: 'center' }}>
     <h1>
-      Welcome to <Link to="docs">EXPRESS language reference!</Link>
+      Welcome to the <Link to="docs">EXPRESS language reference!</Link>
     </h1>
   </div>
 )
