@@ -14,7 +14,7 @@ import symbol from 'assets/SymbolOutlined.svg'
 import styled from 'styled-components'
 
 
-const DOCS_ROOT = '/docs/'
+const DOCS_ROOT = '/'
 
 
 export default () => {
