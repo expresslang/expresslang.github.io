@@ -18,7 +18,9 @@ export default {
       {
         sourcePath: DOCS_PATH,
         urlPrefix: '',
-        template: 'src/containers/DocPage',
+        title: "EXPRESS language reference",
+        headerBanner: 'header-banner.svg',
+        footerBanner: 'footer-banner.svg',
       }
     ],
     require.resolve('react-static-plugin-reach-router'),
