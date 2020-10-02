@@ -21,6 +21,7 @@ export default {
         title: "EXPRESS language reference",
         headerBanner: 'header-banner.svg',
         footerBanner: 'footer-banner.svg',
+        footerBannerLink: "https://open.ribose.com",
       }
     ],
     require.resolve('react-static-plugin-reach-router'),
