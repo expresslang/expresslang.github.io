@@ -1079,10 +1079,10 @@
   resolved "https://registry.yarnpkg.com/@riboseinc/aperis-doc-pages/-/aperis-doc-pages-1.0.0-pre8.tgz#e3b4e3e4bc2a2da79da56444fae30cde0d101488"
   integrity sha512-6tP329z9/f6PM0e0OYKeD3Yg3/f8QQOKhvxWI8o65TRveGwZPgEZfZyUyvWGDI5TxySrVh7HVzX57h/poivGfQ==
 
-"@riboseinc/react-static-plugin-aperis-doc-pages@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@riboseinc/react-static-plugin-aperis-doc-pages/-/react-static-plugin-aperis-doc-pages-1.0.2.tgz#ed87580b1c16e70175a58613b39fbfeba6742756"
-  integrity sha512-CV/g4rYmK0qRxZUgFP3SrtJqMI+Z5To/ryBgnyaTV4NMygeoffPrzRYB+LYdSeH3ASdLp0JKd1r7kNX9aYHzwQ==
+"@riboseinc/react-static-plugin-aperis-doc-pages@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@riboseinc/react-static-plugin-aperis-doc-pages/-/react-static-plugin-aperis-doc-pages-1.0.3.tgz#d6ff6ea7b8f8a33960e328fbd75db81677b60ebd"
+  integrity sha512-IMhwwH8cdgV1cbWgFcMVlsNZmH7kmjdRxzRaHm+r52b+QmJHTmJ3ALuBk1Qq5RkggIbLXEP5sh5nfGMUUAzgIw==
   dependencies:
     "@reach/router" "^1.3.4"
     "@types/chroma-js" "^2.1.0"
