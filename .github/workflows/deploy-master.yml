@@ -1,3 +1,4 @@
+
 name: deploy-master
 
 on:
@@ -40,3 +41,4 @@ jobs:
           aws s3 sync dist s3://$S3_BUCKET_NAME --region=$AWS_REGION --delete --no-progress --include "*" --exclude "*.html" --exclude "*.json" --exclude "*.jsonld" --exclude "*.ttl"
           aws configure set preview.cloudfront true
           aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
+      
