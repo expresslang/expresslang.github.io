@@ -1,3 +1,4 @@
 title: EXPRESS language reference
 urlPrefix: ''
 footerBannerLink: 'https://open.ribose.com/'
+deploymentSetup: awsGHA
