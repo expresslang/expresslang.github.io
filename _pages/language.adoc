@@ -1,13 +1,11 @@
 ---
-layout: docs
+layout: docs-base
+html-class: docs-page
 title: Introducing EXPRESS
-html-class: overview
 ---
 :page-liquid:
 
-== Introducing EXPRESS
-
-=== Purpose
+== Purpose
 
 EXPRESS is an information modelling language that has been powering what is now
 called "smart manufacturing". The language originated from the PDDI program,
@@ -37,7 +35,7 @@ modelling languages:
 * It is a data modelling language -- not a programming language, even though it
 does provide algorithmic functionality
 
-=== The EXPRESS language family
+== The EXPRESS language family
 
 Each member of the EXPRESS family of languages provides specific functionality
 for the information modeller:
@@ -48,7 +46,7 @@ a subset of EXPRESS syntax
 * EXPRESS-I provides a lexical syntax for information model instances
 * EXPRESS-X provides a lexical syntax for mapping between information models
 
-=== Standardization of EXPRESS
+== Standardization of EXPRESS
 
 Given that EXPRESS was immensely useful for the manufacturing supply chain,
 it entered a standardization process at the National Bureau of Standards

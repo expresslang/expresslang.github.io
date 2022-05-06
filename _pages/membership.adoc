@@ -1,4 +1,8 @@
-== Membership
+---
+layout: docs-base
+html-class: docs-page
+title: Membership
+---
 
 ELF serves organizations and individuals alike with a need in defining
 interchangeable information models across information systems.
