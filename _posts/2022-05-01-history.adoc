@@ -1,9 +1,10 @@
-== An official history of EXPRESS
+---
+title: An official history of EXPRESS
+---
 
 This sequence of events is attested by the original team of EXPRESS developers: Doug Schenck, Bernd Wenzel, Joe Eggers and Peter Wilson.
 
-=== Creation of EXPRESS
-
+== Creation of EXPRESS
 
 Douglas Schenk and Peter Wilson “Information Modeling: The EXPRESS Way” published in 1994:
 
@@ -11,7 +12,7 @@ Douglas Schenk and Peter Wilson “Information Modeling: The EXPRESS Way” publ
 "Peter Wilson developed EXPRESS-G and EXPRESS-I”.
 
 
-=== Birth of EXPRESS (1982)
+== Birth of EXPRESS (1982)
 
 The PDDI program was created in 1982 by USAF at McDonnell Aircraft, headed by Doug Schenck (of McDonnell Aircraft).
 A data modelling language was developed in PDDI called “PDDI DSL” (Data Specification Language).
@@ -19,7 +20,7 @@ Joe Eggers (of McDonnell Aircraft) with Doug developed the first parsers and com
 Trivia: at one point, PDDI DSL was called the “Doug Schenck Language”.
 
 
-=== EXPRESS in NBS (1984)
+== EXPRESS in NBS (1984)
 
 As part of the NBS STEP effort, PDES was created under the IGES organization within NBS.
 PDDI DSL was transitioned into the PDES organization within NBS as the PDDI program was mostly completed in 1985.
@@ -28,20 +29,20 @@ NSB hosted the first ISO/TC 184/SC 4 meeting in July 1984, and served as the the
 NOTE: NBS was renamed to “NIST” in 1988.
 
 
-=== Coinage of EXPRESS (1986)
+== Coinage of EXPRESS (1986)
 
 Douglas Schenck and Bernd Wenzel (GEMAP MbH, Munich, FRG) named the language as "EXPRESS" in 1986 Jan.
 Joe Eggers worked closely with Doug and Bernd to ensure the language was readily machine-processable
 NBS (via Doug Schenck) submitted the "EXPRESS - A Language for Information Modeling" document in 1986 Jan to ISO/TC 184/SC 4/WG 1 as N119.
 
 
-=== EXPRESS in ISO (1986)
+== EXPRESS in ISO (1986)
 
 NBS (via Doug Schenck) submitted an updated EXPRESS specification as ISO TC184/SC4/WG 1 N177
 See: https://nvlpubs.nist.gov/nistpubs/Legacy/IR/nistir88-4004p4.pdf
 
 
-=== EXPRESS in ISO (1988)
+== EXPRESS in ISO (1988)
 
 Douglas Schenck submitted through NBS the "PDES Test Draft" to ISO/TC 184/SC 4/WG 1 as N268 (non-LaTeX) and then N287 (LaTeX).
 
@@ -50,26 +51,26 @@ STEP file structure (also called “physical file”), also inspired by the PDDI
 SOURCE: NISTIR 88-4004 PDES First Working Draft.
 
 
-=== Birth of EXPRESS-G (1989/90)
+== Birth of EXPRESS-G (1989/90)
 
 Peter Wilson (Boeing) created EXPRESS-G in 1989, which was formalized in 1990.
 “It didn't take long as I was the only one doing it so there were no heated discussions.”
 It was accepted by ISO at the same time as EXPRESS itself.
 
 
-=== Birth of EXPRESS-I (1991/92)
+== Birth of EXPRESS-I (1991/92)
 
 EXPRESS-I came a little later. A language for describing instances of
 information models.
 
 Documented in The EXPRESS Way.
 
-=== EXPRESS accepted at ISO (1994)
+== EXPRESS accepted at ISO (1994)
 
 EXPRESS and EXPRESS-G published as “ISO 10303:1994, Industrial Automation Systems and Integration –Product data representation and exchange”
 “Information Modeling: The EXPRESS Way” by Douglas Schenck and Peter Wilson, published by Oxford University Press (1994)
 Reference for EXPRESS, EXPRESS-G, EXPRESS-I and EXPRESS-X
 
-=== EXPRESS updated at ISO (2004)
+== EXPRESS updated at ISO (2004)
 
 David Loffredo (of STEP Tools) and Peter Wilson (of Boeing) led the update to ISO 10303-11:2004, “Industrial Automation Systems And Integration - Product Data Representation And Exchange - Part 11: Description Methods: The EXPRESS Language Reference Manual”
