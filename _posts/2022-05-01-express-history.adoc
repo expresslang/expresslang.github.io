@@ -1,5 +1,21 @@
 ---
+layout: post
 title: An official account of the EXPRESS languages
+date: 2022-05-01
+categories: announcements
+authors:
+  -
+    name: Douglas Schenck
+    email: douglas.schenck@expresslang.org
+  -
+    name: Peter Wilson
+    email: peter.wilson@expresslang.org
+  -
+    name: Bernd Wenzel
+    email: bernd.wenzel@expresslang.org
+
+excerpt: >-
+  The official history of EXPRESS, by its founders!
 ---
 
 This is the official account of the EXPRESS language family, written and
