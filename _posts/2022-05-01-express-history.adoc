@@ -1,6 +1,6 @@
 ---
 layout: post
-title: An official account of the EXPRESS languages
+title: A history of the EXPRESS languages
 date: 2022-05-01
 categories: announcements
 authors:
@@ -15,7 +15,7 @@ authors:
     email: bernd.wenzel@expresslang.org
 
 excerpt: >-
-  The official history of EXPRESS, by its founders!
+  The official account of EXPRESS history, by its founders!
 ---
 
 This is the official account of the EXPRESS language family, written and
@@ -107,7 +107,7 @@ STEP file structure (also called  "`physical file`"), also inspired by the PDDI
 effort, was submitted as N279.
 
 .ISO/TC 184/SC 4/WG 1 N287
-image::/assets/2022-05-01-express-history/n287.png[height=400]
+image::/assets/blog/2022-05-01-express-history/n287.png[height=400]
 
 SOURCE: NISTIR 88-4004 PDES First Working Draft.
 
@@ -124,7 +124,7 @@ ____
 It was accepted by ISO at the same time as EXPRESS itself.
 
 .Description of when EXPRESS-G was created, according to Peter Wilson
-image::/assets/2022-05-01-express-history/expressg.png[width=600]
+image::/assets/blog/2022-05-01-express-history/expressg.png[width=600]
 
 == Birth of EXPRESS-I (1991/92)
 
@@ -150,11 +150,11 @@ https://www.iso.org/standard/18348.html[ISO 10303-11:1994],
 |===
 |
 .Information Modeling: The EXPRESS Way, by Douglas Schenck and Peter Wilson
-image::/assets/2022-05-01-express-history/expressway.jpeg[height=400]
+image::/assets/blog/2022-05-01-express-history/expressway.jpeg[height=400]
 
 |
 .ISO 10303-11:1994
-image::/assets/2022-05-01-express-history/10303-11-1994.jpeg[height=400]
+image::/assets/blog/2022-05-01-express-history/10303-11-1994.jpeg[height=400]
 
 |===
 
@@ -169,7 +169,7 @@ https://www.iso.org/standard/38047.html[ISO 10303-11:2004], "`Industrial Automat
 |===
 |
 .Cover page of ISO 10303-11:2004
-image::/assets/2022-05-01-express-history/10303-11-2004.jpeg[]
+image::/assets/blog/2022-05-01-express-history/10303-11-2004.jpeg[]
 
 |
 
