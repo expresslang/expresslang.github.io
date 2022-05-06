@@ -14,6 +14,13 @@ $main-background: linear-gradient(315deg, lighten($primary-color-dark, 10%) 0%, 
   }
 }
 
+body > .underlay > footer {
+  .parent-hub-plug {
+    display: none !important;
+    // Temporary measure, until this site is converted to hub site or new framework.
+  }
+}
+
 body.site--project.layout--home > main > .custom-intro .summary p:first-child:first-letter {
   font-size: unset;
   line-height: unset;
