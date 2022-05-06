@@ -48,7 +48,7 @@ legal:
   privacy_policy_link: /privacy
 
 home_calls_to_action:
-  - { url: "/docs/test-section/", title: "View documentation" }
+  - { url: "/language/", title: "Language introduction" }
 
 collections:
   projects:
