@@ -1,0 +1,116 @@
+title: ELF - EXPRESS Language Foundation
+description: International standards for information modelling, abstract languages and data management
+
+tagline: >-
+  Don't panic, EXPRESS
+
+permalink: /blog/:year-:month-:day-:title/
+
+seo:
+  type: Organization
+
+url: https://www.expresslang.org
+
+github_repo_url: https://github.com/expresslang/expresslang.org
+github_repo_branch: main
+
+algolia_search:
+  api_key: 'test'
+  index_name: 'expresslang'
+
+landing_priority: [custom_intro, blog, specs, software]
+
+theme: jekyll-theme-open-project
+
+author:
+  name: EXPRESS Language Foundation
+  url: https://www.expresslang.org
+
+authors:
+  - name: EXPRESS Language Foundation
+    email: info@expresslang.org
+
+contact_email: info@expresslang.org
+
+theme: jekyll-theme-open-project
+
+is_hub: true
+
+includes_dir: .
+
+social:
+  links:
+    - https://github.com/expresslang
+
+legal:
+  name: EXPRESS Language Foundation
+  tos_link: /tos
+  privacy_policy_link: /privacy
+
+home_calls_to_action:
+  - { url: "/docs/test-section/", title: "View documentation" }
+
+collections:
+  projects:
+    output: false
+  software:
+    output: true
+    permalink: /software/:path/
+  specs:
+    output: true
+    permalink: /specs/:path/
+  posts:
+    output: true
+    permalink: /blog/:year-:month-:day-:title/
+  pages:
+    output: true
+    permalink: /:name/
+
+
+defaults:
+  # Theme defaults.
+  # MUST be duplicated from theme’s _config.yml
+  # (does not get inherited, unlike the collections hash)
+  - scope:
+      path: ""
+    values:
+      layout: default
+  - scope:
+      path: _posts
+      type: posts
+    values:
+      layout: post
+  - scope:
+      path: _software
+      type: software
+    values:
+      layout: product
+  - scope:
+      path: _specs
+      type: specs
+    values:
+      layout: spec
+
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+tag_namespaces:
+  software:
+    writtenin: "Written in"
+    bindingsfor: "Bindings for"
+    user: "Target user"
+    interface: "Interface"
+  specs:
+    audience: "Audience"
+    completion_status: "Status"
+
+exclude:
+  - .git
+  - .lycheeignore
+  - "*/.git"
+  - Gemfile*
+  - Makefile
+  - Rakefile
+  - README.adoc
+  - vendor # for deployment

@@ -1,0 +1,93 @@
+---
+layout: docs
+title: About ELF
+html-class: overview
+---
+:page-liquid:
+
+== About the EXPRESS Language Foundation
+
+=== Our mission
+
+[quote]
+____
+“to facilitate the education, standardization, research, promotion, definition, usage of information modelling and programming languages, with a focus on the EXPRESS language family.”
+____
+
+=== The role of ELF
+
+The EXPRESS Language Foundation is established in response to user needs
+of the EXPRESS language family, juxtaposed upon the current technology
+and usage environment that places additional demands on the language family
+not previously addressed. Linguists consider languages as living things,
+and members of the EXPRESS language family are no different!
+
+ELF funds future development and maintenance of the EXPRESS family of languages,
+and aims to support users of these languages.
+
+Specifically, ELF aims to:
+
+. develop and publish best practices, documentation and related tools for the
+definition, relation, usage, governance and dissemination of information models;
+
+. foster and host a user community for those who work with the EXPRESS language family.
+
+=== Membership
+
+ELF serves organizations and individuals alike with a need in defining
+interchangeable information models across information systems.
+
+For corporate and invididual membership inquiries,
+please email mailto:info@expresslang.org.
+
+
+=== Standardization
+
+ELF is an international standardization organization, similar to the roles
+played by ISO and IEC.
+
+ELF creates international standards and contributes to the domains of
+information modelling, abstract languages and data management, relating to the
+understanding of shared data and the relationships between them,
+specifically for the EXPRESS language families.
+
+
+=== Governance structure
+
+ELF consists of a board and members of the organization. Our members are
+organized into a central office with multiple technical committees:
+
+* The central office functions to support the activities of technical
+committees, including for the publication of standards.
+
+* Technical committees are organized by volunteers who are experts in a selected
+domain of the technical committee and develop best practices and information for
+the international arena.
+
+Roles include:
+
+* Board of Directors
+* President
+* Vice-President
+* CFO
+* Executive Director
+* Technical Coordination Committee
+* TC EXPRESS
+* TC EXPRESS-G
+* TC EXPRESS-I
+
+=== International cooperation
+
+The mission of ELF is international in nature, given that its founding team is
+spread across the globe.
+
+ELF consists of international experts and will work with international partners.
+
+
+=== Founding members
+
+The founding members of ELF include the original inventors of EXPRESS, Doug
+Schenck, Bernd Wenzel, Peter Wilson; experts involved in enhancing EXPRESS,
+David Loffredo, Allison Barnard-Feeney; as well as EXPRESS stakeholders deeply
+interested in the achievement of the Foundation's mission, Thomas Thurman,
+Hiroshi Murayama and Ronald Tse.
