@@ -34,8 +34,6 @@ contact_email: info@expresslang.org
 
 theme: jekyll-theme-open-project
 
-is_hub: true
-
 includes_dir: .
 
 social:
