@@ -1,0 +1,34 @@
+---
+layout: docs-base
+html-class: docs-page
+title: EXPRESS language references
+---
+:page-liquid:
+
+Some of our favorite references on the EXPRESS languages
+are listed below. The citations are provided in the
+https://www.iso.org/standard/72642.html[ISO 690] format.
+
+* Douglas SCHENCK, Peter WILSON, _Information modeling: the EXPRESS Way_. Oxford: Oxford University Press, 1994.
+Available from: https://global.oup.com/academic/product/information-modeling-the-express-way-9780195087147
+
+* Peter WILSON (ed.). _Proceedings of the EUG'91 -- First International EXPRESS User Group Conference_, Houston, TX: 17–18 October 1991
+
+* Peter WILSON (ed.). _Proceedings of the EUG'92 – Second International EXPRESS User Group Conference_. Dallas, TX: 17–18 October 1992
+
+* Peter WILSON (ed.). _Proceedings of the EUG'93 – Third International EXPRESS User Group Conference_. Berlin, Germany: 2-3 October 1993
+
+* Peter WILSON (ed.). _Proceedings of the EUG'94 – 4th International EXPRESS User Group Conference_. Greenville, SC: 13-14 October 1994
+
+* Peter WILSON (ed.). _Proceedings of the EUG'95, 5th Annual EXPRESS User Group International Conference_. Grenoble, France: 21-22 October 1995
+
+* Peter WILSON (ed.). _Proceedings of the EUG'96, 6th Annual EXPRESS User Group International Conference_. Toronto, Canada: 5-6 October 1996
+
+* Jon OWEN. _STEP: An Introduction_. Winchester: Information Geometers, 1993.
+
+* Object Management Group. _Express Metamodel, version 1.1_. 2015.
+Available from: https://www.omg.org/spec/EXPRESS/
+
+
+//1996 “EXPRESS in STEP its uses, users, and future.”
+
