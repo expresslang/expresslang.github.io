@@ -43,7 +43,7 @@ called "smart manufacturing". The language originated from the PDDI program,
 which was created in 1982 by the US Air Force at McDonnell Aircraft (now merged
 into Boeing).
 
-The rasion-de-etre of EXPRESS is reflected in its name -- to facilitate
+The raison d'être of EXPRESS is reflected in its name -- to facilitate
 "`expressiveness`" in modelling information.
 
 Today, EXPRESS is heavily used in advanced manufacturing, including in
