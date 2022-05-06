@@ -1,0 +1,135 @@
+---
+title: An official account of the EXPRESS languages
+---
+
+This is the official account of the EXPRESS language family, written and
+confirmed by the original team of EXPRESS inventors/developers: Doug Schenck,
+Bernd Wenzel, Joe Eggers and Peter Wilson.
+
+
+== Creation of EXPRESS
+
+
+Douglas Schenck and Peter Wilson published the authoritative reference to the
+EXPRESS language named "`Information Modeling: The EXPRESS Way`" in 1994, with
+several anecdotes of how EXPRESS was initially conceived:
+
+[quote,"Information Modeling: The EXPRESS Way"]
+____
+The name EXPRESS (which is supposed to conjure up the idea of expressiveness)
+was coined in Zurich in the spring of 1986 when Bernd Wenzel and [Doug] first
+started working on the problem.
+____
+
+[quote,"Information Modeling: The EXPRESS Way"]
+____
+Peter Wilson developed EXPRESS-G and EXPRESS-I.
+____
+
+
+== Birth of EXPRESS (1982)
+
+The PDDI program was created in 1982 by the https://www.airforce.com[US Air Force]
+at the https://en.wikipedia.org/wiki/McDonnell_Douglas[McDonnell Douglas Corporation],
+headed by Douglas Schenck (of McDonnell Aircraft).
+
+A data modelling language was developed in PDDI called  "`PDDI DSL`" (Data
+Specification Language).
+
+Joe Eggers (of McDonnell Aircraft) with Doug developed the first parsers and
+compilers.
+
+NOTE: At one point, the PDDI DSL was called the "`Doug Schenck Language`".
+
+
+== EXPRESS in NBS (1984)
+
+As part of the https://www.nist.gov[NBS (now NIST)]
+https://en.wikipedia.org/wiki/ISO_10303[STEP] effort,
+PDES was created under the IGES organization within NBS.
+
+PDDI DSL was transitioned into the PDES organization within NBS as the PDDI
+program was mostly completed in 1985.
+
+NSB hosted the first https://www.iso.org/committee/54158.html[ISO/TC 184/SC 4]
+meeting in July 1984, and served as the the SC4 Secretariat on behalf of
+https://www.ansi.org[ANSI] until December 1998.
+
+NOTE: NBS was renamed to  "`NIST`" in 1988.
+
+NOTE: The NBS PDES organization was succeeded by https://pdesinc.org[PDES, Inc].
+
+
+== Coinage of EXPRESS (1986)
+
+Douglas Schenck and Bernd Wenzel (of GEMAP MbH, Munich, FRG) named the language as
+"`EXPRESS`" in Jan 1986.
+
+Joe Eggers worked closely with Doug and Bernd to ensure the language was readily
+machine-processable.
+
+NBS (via Doug Schenck) submitted the "EXPRESS - A Language for Information
+Modeling" document in 1986 Jan to ISO/TC 184/SC 4/WG 1 as N119.
+
+
+== EXPRESS in ISO (1986)
+
+NBS (via Doug Schenck) submitted an updated EXPRESS specification as
+ISO TC 184/SC4/WG 1 N177.
+
+NOTE: This submission is made available by NIST at
+https://nvlpubs.nist.gov/nistpubs/Legacy/IR/nistir88-4004p4.pdf[NIST IR 88-4004 Part 4].
+
+
+== EXPRESS in ISO (1988)
+
+Douglas Schenck submitted through NBS the "`PDES Test Draft`" to
+ISO/TC 184/SC 4/WG 1 as N268 (non-LaTeX) and then N287 (LaTeX formatted).
+
+STEP file structure (also called  "`physical file`"), also inspired by the PDDI
+effort, was submitted as N279.
+
+SOURCE: NISTIR 88-4004 PDES First Working Draft.
+
+
+== Birth of EXPRESS-G (1989/90)
+
+Peter Wilson (Boeing) created EXPRESS-G in 1989, which was formalized in 1990.
+
+[quote,Peter Wilson,"Information Modeling: The EXPRESS Way"]
+____
+It didn't take long as I was the only one doing it so there were no heated discussions.
+____
+
+It was accepted by ISO at the same time as EXPRESS itself.
+
+
+== Birth of EXPRESS-I (1991/92)
+
+EXPRESS-I came a little later. A language for describing instances of
+information models.
+
+The language is described in the "Information Modeling: The EXPRESS Way".
+It was never standardized at ISO.
+
+
+== EXPRESS accepted as an International Standard at ISO (1994)
+
+EXPRESS and EXPRESS-G were published as
+https://www.iso.org/standard/18348.html[ISO 10303-11:1994],
+"`Industrial Automation Systems and Integration -- Product data representation and exchange`".
+
+The book "`Information Modeling: The EXPRESS Way`" by Douglas Schenck and Peter
+Wilson, was published by Oxford University Press (1994).
+
+References for EXPRESS, EXPRESS-G, EXPRESS-I and EXPRESS-X were published.
+
+== EXPRESS International Standard updated at ISO (2004)
+
+David Loffredo (of STEP Tools) and Peter Wilson (of Boeing) led the update to
+https://www.iso.org/standard/38047.html[ISO 10303-11:2004], "`Industrial Automation Systems And Integration - Product Data Representation And Exchange - Part 11: Description Methods: The EXPRESS Language Reference Manual`"
+
+== Summary
+
+The inventors of EXPRESS with ELF will be carrying this history of the EXPRESS
+languages forward.

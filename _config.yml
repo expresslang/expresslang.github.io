@@ -2,7 +2,7 @@ title: EXPRESS Language Foundation
 description: International standards for information modelling, abstract languages and data management
 
 tagline: >-
-  Don’t panic, EXPRESS
+  Don’t panic, <strong>EXPRESS</strong>
 
 permalink: /blog/:year-:month-:day-:title/
 
@@ -49,8 +49,9 @@ home_calls_to_action:
   - { url: "/language/", title: "Language introduction" }
 
 collections:
+  # Temporary fix
   projects:
-    output: false
+    output: true
   software:
     output: true
     permalink: /software/:path/
@@ -112,3 +113,5 @@ exclude:
   - Rakefile
   - README.adoc
   - vendor # for deployment
+
+
