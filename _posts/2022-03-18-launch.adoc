@@ -1,0 +1,181 @@
+---
+layout: post
+title: "Introducing the EXPRESS Language Foundation"
+date: 2022-03-18
+categories: announcements
+authors:
+  -
+    name: Thomas Thurman
+    email: thomas.thurman@expresslang.org
+    social_links:
+      - https://github.com/TRThurman
+  -
+    name: Hiroshi Murayama
+    email: hiroshi.murayama@expresslang.org
+  -
+    name: David Loffredo
+    email: david.loffredo@expresslang.org
+  -
+    name: Ronald Tse
+    email: ronald.tse@expresslang.org
+    social_links:
+      - https://github.com/ronaldtse
+
+excerpt: >-
+  The EXPRESS Language Foundation is a newly established
+  standards organization for the EXPRESS language.
+---
+= Introducing the EXPRESS Language Foundation
+
+We are happy to announce the establishment of the EXPRESS Language Foundation.
+
+The EXPRESS Language Foundation, or just "`ELF`", is a non-profit organization
+to facilitate the education, standardization, research, promotion, definition,
+usage of information modelling and programming languages, with a focus on the
+EXPRESS language family.
+
+== What is EXPRESS?
+
+=== Purpose of EXPRESS
+
+EXPRESS is an information modelling language that has been powering what is now
+called "smart manufacturing". The language originated from the PDDI program,
+which was created in 1982 by the US Air Force at McDonnell Aircraft (now merged
+into Boeing).
+
+The rasion-de-etre of EXPRESS is reflected in its name -- to facilitate
+"`expressiveness`" in modelling information.
+
+Today, EXPRESS is heavily used in advanced manufacturing, including in
+the industries of:
+
+* aerospace
+* automotive
+* construction
+* digital twins
+* smart manufacturing
+
+Since then, EXPRESS has now grown into a family of information
+modelling languages, including EXPRESS-G, EXPRESS-I and EXPRESS-X, collectively
+referred to as the "`EXPRESS language family`".
+
+There are a few properties that separate EXPRESS from other information
+modelling languages:
+
+* It is a machine-readable language.
+* It is a data modelling language -- not a programming language, even though it
+does provide algorithmic functionality
+
+=== The EXPRESS language family
+
+Each member of the EXPRESS family of languages provides specific functionality
+for the information modeller:
+
+* EXPRESS provides a lexical syntax for modelling information
+* EXPRESS-G provides a graphical syntax for modelling information, mirroring
+a subset of EXPRESS syntax
+* EXPRESS-I provides a lexical syntax for information model instances
+* EXPRESS-X provides a lexical syntax for mapping between information models
+
+=== Standardization of EXPRESS
+
+Given that EXPRESS was immensely useful for the manufacturing supply chain,
+it entered a standardization process at the National Bureau of Standards
+(now NIST) in 1984.
+
+In 1986, EXPRESS was proposed by NBS to be an International Standard at ISO,
+which the language specification was ultimately published in 1994 as ISO
+10303-11:1994.
+
+In 1994, prior to its standardization, the first authoritative reference
+and manual on EXPRESS was published by Doug Schenck and Peter Wilson, the
+original inventor of EXPRESS and EXPRESS-G/EXPRESS-X respectively.
+
+In 2004, the second edition of the language reference ISO 10303-11:2004
+was published at ISO, with David Loffredo and Peter Wilson as its project leaders.
+
+Doug, Peter and Dave are all founding members of ELF.
+
+
+== The role of ELF
+
+EXPRESS has already been standardized and is widely used. Why does the EXPRESS
+language need to be supported by an organization?
+
+The EXPRESS Language Foundation is established in response to user needs
+of the EXPRESS language family, juxtaposed upon the current technology
+and usage environment that places additional demands on the language family
+not previously addressed. Linguists consider languages as living things,
+and members of the EXPRESS language family are no different!
+
+ELF, being a non-profit organization, is able to receive donations and grants to
+fund future development and maintenance of the EXPRESS family of languages, as
+well as be able to support users of the languages.
+
+Specifically, ELF aims to:
+
+. develop and publish best practices, documentation and related tools for the
+definition, relation, usage, governance and dissemination of information models;
+
+. foster and host a user community for those who work with the EXPRESS language family.
+
+== Target beneficiaries
+
+For those who remember, the EXPRESS User Group (EUG) has held annual conferences
+since 1991 until 1996. Peter Wilson, the main organizer of EUG, is one of the
+founders of ELF.
+
+ELF takes the baton from EUG in the 21st century in the following ways:
+
+* Foster and support EXPRESS user communities (role of EUG)
+* Educate EXPRESS users, providing training resources
+* Develop and standardize the EXPRESS language family
+* Promote usage and adoption of the EXPRESS language family
+* Ensure that EXPRESS remains relevant and useful now and beyond
+
+ELF serves organizations and individuals alike with a need in defining
+interchangeable information models across information systems.
+
+== Standardization
+
+ELF is an international standardization organization, similar to the roles
+played by ISO and IEC.
+
+ELF creates international standards and contributes to the domains of
+information modelling, abstract languages and data management, relating to the
+understanding of shared data and the relationships between them,
+specifically for the EXPRESS language families.
+
+
+== Governance structure
+
+ELF consists of a board and members of the organization. Our members are
+organized into a central office with multiple technical committees:
+
+* The central office functions to support the activities of technical
+committees, including for the publication of standards.
+
+* Technical committees are organized by volunteers who are experts in a selected
+domain of the technical committee and develop best practices and information for
+the international arena.
+
+
+== International cooperation
+
+The mission of ELF is international in nature, given that its founding team is
+spread across the globe.
+
+ELF consists of international experts and will work with international partners.
+
+
+== Join us at ELF!
+
+The founding members of ELF include the original inventors of EXPRESS, Doug
+Schenck, Bernd Wenzel, Peter Wilson; experts involved in enhancing EXPRESS,
+David Loffredo, Allison Barnard-Feeney; as well as EXPRESS stakeholders deeply
+interested in the achievement of the Foundation's mission, Thomas Thurman,
+Hiroshi Murayama and Ronald Tse.
+
+ELF is now welcoming organizational and individual members.
+
+Join us in making EXPRESS better!

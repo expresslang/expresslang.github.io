@@ -1,0 +1,145 @@
+---
+---
+
+$accent-color: lighten(#E3A238, 10%);
+$primary-color: darken(#1AB0A7, 20%);
+$primary-color-dark: darken(#1AB0A7, 20%);
+$main-background: linear-gradient(315deg, lighten($primary-color-dark, 10%) 0%, $primary-color-dark 74%) !default;
+
+@import 'jekyll-theme-open-project';
+
+.main-section {
+  > .title {
+    font-weight: 500;
+  }
+}
+
+.file-browser-with-preview {
+  padding-bottom: 2rem;
+  height: 500px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: stretch;
+
+  background: whiteSmoke;
+  box-shadow: $primary-color-dark 0 0 0 2px;
+  margin: 2px;
+
+  .file-browser-search {
+    position: absolute;
+    inset: 0;
+    top: unset;
+    height: 2rem;
+    padding: .1rem .5rem;
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+  .file-listing {
+    width: 35%;
+    flex-grow: 0;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: none;
+    overflow-x: hidden;
+    overflow-y: scroll;
+
+    .file-list-item {
+      white-space: nowrap;
+      font-size: 12px;
+      letter-spacing: -.01em;
+      box-shadow: gray -1px -1px 0;
+      padding: .25em 1em;
+
+      &.selected {
+        font-weight: bold;
+        background: $primary-color-dark;
+        color: white;
+      }
+
+      .file {
+        text-decoration: underline;
+      }
+    }
+
+  }
+
+  .file-preview {
+    flex: 1;
+    padding: 1rem;
+    background: $primary-color-dark;
+    font-weight: bold;
+    overflow: hidden;
+
+    color: #fff;
+
+    a:link, a:visited {
+      color: inherit;
+    }
+  }
+}
+
+
+body.site--project.layout--home > main > .custom-intro .summary p:first-child:first-letter {
+  font-size: unset;
+  line-height: unset;
+  margin: unset;
+  float: unset;
+  padding: unset;
+}
+
+body > .underlay > header {
+  > .site-logo a .title, > .site-logo a .symbol svg path {
+    color: $accent-color;
+    fill: $accent-color;
+  }
+}
+
+body.layout--home > .underlay > .hero {
+  .illustration {
+    bottom: -100px !important;
+
+    svg {
+      height: 200px;
+    }
+  }
+
+  > .text {
+    > .title {
+      font-weight: normal;
+    }
+  }
+}
+
+body.layout--home {
+  > main .custom-intro .summary {
+    ul.supported-bibliographies {
+      li {
+        .label {
+          margin-right: 1en;
+        }
+        .source, .gem {
+          white-space: nowrap;
+        }
+        .source {
+          &:after {
+            content: ", ";
+          }
+
+          &:last-child:after {
+            content: unset;
+          }
+        }
+      }
+    }
+  }
+}
+
+body.layout--home {
+  > main > .featured-posts {
+    .title {
+      align-self: flex-start;
+    }
+  }
+}

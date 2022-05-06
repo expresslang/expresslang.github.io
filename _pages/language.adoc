@@ -1,0 +1,67 @@
+---
+layout: docs
+title: Introducing EXPRESS
+html-class: overview
+---
+:page-liquid:
+
+== Introducing EXPRESS
+
+=== Purpose
+
+EXPRESS is an information modelling language that has been powering what is now
+called "smart manufacturing". The language originated from the PDDI program,
+which was created in 1982 by the US Air Force at McDonnell Aircraft (now merged
+into Boeing).
+
+The rasion-de-etre of EXPRESS is reflected in its name -- to facilitate
+"`expressiveness`" in modelling information.
+
+Today, EXPRESS is heavily used in advanced manufacturing, including in
+the industries of:
+
+* aerospace
+* automotive
+* construction
+* digital twins
+* smart manufacturing
+
+Since then, EXPRESS has now grown into a family of information
+modelling languages, including EXPRESS-G, EXPRESS-I and EXPRESS-X, collectively
+referred to as the "`EXPRESS language family`".
+
+There are a few properties that separate EXPRESS from other information
+modelling languages:
+
+* It is a machine-readable language.
+* It is a data modelling language -- not a programming language, even though it
+does provide algorithmic functionality
+
+=== The EXPRESS language family
+
+Each member of the EXPRESS family of languages provides specific functionality
+for the information modeller:
+
+* EXPRESS provides a lexical syntax for modelling information
+* EXPRESS-G provides a graphical syntax for modelling information, mirroring
+a subset of EXPRESS syntax
+* EXPRESS-I provides a lexical syntax for information model instances
+* EXPRESS-X provides a lexical syntax for mapping between information models
+
+=== Standardization of EXPRESS
+
+Given that EXPRESS was immensely useful for the manufacturing supply chain,
+it entered a standardization process at the National Bureau of Standards
+(now NIST) in 1984.
+
+In 1986, EXPRESS was proposed by NBS to be an International Standard at ISO,
+which the language specification was ultimately published in 1994 as ISO
+10303-11:1994.
+
+In 1994, prior to its standardization, the first authoritative reference
+and manual on EXPRESS was published by Doug Schenck and Peter Wilson, the
+original inventor of EXPRESS and EXPRESS-G/EXPRESS-X respectively.
+
+In 2004, the second edition of the language reference ISO 10303-11:2004
+was published at ISO, with David Loffredo and Peter Wilson as its project leaders.
+
