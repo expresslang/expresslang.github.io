@@ -7,5 +7,16 @@ title: Membership
 ELF serves organizations and individuals alike with a need in defining
 interchangeable information models across information systems.
 
-For corporate and individual membership inquiries,
-please email mailto:info@expresslang.org.
+ELF membership is open to all parties internationally through an annual
+donation.
+
+* Corporate membership enables the participation of corporate
+staff in ELF technical committees with voting rights.
+
+* Individual membership enables participation in technical committees and
+working groups in expert capacity.
+
+* Founding membership carries the same benefits as corporate membership
+but does not carry the requirement of an annual donation.
+
+For membership inquiries, please contact link:mailto:info@expresslang.org[us].

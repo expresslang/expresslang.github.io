@@ -5,20 +5,25 @@ title: About the EXPRESS Language Foundation
 ---
 :page-liquid:
 
-=== Our mission
+== Our mission
 
-[quote]
-____
-“to facilitate the education, standardization, research, promotion, definition, usage of information modelling and programming languages, with a focus on the EXPRESS language family.”
-____
+To facilitate the education, standardization, research, promotion, definition,
+usage of information modelling and programming languages, with a focus on the
+EXPRESS language family.
 
-=== The role of ELF
+
+== Our purpose
 
 The EXPRESS Language Foundation is established in response to user needs
 of the EXPRESS language family, juxtaposed upon the current technology
 and usage environment that places additional demands on the language family
-not previously addressed. Linguists consider languages as living things,
-and members of the EXPRESS language family are no different!
+not previously addressed.
+
+Linguists consider languages as living things, and members of the EXPRESS
+language family are no different!
+
+
+== Our work
 
 ELF funds future development and maintenance of the EXPRESS family of languages,
 and aims to support users of these languages.
@@ -30,16 +35,8 @@ definition, relation, usage, governance and dissemination of information models;
 
 . foster and host a user community for those who work with the EXPRESS language family.
 
-=== Membership
 
-ELF serves organizations and individuals alike with a need in defining
-interchangeable information models across information systems.
-
-For corporate and invididual membership inquiries,
-please email mailto:info@expresslang.org.
-
-
-=== Standardization
+== Standardization
 
 ELF is an international standardization organization, similar to the roles
 played by ISO and IEC.
@@ -50,7 +47,15 @@ understanding of shared data and the relationships between them,
 specifically for the EXPRESS language families.
 
 
-=== Governance structure
+== Membership
+
+ELF serves organizations and individuals alike with a need in defining
+interchangeable information models across information systems.
+
+Please refer to the link:/membership[membership] page for more details.
+
+
+== Governance structure
 
 ELF consists of a board and members of the organization. Our members are
 organized into a central office with multiple technical committees:
@@ -62,19 +67,29 @@ committees, including for the publication of standards.
 domain of the technical committee and develop best practices and information for
 the international arena.
 
-Roles include:
+ELF is composed of the following internal bodies and roles:
 
 * Board of Directors
-* President
-* Vice-President
-* CFO
-* Executive Director
+
+* Executive functions
+** President
+** Vice-President
+** Executive Director
+** Chief Financial Officer
+
 * Technical Coordination Committee
+
+
+== Technical work
+
+Technical work at ELF is performed by its Technical Committees, including:
+
 * TC EXPRESS
 * TC EXPRESS-G
 * TC EXPRESS-I
 
-=== International cooperation
+
+== International cooperation
 
 The mission of ELF is international in nature, given that its founding team is
 spread across the globe.
@@ -82,10 +97,17 @@ spread across the globe.
 ELF consists of international experts and will work with international partners.
 
 
-=== Founding members
+== Founders
 
-The founding members of ELF include the original inventors of EXPRESS, Doug
-Schenck, Bernd Wenzel, Peter Wilson; experts involved in enhancing EXPRESS,
-David Loffredo, Allison Barnard-Feeney; as well as EXPRESS stakeholders deeply
-interested in the achievement of the Foundation's mission, Thomas Thurman,
-Hiroshi Murayama and Ronald Tse.
+The founders of ELF include the original inventors of EXPRESS, experts involved
+in enhancing EXPRESS, as well as EXPRESS stakeholders deeply interested in the
+achievement of the Foundation's mission.
+
+* Douglas Schenck
+* https://www.linkedin.com/in/bernd-wenzel-5392922/[Prof. Bernd Wenzel]
+* Peter Wilson
+* https://www.linkedin.com/in/allison-barnard-feeney-9715a2/[Allison Barnard-Feeney]
+* https://www.linkedin.com/in/loffredo/[David Loffredo]
+* https://www.linkedin.com/in/tom-thurman-8161535/[Thomas Thurman]
+* https://www.linkedin.com/in/hiroshi-murayama-86a03851/[Hiroshi Murayama]
+* https://www.linkedin.com/in/rhtse/[Ronald Tse]
