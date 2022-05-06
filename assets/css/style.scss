@@ -40,22 +40,19 @@ body > .underlay > header > .hamburger-menu {
   }
 }
 
+
 body > .underlay > header {
   > .site-logo,
   > .hamburger-menu .site-logo-container {
 
-    a .title svg path,
-    a .symbol svg path {
-      color: white !important;
-      fill: white !important;
-    }
+    margin-right: 2em;
 
     a .symbol {
       display: inline-block;
 
       svg {
-        height: 1.2em;
-        margin-right: 0.3em;
+        height: 2em;
+        margin-right: 0.5em;
       }
     }
 
