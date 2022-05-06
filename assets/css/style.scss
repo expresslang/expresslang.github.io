@@ -1,9 +1,9 @@
 ---
 ---
 
-$accent-color: lighten(#E3A238, 10%);
-$primary-color: darken(#1AB0A7, 20%);
-$primary-color-dark: darken(#1AB0A7, 20%);
+$accent-color: #FFB1A2;
+$primary-color: #4d7bc3;
+$primary-color-dark: #3f65a2;
 $main-background: linear-gradient(315deg, lighten($primary-color-dark, 10%) 0%, $primary-color-dark 74%) !default;
 
 @import 'jekyll-theme-open-project';
@@ -17,15 +17,17 @@ $main-background: linear-gradient(315deg, lighten($primary-color-dark, 10%) 0%, 
 body.site--project.layout--home > main > .custom-intro .summary p:first-child:first-letter {
   font-size: unset;
   line-height: unset;
+  color: unset;
   margin: unset;
   float: unset;
   padding: unset;
 }
 
 body > .underlay > header {
-  > .site-logo a .title, > .site-logo a .symbol svg path {
-    color: $accent-color;
-    fill: $accent-color;
+  > .site-logo a .title svg path,
+  > .site-logo a .symbol svg path {
+    color: white !important;
+    fill: white !important;
   }
 }
 
