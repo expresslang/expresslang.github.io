@@ -1,7 +1,7 @@
 ---
 layout: docs-base
 html-class: docs-page
-title: Introducing EXPRESS
+title: Privacy policy
 ---
 == Privacy policy
 
