@@ -30,28 +30,43 @@ body.site--project.layout--home > main > .custom-intro .summary p:first-child:fi
   padding: unset;
 }
 
+body > .underlay > header > .hamburger-menu {
+  > nav {
+    margin-top: 1em
+  }
+
+  > nav > * {
+    margin-left: 1.5em
+  }
+}
+
 body > .underlay > header {
-  > .site-logo a .title svg path,
-  > .site-logo a .symbol svg path {
-    color: white !important;
-    fill: white !important;
-  }
+  > .site-logo,
+  > .hamburger-menu .site-logo-container {
 
-  > .site-logo a .symbol {
-    display: inline-block;
-
-    svg {
-      height: 1.2em;
-      margin-right: 0.3em;
+    a .title svg path,
+    a .symbol svg path {
+      color: white !important;
+      fill: white !important;
     }
-  }
 
-  > .site-logo a .title {
-    display: inline-block;
+    a .symbol {
+      display: inline-block;
 
-    svg {
-      height: 1.3em
+      svg {
+        height: 1.2em;
+        margin-right: 0.3em;
+      }
     }
+
+    a .title {
+      display: inline-block;
+
+      svg {
+        height: 1.3em
+      }
+    }
+
   }
 }
 
