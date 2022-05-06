@@ -11,8 +11,9 @@ Bernd Wenzel, Joe Eggers and Peter Wilson.
 
 
 Douglas Schenck and Peter Wilson published the authoritative reference to the
-EXPRESS language named "`Information Modeling: The EXPRESS Way`" in 1994, with
-several anecdotes of how EXPRESS was initially conceived:
+EXPRESS language named
+https://global.oup.com/academic/product/information-modeling-the-express-way-9780195087147["`Information Modeling: The EXPRESS Way`"]
+in 1994, with several anecdotes of how EXPRESS was initially conceived:
 
 [quote,"Information Modeling: The EXPRESS Way"]
 ____
@@ -89,6 +90,9 @@ ISO/TC 184/SC 4/WG 1 as N268 (non-LaTeX) and then N287 (LaTeX formatted).
 STEP file structure (also called  "`physical file`"), also inspired by the PDDI
 effort, was submitted as N279.
 
+.ISO/TC 184/SC 4/WG 1 N287
+image::/assets/2022-05-01-express-history/n287.png[height=400]
+
 SOURCE: NISTIR 88-4004 PDES First Working Draft.
 
 
@@ -103,6 +107,8 @@ ____
 
 It was accepted by ISO at the same time as EXPRESS itself.
 
+.Description of when EXPRESS-G was created, according to Peter Wilson
+image::/assets/2022-05-01-express-history/expressg.png[width=600]
 
 == Birth of EXPRESS-I (1991/92)
 
@@ -115,12 +121,26 @@ It was never standardized at ISO.
 
 == EXPRESS accepted as an International Standard at ISO (1994)
 
+The book "`Information Modeling: The EXPRESS Way`" by Douglas Schenck and Peter
+Wilson, was published by Oxford University Press (1994), which covers
+EXPRESS, EXPRESS-G and EXPRESS-I.
+
 EXPRESS and EXPRESS-G were published as
 https://www.iso.org/standard/18348.html[ISO 10303-11:1994],
 "`Industrial Automation Systems and Integration -- Product data representation and exchange`".
 
-The book "`Information Modeling: The EXPRESS Way`" by Douglas Schenck and Peter
-Wilson, was published by Oxford University Press (1994).
+
+[cols="a,a"]
+|===
+|
+.Information Modeling: The EXPRESS Way, by Douglas Schenck and Peter Wilson
+image::/assets/2022-05-01-express-history/expressway.jpeg[height=400]
+
+|
+.ISO 10303-11:1994
+image::/assets/2022-05-01-express-history/10303-11-1994.jpeg[height=400]
+
+|===
 
 References for EXPRESS, EXPRESS-G, EXPRESS-I and EXPRESS-X were published.
 
@@ -129,7 +149,19 @@ References for EXPRESS, EXPRESS-G, EXPRESS-I and EXPRESS-X were published.
 David Loffredo (of STEP Tools) and Peter Wilson (of Boeing) led the update to
 https://www.iso.org/standard/38047.html[ISO 10303-11:2004], "`Industrial Automation Systems And Integration - Product Data Representation And Exchange - Part 11: Description Methods: The EXPRESS Language Reference Manual`"
 
+[cols="a,a"]
+|===
+|
+.Cover page of ISO 10303-11:2004
+image::/assets/2022-05-01-express-history/10303-11-2004.jpeg[]
+
+|
+
+|===
+
+
 == Summary
 
 The inventors of EXPRESS with ELF will be carrying this history of the EXPRESS
 languages forward.
+
