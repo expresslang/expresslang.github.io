@@ -1,11 +1,9 @@
 ---
-layout: docs
-title: About ELF
-html-class: overview
+layout: docs-base
+html-class: docs-page
+title: About the EXPRESS Language Foundation
 ---
 :page-liquid:
-
-== About the EXPRESS Language Foundation
 
 === Our mission
 
