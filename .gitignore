@@ -5,3 +5,5 @@ tmp
 artifacts
 dist
 .DS_Store
+Gemfile.lock
+
