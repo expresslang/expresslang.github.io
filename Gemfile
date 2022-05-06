@@ -25,6 +25,7 @@ group :jekyll_plugins do
   gem "jekyll-data"
   gem "jekyll-asciidoc"
   gem "jekyll-redirect-from"
+  gem "jekyll-inline-svg"
   gem "git"
   gem "jekyll-theme-open-project-helpers"
   gem "kramdown-parser-gfm"

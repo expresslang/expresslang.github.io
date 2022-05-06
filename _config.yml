@@ -93,6 +93,7 @@ defaults:
 plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
+  - jekyll-inline-svg
 
 tag_namespaces:
   software:
@@ -114,4 +115,6 @@ exclude:
   - README.adoc
   - vendor # for deployment
 
+svg:
+  optimize: true
 

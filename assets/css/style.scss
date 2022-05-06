@@ -36,6 +36,23 @@ body > .underlay > header {
     color: white !important;
     fill: white !important;
   }
+
+  > .site-logo a .symbol {
+    display: inline-block;
+
+    svg {
+      height: 1.2em;
+      margin-right: 0.3em;
+    }
+  }
+
+  > .site-logo a .title {
+    display: inline-block;
+
+    svg {
+      height: 1.3em
+    }
+  }
 }
 
 body.layout--home > .underlay > .hero {
