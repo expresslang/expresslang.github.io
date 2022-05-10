@@ -7,7 +7,7 @@ title: EXPRESS language references
 
 == EXPRESS grammar in BNF form
 
-The following EXPRESS BNF grammars are provide as language references.
+The following EXPRESS BNF grammars are provided as language references.
 
 * link:/bnf/iso-10303-11-2004-raw.bnf[ISO 10303-11:2004 BNF (raw)]
 * link:/bnf/iso-10303-11-2004.bnf[ISO 10303-11:2004 BNF]
