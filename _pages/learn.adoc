@@ -1,0 +1,25 @@
+---
+layout: author-docs
+title: Learning EXPRESS (beta)
+article_header_title: Learning EXPRESS (beta)
+html-class: overview
+---
+:page-liquid:
+
+WARNING: This section is in "beta" -- it still under heavy development, only use
+when absolutely necessary.
+
+== Introductory course to EXPRESS
+
+[.feature-list]
+* EXPRESS is an information modelling language that serves as core technology to intelligent manufacturing.
+
+* This course is authored by Peter Wilson and has been delivered
+since 1994.
+
+* This course is divided into 5 modules, starting with an
+introduction to EXPRESS.
+
+// +++
+// <div class="cta"><a class="button" href="/author/getting-started">Get started</a></div>
+// +++
