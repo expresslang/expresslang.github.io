@@ -172,9 +172,9 @@ ELF consists of international experts and will work with international partners.
 
 The founding members of ELF include the original inventors of EXPRESS, Doug
 Schenck, Bernd Wenzel, Peter Wilson; experts involved in enhancing EXPRESS,
-David Loffredo, Allison Barnard-Feeney; as well as EXPRESS stakeholders deeply
-interested in the achievement of the Foundation's mission, Thomas Thurman,
-Hiroshi Murayama and Ronald Tse.
+David Loffredo, Allison Barnard Feeney, Phil Spiby; as well as EXPRESS
+stakeholders deeply interested in the achievement of the Foundation's mission,
+Thomas Thurman, Hiroshi Murayama and Ronald Tse.
 
 ELF is now welcoming organizational and individual members.
 
