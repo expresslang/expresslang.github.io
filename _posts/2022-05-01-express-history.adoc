@@ -143,7 +143,7 @@ EXPRESS, EXPRESS-G and EXPRESS-I.
 
 EXPRESS and EXPRESS-G were published as
 https://www.iso.org/standard/18348.html[ISO 10303-11:1994],
-"`Industrial Automation Systems and Integration -- Product data representation and exchange`".
+"`The EXPRESS language reference manual`".
 
 
 [cols="a,a"]
@@ -162,8 +162,13 @@ References for EXPRESS, EXPRESS-G, EXPRESS-I and EXPRESS-X were published.
 
 == EXPRESS International Standard updated at ISO (2004)
 
-David Loffredo (of STEP Tools) and Peter Wilson (of Boeing) led the update to
-https://www.iso.org/standard/38047.html[ISO 10303-11:2004], "`Industrial Automation Systems And Integration - Product Data Representation And Exchange - Part 11: Description Methods: The EXPRESS Language Reference Manual`"
+EXPRESS was updated to edition 2 in
+https://www.iso.org/standard/38047.html[ISO 10303-11:2004], "`The EXPRESS language reference manual`"
+
+This work was performed in ISO/TC 184/SC 4/WG 11 (convenor David Loffredo), led
+by project leader Phil Spiby, with contribution of many experts including Peter
+Wilson, Ed Barkmeyer, Peter Denno, Jochen Haenisch, David Price.
+
 
 [cols="a,a"]
 |===
