@@ -61,6 +61,26 @@ instantiation method is a _concrete_ model. One that is implementation
 independent is a _conceptual_ model.
 --
 
+This is a somewhat formal definition, but then we are going to
+be spending a lot of time with formal models and modeling.
+
+It is intended to enable unambiguous communication about a limited
+topic (or range of topics).
+
+Purpose:: To identify clearly the objects in a '`Universe of Discourse`'
+in order to enable people (and potentially computer systems) to communicate
+precisely about a domain of common interest.
+
+Comprises:: An information model is composed of
++
+--
+* objects
+* relationships
+* constraints
+
+which, taken together, provide a complete and unambiguous formal
+representation of a Universe of Discourse.
+--
 
 == Why Formal Models?
 
@@ -96,32 +116,6 @@ looking at the pair...
 * Numerical data (1-3-91) can be ambiguous.
 
 There are some exercises about ambiguities.
-
-
-== Information Model
-
-This is a somewhat formal definition, but then we are going to
-be spending a lot of time with formal models and modeling.
-
-It is intended to enable unambiguous communication about a limited
-topic (or range of topics).
-
-Purpose:: To identify clearly the objects in a '`Universe of Discourse`'
-in order to enable people (and potentially computer systems) to communicate
-precisely about a domain of common interest.
-
-Comprises:: An information model is composed of
-+
---
-* objects
-* relationships
-* constraints
-
-which, taken together, provide a complete and unambiguous formal
-representation of a Universe of Discourse.
---
-
-
 
 
 == What the information model is NOT
