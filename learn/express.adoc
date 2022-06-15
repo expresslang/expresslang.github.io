@@ -143,7 +143,7 @@ technologies. IM constraints are often implemented via programatic code.
 
 
 // begin notes
-
+////
 == IM Description Methods
 
 Historically, formal information models have been specified using
@@ -154,8 +154,8 @@ The graphic constructs are usually boxes and lines connecting the boxes,
 together with some annotations on the diagram.
 
 A graphical model can easily be the size of a wall, which might cause
-difficulties if you ant to put one in a report.
-
+difficulties if you want to put one in a report.
+////
 // end notes
 
 
@@ -176,7 +176,7 @@ completeness.
 
 
 // begin notes
-
+////
 == EXPRESS Development
 
 EXPRESS has been used, one way or another, for 20 years
@@ -189,14 +189,15 @@ Other modeling techniques were reviewed but did not have the power
 that was felt to be needed, in particular constraint specifications.
 Also the languages were basically graphical although there were some
 proprietry lexical adjuncts.
-
+////
 // end notes
 
 
 == EXPRESS Development
 
 EXPRESS developed as an information modeling language to meet the needs
-of product data exchange model definition.
+of product data exchange model definition. It has been used, one way or
+another, for 20 years or so.
 
 
 * First version, called DSL, developed under the USAF funded PDDI
@@ -208,7 +209,7 @@ program (early '80s).
 
 
 // begin notes
-
+////
 == REVIEWS
 
 EXPRESS has been formally approved as an International Standard,
@@ -222,11 +223,23 @@ reference manual_
 The first edition was formally approved and published in 1994.
 
 The second edition should be published during 2004.
-
+////
 // end notes
 
 
-== REVIEWS
+== Reviews
+
+EXPRESS has been formally approved as an International Standard,
+specifically:
+
+ISO 10303-11 _Industrial automation systems and integration --
+Product data representation and exchange --
+Part 11: Description method: The EXPRESS language
+reference manual_
+
+The first edition was formally approved and published in 1994.
+
+The second edition should be published during 2004.
 
 The language is subject to ongoing review within STEP and by other users.
 Also international public review as part of ISO standardization:
