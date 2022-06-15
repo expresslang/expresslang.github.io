@@ -257,9 +257,9 @@ End 2003:: Edition 2 approved as an International Standard.
 
 == Language Comparison
 
-Most modeling anguages are graphical, which is inherently limiting.
+Most modeling languages are graphical, which is inherently limiting.
 
-For data modeling most languages are targeted towards Relational Databases.
+For data modeling, most languages are targeted towards Relational Databases.
 Examples include IDEF1X, Shlaer-Mellor, Extended Entity-Relation.
 
 UML is for modeling an Object Oriented program. EXPRESS is for modeling
@@ -272,8 +272,8 @@ engineers as user, not by computer scientists).
 .LANGUAGE COMPARISON
 [cols="^a,^a,^a",options="unnumbered"]
 |===
-| Characteristic | Others     | EXPRESS
-3+| Modeling
+h| Characteristic h| Others     h| EXPRESS
+3+h| Modeling
 | Form           | Graphics   | Programmatic
 | Flavor         | Relational | OO
 | Objects        |  X         | X
@@ -283,11 +283,11 @@ engineers as user, not by computer scientists).
 | Domain         | Entity     | Entity + Type
 | Sequencing     |            | X
 | Cardinalities  | Limited    | Any
-3+| Constraints
+3+h| Constraints
 | Domain         | Limited    | Any
 | Roles          | Limited    | Any
 | Categorization | Limited    | Broad
-3+| Miscellaneous
+3+h| Miscellaneous
 | Multi-page     | Some       | X
 | Algorithms     |            | X
 | Scoping        |            | X
