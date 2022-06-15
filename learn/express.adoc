@@ -33,7 +33,7 @@ Definition:: Information is knowledge of ideas, facts and/or processes.
 --
 
 
-== Information Model
+== Information Model (IM)
 
 Because we are dealing with computer systems we need a precise
 definition of the information of interest. One goal is to be able to
