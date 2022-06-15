@@ -118,12 +118,16 @@ looking at the pair...
 There are some exercises about ambiguities.
 
 
+// begin notes
+
 == What the information model is NOT
 
 We are interested in computer based/processible information models.
 
 A model uses, or is associated with, various more common computer
 techniques, but it is essentially for human consumption.
+
+// end notes
 
 An Information Model is:
 
@@ -138,7 +142,7 @@ A populated instance of an IM may be maintained using DB or similar
 technologies. IM constraints are often implemented via programatic code.
 
 
-
+// begin notes
 
 == IM Description Methods
 
@@ -152,7 +156,7 @@ together with some annotations on the diagram.
 A graphical model can easily be the size of a wall, which might cause
 difficulties if you ant to put one in a report.
 
-
+// end notes
 
 
 == IM Description Methods
@@ -171,7 +175,7 @@ understanding. Graphical models nearly always require supplemental text for
 completeness.
 
 
-
+// begin notes
 
 == EXPRESS Development
 
@@ -186,7 +190,7 @@ that was felt to be needed, in particular constraint specifications.
 Also the languages were basically graphical although there were some
 proprietry lexical adjuncts.
 
-
+// end notes
 
 
 == EXPRESS Development
@@ -203,7 +207,7 @@ program (early '80s).
 * Language still evolving.
 
 
-
+// begin notes
 
 == REVIEWS
 
@@ -219,7 +223,7 @@ The first edition was formally approved and published in 1994.
 
 The second edition should be published during 2004.
 
-
+// end notes
 
 
 == REVIEWS
@@ -236,7 +240,7 @@ End 1994:: Published as International Standard ISO 10303-11:1994.
 End 2003:: Edition 2 approved as an International Standard.
 
 
-
+// begin notes
 
 == Language Comparison
 
@@ -249,7 +253,7 @@ UML is for modeling an Object Oriented program. EXPRESS is for modeling
 data and naturally moved to an OO perspective (it was developed by practising
 engineers as user, not by computer scientists).
 
-
+// end notes
 
 
 .LANGUAGE COMPARISON
@@ -278,7 +282,7 @@ engineers as user, not by computer scientists).
 
 
 
-
+// begin notes
 
 == Graphical Models
 
@@ -292,7 +296,7 @@ program code that many details get missed.
 
 It is difficult to formally specify a graphical language.
 
-
+// end notes
 
 
 == Graphical Models
@@ -304,7 +308,7 @@ It is difficult to formally specify a graphical language.
 * Effectively, not computer processible (What You See Is All You've Got).
 
 
-
+// begin notes
 
 == Textual Models
 
@@ -322,7 +326,7 @@ They provide opportunities for models to be manipulated, for example
 automatically developing test cases or checking that data conforms to the
 model.
 
-
+// end notes
 
 == Textual Models
 
@@ -334,7 +338,7 @@ model.
 * Potential for automatic implementation (for model simulation and test).
 
 
-
+// begin notes
 
 == EXPRESS is
 
@@ -358,7 +362,7 @@ One of the strengths of EXPRESS is that it much of it was developed by the
 end users. That is also probaly its major weakness as its initial coherence
 sank under the weight.
 
-
+// end notes
 
 
 == EXPRESS is:
@@ -372,7 +376,7 @@ sank under the weight.
 * Has several aspects (subsets)
 
 
-
+// begin notes
 
 == EXPRESS Aspects
 
@@ -398,7 +402,7 @@ in which you can specify desired changes to an EXPRESS model and then have
 them performed; transformations principally consist of splitting or merging
 things and their relationships.
 
-
+// end notes
 
 
 == EXPRESS Aspects
@@ -412,14 +416,14 @@ things and their relationships.
 * Transformation specification (EXPRESS-X).
 
 
-
+// begin notes
 
 == EXPRESS Usage
 
 EXPRESS is widely used in the Standards community for formal definition
 of data-related concepts.
 
-
+// end notes
 
 
 == EXPRESS Usage
@@ -437,7 +441,7 @@ Other uses are possible, such as using EXPRESS to define the syntax,
 grammer, and semantics of the EXPRESS language.
 
 
-
+// begin notes
 
 == STEP History
 
@@ -483,14 +487,14 @@ US standard (even though most participants were non-US). This dilemma was
 eventually resolved by changing PDES to be -- Product Data Exchange using
 STEP (which some then called Standard for Exchange using PDES).
 
-
+// end notes
 
 
 [%unnumbered]
 image::../images/01-pstphist.svg[]
 
 
-
+// begin notes
 
 == STEP Documents
 
@@ -512,13 +516,13 @@ for product descriptions.
 which specify application dependent information models for the purposes
 of data exchange.
 
-
+// end notes
 
 
 image::../images/01-pstpover.svg[]
 
 
-
+// begin notes
 
 == STEP Architecture
 
@@ -535,7 +539,7 @@ consist of a mapping from EXPRESS to a data representation.
 As far as a typical end user is concerned, the IRs are invisible and there
 are APs and exchange levels.
 
-
+// end notes
 
 
 [%unnumbered]
@@ -543,7 +547,7 @@ are APs and exchange levels.
 image::../images/01-pstparch.svg[]
 
 
-
+// begin notes
 
 == Level 1 Exchange
 
@@ -557,7 +561,7 @@ their CAD system).
 image::../images/01-plevel1.svg[]
 
 
-
+// begin notes
 
 == Level 2 Exchange
 
@@ -566,7 +570,7 @@ Level 2 data exchange is memory-based. Get your CAD system to create a
 can be written to a file for Level 1 use. At the end of the session
 the STEP database is no longer available.
 
-
+// end notes
 
 
 [%unnumbered]
@@ -574,7 +578,7 @@ the STEP database is no longer available.
 image::../images/01-plevel2.svg[]
 
 
-
+// begin notes
 
 == Level 3 Exchange
 
@@ -582,7 +586,7 @@ Level 3 data exchange is database-based. The STEP data is maintained
 in a (permanent) shared database. STEP level 1 files can be written and read
 by the database.
 
-
+// end notes
 
 
 [%unnumbered]
@@ -590,7 +594,7 @@ by the database.
 image::../images/01-plevel3.svg[]
 
 
-
+// begin notes
 
 == Procedural Exchange
 
@@ -602,7 +606,7 @@ a hole in it, tell the system to create a block, put a hole in it, and then
 perhaps move it to another position. The end result in terms of data values
 can be the same but the route is very different.
 
-
+// end notes
 
 
 [%unnumbered]
@@ -610,7 +614,7 @@ can be the same but the route is very different.
 image::../images/01-pfilproc.svg[]
 
 
-
+// begin notes
 
 == Level 4 Exchange
 
@@ -622,7 +626,7 @@ The vision has faded.
 The majority of STEP implementations are Level 1 (file exchange).
 Internally, though, they are implemented using a Level 2 or 3 architecture.
 
-
+// end notes
 
 
 [%unnumbered]
@@ -630,7 +634,7 @@ Internally, though, they are implemented using a Level 2 or 3 architecture.
 image::../images/01-plevel4.svg[]
 
 
-
+// begin notes
 
 == EXPRESS Primitives
 
@@ -643,7 +647,7 @@ These, plus literals, are the fundamental '`things`' of the EXPRESS language.
 
 These are later described in detail.
 
-
+// end notes
 
 
 == EXPRESS Primitives
@@ -655,7 +659,7 @@ Enumeration)
 * Pascal-like procedural language
 
 
-
+// begin notes
 
 == Simple Types
 
@@ -668,7 +672,7 @@ as you like.
 
 The procedural language lets you perform operations on NUMBERs.
 
-
+// end notes
 
 
 == Simple Types
@@ -683,7 +687,7 @@ Various operations such as stem:[+, -, //, ">="], etc. may be
 applied to these types.
 
 
-
+// begin notes
 
 == Simple Types (cont)
 
@@ -692,7 +696,7 @@ epressions.
 
 The procedural language lets you perform operations on logicals.
 
-
+// end notes
 
 
 == Simple Types (cont)
@@ -709,7 +713,7 @@ Comparisons on Booleans and Logicals can be performed
 Other operations include `NOT`, `AND`, `OR`, `XOR`.
 
 
-
+// begin notes
 
 == Simple Types (cont)
 
@@ -719,7 +723,7 @@ is a specialisation of a STRING as it is limited to the digits 0 and 1.
 The procedural language lets you perform operations (concatenation,
 subsetting and comparison) on strings.
 
-
+// end notes
 
 
 == Simple Types (cont)
@@ -743,14 +747,14 @@ IF s1[2:3] = 'it' THEN ...
 ----
 
 
-
+// begin notes
 
 == Aggregations
 
 Aggregations are collections of things. A collection may be ordered or
 unordered, and fixed or expandible in size, and with or without duplicates.
 
-
+// end notes
 
 
 == Aggregations
@@ -771,14 +775,14 @@ NOTE: `LIST [L:H] OF UNIQUE ...` is used for an ordered collection
 with no duplicates.
 
 
-
+// begin notes
 
 == Types
 
 A TYPE is a user-defined extension to the EXPRESS-defined simple types
 and aggregations. Every TYPE has a name chosen by the user.
 
-
+// end notes
 
 
 == Types
@@ -794,7 +798,7 @@ Enumeration:: An ordered set of values represented by names. +
 `END_TYPE;`
 
 
-
+// begin notes
 
 == TYPE Examples
 
@@ -808,7 +812,7 @@ a limited scope for the model.
 
 stem:[tt "choose_thing"] is a selection between two alternatives.
 
-
+// end notes
 
 
 == TYPE Examples
@@ -836,7 +840,7 @@ END_TYPE;
 ----
 
 
-
+// begin notes
 
 == ENTITY
 
@@ -844,7 +848,7 @@ An ENTITY is a user defined object, representing some thing. It has
 various components which will be described. Every ENTITY has a user-defined
 name.
 
-
+// end notes
 
 
 == ENTITY
@@ -858,7 +862,7 @@ The characteristics (properties) of an entity are defined in terms of data
 An entity may '`inherit`' properties from another entity.
 
 
-
+// begin notes
 
 == ENTITY Attributes
 
@@ -868,7 +872,7 @@ kind of data.
 
 The kind of data may be a (collection of) simple types, TYPEs or ENTITYs.
 
-
+// end notes
 
 
 == ENTITY Attributes
@@ -891,7 +895,7 @@ The data for calculating a derived attribute must be accessible from
 the entity.
 
 
-
+// begin notes
 
 == ENTITY Constraints
 
@@ -902,7 +906,7 @@ Constraints limit the kind and/or values of the attributes' data.
 *WHERE* rules are logical expressions. In this case
 the radius must be positive length.
 
-
+// end notes
 
 
 == ENTITY Constraints
@@ -926,7 +930,7 @@ END_ENTITY;
 A WHERE (domain) rule fails if it evaluates to `FALSE`.
 
 
-
+// begin notes
 
 == Example ENTITY
 
@@ -941,7 +945,7 @@ No two people have the same social security number.
 The WHERE rule states that if someone has a spouse then the spouse must
 be of the opposite sex.
 
-
+// end notes
 
 
 == Example ENTITY
@@ -965,7 +969,7 @@ END_ENTITY;
 ----
 
 
-
+// begin notes
 
 == Subtyping
 
@@ -976,7 +980,7 @@ Forgetting about Cantor and degrees of infinity
 * There are fewer odd numbers than there are natural numbers.
 * There are fewer prime numbers than there are natural numbers.
 
-
+// end notes
 
 
 == Subtyping
@@ -1001,7 +1005,7 @@ END_ENTITY;
 ----
 
 
-
+// begin notes
 
 == FUNCTION Example
 
@@ -1012,7 +1016,7 @@ TRUE or FALSE depending on whether or not the first is a subset of
 the second (i.e., every member of stem:[tt "sub"]
 is also in stem:[tt "super"]).
 
-
+// end notes
 
 
 == FUNCTION Example
@@ -1040,7 +1044,7 @@ END_FUNCTION;
 ----
 
 
-
+// begin notes
 
 == Predefined Functions
 
@@ -1048,7 +1052,7 @@ EXPRESS includes a variety of predefined functions.
 
 There is more on these later in the course.
 
-
+// end notes
 
 
 == Predefined Functions
@@ -1064,7 +1068,7 @@ else SUBS is returned.
 entities and returns each entity instance that uses T in role R.
 
 
-
+// begin notes
 
 == Constants
 
@@ -1073,7 +1077,7 @@ precision).
 
 You can also define your own constants, but this is not often done.
 
-
+// end notes
 
 
 == Constants
@@ -1093,7 +1097,7 @@ END_CONSTANT;
 --
 
 
-
+// begin notes
 
 
 == SCHEMA
@@ -1102,7 +1106,7 @@ The minimum EXPRESS model consists of a single empty SCHEMA.
 
 TYPE, ENTITY, FUNCTION definitions are contained within a SCHEMA.
 
-
+// end notes
 
 
 == SCHEMA
@@ -1116,7 +1120,7 @@ relevant domains.
 domains of interest.
 
 
-
+// begin notes
 
 == SCHEMA (cont)
 
@@ -1125,7 +1129,7 @@ A model usually consists of more than one SCHEMA.
 From within a SCHEMA you can get at anything in any other SCHEMA
 (there is no way to '`hide`' something).
 
-
+// end notes
 
 
 == SCHEMA (cont)
