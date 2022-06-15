@@ -122,7 +122,7 @@ There are some exercises about ambiguities.
 
 == What the information model is NOT
 
-We are interested in computer based/processible information models.
+// We are interested in computer based/processible information models.
 
 A model uses, or is associated with, various more common computer
 techniques, but it is essentially for human consumption.
@@ -132,11 +132,11 @@ techniques, but it is essentially for human consumption.
 An Information Model is:
 
 * NOT a database definition (even though terms such as _schema_ are
-common.
+common)
 * NOT a data structure definition (even though data instances of the model
 could be structured)
 * NOT a program (even though procedural code and algorithms may be in
-the model)
+the model).
 
 A populated instance of an IM may be maintained using DB or similar
 technologies. IM constraints are often implemented via programatic code.
