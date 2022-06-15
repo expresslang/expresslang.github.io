@@ -296,7 +296,7 @@ h| Characteristic h| Others     h| EXPRESS
 
 
 // begin notes
-
+////
 == Graphical Models
 
 Very good for group work -- sketch on blackboard, but soon run
@@ -308,17 +308,22 @@ a general experience over several decades of going from flowcharts to
 program code that many details get missed.
 
 It is difficult to formally specify a graphical language.
-
+////
 // end notes
 
 
 == Graphical Models
 
-* Excellent for group explanations and work.
-* Easy to follow (but can take a lot of wall space).
-* Model development may be superficial (it looks right).
-* Some drawing tools may exist, or can use CAD system.
-* Effectively, not computer processible (What You See Is All You've Got).
+Graphic models are excellent for group explanations and work.
+They are easy to follow and develop with the support of multiple
+drawing tools and CAD programs.
+
+There are some downsides, however:
+
+* They bring a lot of space to the board,
+* the model development may be superficial
+(even when it looks right),
+* and they are not computer processible.
 
 
 // begin notes
