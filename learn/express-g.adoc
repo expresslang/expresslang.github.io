@@ -5,7 +5,7 @@ layout: author-docs
 
 = The EXPRESS-G language
 
-== Introduction
+== Summary
 
 This part of the course covers the elements of EXPRESS-G:
 
@@ -13,41 +13,49 @@ This part of the course covers the elements of EXPRESS-G:
 * Design goals
 * Language elements and examples
 
-== EXPRESS-G
 
-There were three main proposals for a graphical version of
-EXPRESS before the EXPRESS Committee started work in earnest. This meant
-that they had some user experiences to guide them.
-// end notes
-
+== Introduction
 
 EXPRESS-G is a graphical subset of EXPRESS lexical language and
 has evolved from a variety of sources.
 
-10/88:: EXPRESSAM (Bruce Lownsbery, Lawrence Livermore Lab)
+EXPRESS-G may be used anywhere EXPRESS is used.
+It can be used alone in its own right, but more usually employed with
+EXPRESS lexical to fill in any missing details.
+
+It is created to achieve:
+
+* Graphical display of EXPRESS models.
+* Stand-alone information modeling iconic language.
+* Model display at varying levels of abstraction.
+* Model display at varying levels of granularity.
+
+
+== History
+
+There were three main proposals for a graphical version of
+EXPRESS before the EXPRESS Committee started work in earnest. This meant
+that they had some user experiences to guide them.
+
+* 1988-10: EXPRESSAM (Bruce Lownsbery of Lawrence Livermore Lab)
 based on NIAM.
-2/89:: GREXP (Peter Wilson, GE) BLA  (boxes, lines, annotation) with
+
+* 1989-02: GREXP (Peter Wilson of General Electric), a BLA language ("boxes, lines, annotation") with
 multiple levels of abstraction and any amount of text.
-11/89:: ExpressGraph (Curt Parks, NIST & John Zimmerman, Allied Bendix)
+
+* 1989-11: ExpressGraph (Curt Parks of NIST, John Zimmerman of Allied Bendix)
 simplified version of EXPRESSAM.
-2/90:: EXPRESS-G (EXPRESS Committee)
 
-
-
-// begin notes
-== EXPRESS-G
+* 1990-02: EXPRESS-G (EXPRESS Committee)
 
 The final result is yet another member of the BLA (boxes,
 lines, and annotations) family. Unlike practically any other BLA
-language it was based on an existing lexical language --  the others
+language it was based on an existing lexical language -- the others
 were stand-alone.
 
-EXPRESS-G is limited to the structural parts of EXPRESS --  no
+EXPRESS-G is a subset that is limited to the structural parts of EXPRESS -- no
 representation of constraints, no FUNCTIONs.
-// end notes
 
-
-== EXPRESS-G
 
 * Drafted by EXPRESS Committee in January 1990
 * A combination of ExpressGraph and GREXP.
@@ -60,9 +68,16 @@ extended.
 * Same standardization status as EXPRESS.
 
 
+=== Design goals
 
-// begin notes
-== EXPRESS-G design Goals
+The design goals of EXPRESS-G included:
+
+* Subset of EXPRESS.
+* Intuitive understanding of diagrams.
+* Support different levels of abstraction.
+* Mechanism for multi-page models.
+* Minimal graphic capabilities needed.
+* Potential automatic EXPRESS-G display of EXPRESS models.
 
 As there was a full lexical language available EXPRESS-G was limited
 to those things that could be easily represented graphically.
@@ -81,127 +96,91 @@ The icons had to be simple so simple drawing programs could be used
 
 It would be useful to be able to develop software to go between
 EXPRESS and EXPRESS-G modeling.
-// end notes
-
-== EXPRESS-G Design Goals
-
-* Subset of EXPRESS.
-* Intuitive understanding of diagrams.
-* Support different levels of abstraction.
-* Mechanism for multi-page models.
-* Minimal graphic capabilities needed.
-* Potential automatic EXPRESS-G display of EXPRESS models.
 
 
-// begin notes
-== EXPRESS-G Example Model
+=== Example EXPRESS-G model
 
-This is meant to be understandable by the audience --  at least the general
+This is meant to be understandable by the audience -- at least the general
 tenor of the model.
 
-It is a '`2 page`' model even though it is shown on one sheet of paper.
+// It is a '`2 page`' model even though it is shown on one sheet of paper.
 
-
-[source%unnumbered]
+[source]
 ----
-  TYPE date = ARAY [1:3] OF INTEGER; END_TYPE;
+TYPE date = ARAY [1:3] OF INTEGER; END_TYPE;
 
-  TYPE hair_type = ENUMERATION OF
-    (blonde, brown, black, red, white, bald);
-  END_TYPE;
+TYPE hair_type = ENUMERATION OF
+  (blonde, brown, black, red, white, bald);
+END_TYPE;
 
-  ENTITY person;
-    first_name : STRING;
-    last_name : STRING;
-    nickname : STRING;
-    birth_date : date;
-    children : SET [0:?] OF person;
-    hair : hair_type;
-  DERIVE
-    age : INTEGER := years(birth_date);
-  INVERSE
-    parents : SET [0:2] OF person FOR children;
-  END_ENTITY;
+ENTITY person;
+  first_name : STRING;
+  last_name : STRING;
+  nickname : STRING;
+  birth_date : date;
+  children : SET [0:?] OF person;
+  hair : hair_type;
+DERIVE
+  age : INTEGER := years(birth_date);
+INVERSE
+  parents : SET [0:2] OF person FOR children;
+END_ENTITY;
 
-  SUBTYPE_CONSTRAINT sc_person FOR person;
-    ONEOF(male, female);
-  END_SUBTYPE_CONSTRAINT;
+SUBTYPE_CONSTRAINT sc_person FOR person;
+  ONEOF(male, female);
+END_SUBTYPE_CONSTRAINT;
 
-  ENTITY female SUBTYPE OF (person);
-  INVERSE
-    husband : SET [0:1] OF male FOR wife;
-  END_ENTITY;
+ENTITY female SUBTYPE OF (person);
+INVERSE
+  husband : SET [0:1] OF male FOR wife;
+END_ENTITY;
 
-  ENTITY male SUBTYPE OF (person);
-    wife : OPTIONAL female;
-  END_ENTITY;
+ENTITY male SUBTYPE OF (person);
+  wife : OPTIONAL female;
+END_ENTITY;
 
-  FUNCTION years(past : date): INTEGER
-    (* returns number of years between past
-       and curent date *)
-  END_FUNCTION;
+FUNCTION years(past : date): INTEGER
+  (* returns number of years between past and current date *)
+END_FUNCTION;
 ----
-// end notes
 
-
-== EXPRESS-G Example Model
-
-[%unnumbered]
-.PAGE 1 OF 2
+.Example model in EXPRESS-G
+====
 image::../images/02-models-1.svg[]
-
-
-[%unnumbered]
-.PAGE 2 OF 2
 image::../images/02-models-2.svg[]
+====
 
 
+== EXPRESS-G symbols
 
-
-// begin notes
-== Definition Symbols
+=== Definition symbols
 
 These are the symbols for representing the structural elements of EXPRESS,
 principally TYPE, ENTITY and SCHEMA.
 
 SUBTYPE_CONSTRAINT is a late addition.
-// end notes
 
-
-== Definition Symbols
-
-
-[%unnumbered]
-.BASE TYPES
+.EXPRESS-G base types
+====
 image::../images/02-symbols-1.svg[]
-
-
 image::../images/02-symbols-4.svg[]
+====
 
 
-[%unnumbered]
-.DEFINED TYPES
+.EXPRESS-G defined types
 image::../images/02-symbols-8.svg[]
 
-
-[%unnumbered]
-.ENTITY
+.EXPRESS-G ENTITY
 image::../images/02-symbols-9.svg[]
 
-
-[%unnumbered]
-.SUBTYPE_CONSTRAINT
+.EXPRESS-G SUBTYPE_CONSTRAINT
 image::../images/02-symbols-17.svg[]
 
-
-[%unnumbered]
-.SCHEMA
+.EXPRESS-G SCHEMA
 image::../images/02-symbols-13.svg[]
 
 
-
-// begin notes
-== Relationship Symbols
+=== Relationship symbols
 
 Lines are used to indicate relationships between definitions.
 
@@ -212,42 +191,34 @@ of the relationship.
 * Dashed line for an optional attribute of an ENTITY.
 // end notes
 
-
-== Relationship Symbols
-
-[%unnumbered]
-.LINE STYLES
+.EXPRESS-G line styles
 image::../images/02-symbols-14.svg[]
 
 
-// begin notes
-== Composition Symbols
+=== Composition symbols
 
-There are 2 kinds of compostion symbol
+There are 2 kinds of composition symbols:
 
 * Page connectors, where a relationship line crosses to or from
 another page.
+
 * Inter-schema references where something is defined in some other
 schema than the current one.
-// end notes
 
-
-== Composition Symbols
-
-[%unnumbered]
-.PAGE REFERENCES
+.EXPRESS-G page references
 image::../images/02-symbols-15.svg[]
 
-
-[%unnumbered]
-.INTER-SCHEMA REFERENCES
+.EXPRESS-G inter-schema references
 image::../images/02-symbols-16.svg[]
 
 
-// begin notes
-== A Supertype Tree
+== Usage examples
 
-[source%unnumbered]
+=== Expressing a supertype tree
+
+In this example we model a tree of entities composed through subtypes/supertypes.
+
+[source]
 ----
 SCHEMA simple_tree;
 
@@ -270,20 +241,16 @@ ENTITY sub4 SUBTYPE OF (sub2); END_ENTITY;
 
 END_SCHEMA; -- simple_tree
 ----
-// end notes
 
-
-== A Supertype Tree
-
-[%unnumbered]
+.Example EXPRESS-G supertype tree
 image::../images/02-models-5.svg[]
 
 
+=== Expressing retyped attributes
 
-// begin notes
-== Retyping attributes
+A retyped attribute can be shown in the following diagram.
 
-[source%unnumbered]
+[source]
 ----
 ENTITY sup_a;
   attr : sub_b;
@@ -295,26 +262,20 @@ END_ENTITY;
 
 ENTITY sup_b;
   num : OPTIONAL NUMBER;
-END_ENTIY;
+END_ENTITY;
 
 ENTITY sub_b SUBTYPE OF (sup_b);
   SELF\sup_b.num : REAL;
-END_ENTIY;
+END_ENTITY;
 ----
-// end notes
 
-
-
-== Retyping attributes
-
-[%unnumbered]
+.EXPRESS-G of the
 image::../images/02-models-6.svg[]
 
 
-// begin notes
-== Partial and Complete Entity Models
+=== Expressing partial and complete ENTITY models
 
-[source%unnumbered]
+[source]
 ----
 ENTITY super; END_ENTITY;
 
@@ -347,27 +308,19 @@ TYPE name = STRING; END_TYPE;
 
 TYPE strings  LIST [1:?] OF STRING; END_TYPE;
 ----
-// end notes
 
 
-
-== Partial and Complete Entity Models
-
-[%unnumbered]
-.PARTIAL ENTITY LEVEL MODEL
+.EXPRESS-G PARTIAL ENTITY LEVEL MODEL
 image::../images/02-models-3.svg[]
 
-
-[%unnumbered]
-.COMPLETE ENTITY LEVEL MODEL
+.EXPRESS-G COMPLETE ENTITY LEVEL MODEL
 image::../images/02-models-4.svg[]
 
 
+=== Expressing schema and entity models
 
-// begin notes
-== Schema and Entity Models
-
-[source%unnumbered]
+.SCHEMA "top"
+[source]
 ----
 SCHEMA top;
   USE FROM geom (curve, point AS node);
@@ -402,7 +355,11 @@ SCHEMA top;
     loc : node;
   END_ENTITY;
 END_SCHEMA; -- top
+----
 
+.SCHEMA "geom"
+[source]
+----
 SCHEMA geom;
   ENTITY lcs; END_ENTITY;
   ENTITY surface; END_ENTITY;
@@ -410,28 +367,20 @@ SCHEMA geom;
   ENTITY point; END_ENTITY;
 END_SCHEMA; -- geom
 ----
-// end notes
 
-
-== Schema and Entity Models
-
-[%unnumbered]
-.SCHEMA LEVEL MODEL
+.EXPRESS-G schema level model
 image::../images/02-models-8.svg[]
 
-
-[%unnumbered]
-.ENTITY LEVEL MODEL
+.EXPRESS-G entity level model
 image::../images/02-models-7.svg[]
 
 
+=== Expressing subtype constraints
 
-// begin notes
-== Subtype Constraints
 
-[source%unnumbered]
+[source]
 ----
-ENTITY p; END_ENTTY;  -- person
+ENTITY p; END_ENTITY;  -- person
 
 SUBTYPE_CONSTRAINT p_subs FOR p;
   TOTAL_OVER(m, f);
@@ -455,29 +404,5 @@ ENTITY l SUBTYPE OF (a); END_ENTITY; -- legal
 
 ENTITY i SUBTYPE OF (a); END_ENTITY; -- illegal
 ----
-// end notes
 
-
-== Subtype constraints
-
-[%unnumbered]
 image::../images/02-models-10.svg[]
-
-
-// begin notes
-== Usage
-
-May be used anywhere EXPRESS is used.
-
-Can be used alone in its own right, but more usually employed with
-EXPRESS lexical to fill in any missing details.
-// end notes
-
-
-== Usage
-
-* Graphical display of EXPRESS models.
-* Stand-alone information modeling iconic language.
-* Model display at varying levels of abstraction.
-* Model display at varying levels of granularity.
-
