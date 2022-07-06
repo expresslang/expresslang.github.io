@@ -72,14 +72,14 @@ Other systems have different starting points for the zero'th year.
 The Muslim calendar is basically a lunar calendar with months of either
 29 or 30 days. Years are counted from the first day of the month preceeding
 the flight of Mohammed from Mecca to Medina. In the Gregorian calendar the
-starting date corresponds to Thursday 19 July, 622 [.small]#AD#.
+starting date corresponds to Thursday 19 July, 622 AD.
 
 The Jewish calendar is based on solar years and lunar months. In order to
 keep these synchronised some years have an intercalary 13th month of 30 days.
-Years are counted since the Creation and written as 1993 [.small]#AM# _(anno
+Years are counted since the Creation and written as 1993 AM _(anno
 mundi)_. In the Gregorian calendar,
-and Monday 7 October 3761 [.small]#BC# at 11 hours and eleven and one third
-minutes [.small]#PM#.
+and Monday 7 October 3761 BC at 11 hours and eleven and one third
+minutes PM.
 
 Most countries use the Gregorian calendar for secular purposes, but some
 countries also have a seperate religious calendar.
@@ -325,9 +325,9 @@ that captures these statements.
 ____
 
 
-The following is one possible [.small]#EXPRESS# model.
+The following is one possible EXPRESS model.
 
-[source%unnumbered]
+[source]
 ----
 *)
 SCHEMA exercise_2_3;
@@ -369,7 +369,7 @@ noted and not elaborated. The model is very simple as the bicycle just consists
 of the noted components.
 
 
-[source%unnumbered]
+[source]
 ----
 *)
 SCHEMA exercise_2_4;
@@ -412,7 +412,7 @@ bicycle. Similarly, the handlebars and the other (front) wheel
 enabled the bicycle to be steered.
 
 
-[source%unnumbered]
+[source]
 ----
 *)
 SCHEMA exercise_2_5;
@@ -468,13 +468,13 @@ ____
 
 We present in the following sections representations in various languages
 of the book and simple bicycle models given
-earlier in [.small]#EXPRESS# and [.small]#EXPRESS-G# forms.
+earlier in EXPRESS# and [.small]#EXPRESS-G forms.
 
 ==== DAPLEX models
 
 The following is a DAPLEX representation of the book model.
 
-[source%unnumbered]
+[source]
 ----
 DECLARE Book() ==>> ENTITY
 DECLARE Author(Book) ==>> Person
@@ -494,7 +494,7 @@ DECLARE Item(Ownership) ==> Book
 
 This is the DAPLEX representation for the simple bicycle model.
 
-[source%unnumbered]
+[source]
 ----
 DECLARE Bicycle() ==>> ENTITY
 DECLARE Body(Bicycle) ==> Frame
@@ -518,7 +518,7 @@ DECLARE Wheel() ==>> ENTITY
 First we show a GEM representation for the book model.
 
 
-[source%unnumbered]
+[source]
 ----
 BOOK(Author: {PERSON}, PublishedBy: PUBLISHER);
 PERSON(Name: {c});
@@ -530,7 +530,7 @@ OWNERSHIP(Owner: PERSON, Item: BOOK);
 And now here is the representation for the simple bicycle model.
 
 
-[source%unnumbered]
+[source]
 ----
 BICYCLE(Body: FRAME, Seat: SADDLE, SteeredBy: HANDLEBAR,
         DrivenByLeft: PEDAL, DrivenByRight; PEDAL,
@@ -548,7 +548,7 @@ WHEEL(Id: {c});
 An SQL representation for the book model is:
 
 
-[source%unnumbered]
+[source]
 ----
 CREATE TABLE BOOK
   ( PUBLISHED_BY CHAR(50) NOT NULL,
@@ -582,7 +582,7 @@ CREATE TABLE OWNERSHIP
 
 And here is an  SQL representation for the simple bicycle model.
 
-[source%unnumbered]
+[source]
 ----
 CREATE TABLE BICYCLE
   ( FRAME        CHAR(50) NOT NULL,
@@ -655,7 +655,7 @@ ____
 This is a start at the first part of the exercise.
 
 
-[source%unnumbered]
+[source]
 ----
 *)
 SCHEMA exercise_4_1_1;

@@ -377,7 +377,6 @@ image::../images/02-models-7.svg[]
 
 === Expressing subtype constraints
 
-
 [source]
 ----
 ENTITY p; END_ENTITY;  -- person
@@ -405,4 +404,5 @@ ENTITY l SUBTYPE OF (a); END_ENTITY; -- legal
 ENTITY i SUBTYPE OF (a); END_ENTITY; -- illegal
 ----
 
+.EXPRESS-G with SUBTYPE_CONSTRAINTs
 image::../images/02-models-10.svg[]

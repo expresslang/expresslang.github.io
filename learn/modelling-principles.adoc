@@ -3,14 +3,11 @@ layout: author-docs
 ---
 :stem:
 
-= Information Modeling Using EXPRESS -- Modeling Principles
+= Modelling Principles
 
-== SUMMARY
+== Summary
 
-* Organize the team who will
-* Develop the model while
-* Applying the principles.
-
+* Organize the team who will develop the model while applying the principles.
 
 == THE TEAM
 
@@ -21,7 +18,7 @@ The modeling team consists of three groups:
 . Reviewers, who are domain experts, to '`keep the developers honest`'
 
 
-== Remember --
+== Remember
 
 [quote,Manfred Eigen in The Physicists Conception of Nature (ed. Jagdish Mehra) Reidel, 1973]
 ____
@@ -89,7 +86,7 @@ semantics.
 As far as possible, avoid the use of simple types as entity attributes.
 Instead, use Types to provide the semantics.
 
-[source%unnumbered]
+[source]
 ----
 ENTITY antique_object;
   produced : date;
@@ -161,7 +158,7 @@ independent as possible, yet as context specific as required.
 The meaning of an entity should not be dependent on the values of its
 attributes. Do not use '`flags`' to change meanings.
 
-[source%unnumbered]
+[source]
 ----
 ENTITY poor_person_model;
   sex : enumeration_of_male_female;
@@ -186,7 +183,7 @@ An EXPRESS information model is _permissive_
 Add all necessary constraints -- a model is as much about the limitations
 of objects as it is about the objects themselves.
 
-[source%unnumbered]
+[source]
 ----
 TYPE age = INTEGER;
 WHERE
@@ -206,7 +203,7 @@ Specify constraints by the following ordered preferences:
 
 == Constraint (global rule)
 
-[source%unnumbered]
+[source]
 ----
 ENTITY male SUBTYPE OF (person);
   wife : OPTIONAL female;
@@ -227,7 +224,7 @@ END_RULE;
 
 == Constraint (local)
 
-[source%unnumbered]
+[source]
 ----
 ENTITY male SUBTYPE OF (person);
   wife : OPTIONAL female;
@@ -249,7 +246,7 @@ END_ENTITY;
 
 == Constraint (structural)
 
-[source%unnumbered]
+[source]
 ----
 ENTITY male SUBTYPE OF (person);
   -- other attributes
@@ -274,7 +271,7 @@ END_ENTITY;
 A model should not contain redundant information; redundancy leads to
 the possibility of data inconsistencies.
 
-[source%unnumbered]
+[source]
 ----
 ENTITY circle;
   center : point;
@@ -298,7 +295,7 @@ All common properties should be moved as close to the root of the Supertype
 tree as possible. This demonstrates that they ARE common.
 
 .SCHEMA INTERFACING
-[source%unnumbered]
+[source]
 ----
 SCHEMA first;
   ENTITY aaa;

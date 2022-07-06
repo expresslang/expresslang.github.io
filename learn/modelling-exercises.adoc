@@ -259,14 +259,14 @@ and also limits on the maximum stress, stem:[s], in the beam.
 
 The moment of inertia, stem:[I], of the beam cross-section is given by
 
-[stem%unnumbered]
+[stem]
 ++++
 I = {bh^{3}}/{12}
 ++++
 
 and the maximum stress at any beam cross-section is given by
 
-[stem%unnumbered]
+[stem]
 ++++
 s = {Mh}/{2I}
 ++++
@@ -277,28 +277,28 @@ For a beam of length stem:[l] with a total
 uniformly distributed load of stem:[W],
 the maximum  bending moment is
 
-[stem%unnumbered]
+[stem]
 ++++
 M = {Wl}/{8}
 ++++
 
 while for a point load stem:[W] at the center of the beam it is
 
-[stem%unnumbered]
+[stem]
 ++++
 M = {Wl}/{4}
 ++++
 
 The maximum deflection of a uniformly loaded beam is
 
-[stem%unnumbered]
+[stem]
 ++++
 y = {5Wl^{3}}/{384EI}
 ++++
 
 and for a center loaded beam is
 
-[stem%unnumbered]
+[stem]
 ++++
 y = {Wl^{3}}/{48EI}
 ++++
