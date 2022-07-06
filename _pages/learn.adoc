@@ -1,13 +1,10 @@
 ---
 layout: author-docs
-title: Learning EXPRESS (beta)
-article_header_title: Learning EXPRESS (beta)
+title: Learning EXPRESS
+article_header_title: Learning EXPRESS
 html-class: overview
 ---
 :page-liquid:
-
-WARNING: This section is in "beta" -- it still under heavy development, only use
-when absolutely necessary.
 
 == Introductory course to EXPRESS
 

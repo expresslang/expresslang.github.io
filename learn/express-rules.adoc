@@ -3,9 +3,9 @@ layout: author-docs
 ---
 :stem:
 
-= Information Modeling Using EXPRESS -- RULES
+= Using EXPRESS rules
 
-== The Principles
+== Principles
 
 The basic premise is that global RULEs are bad.
 
@@ -15,47 +15,34 @@ the particular implementation of an EXPRESS-defined
 _object base_ (which could be a Part 21 ASCII data file or a
 sophisticated shared database).
 
-
 . EXPRESS is permissive -- anything that is not prohibited is allowed.
-. The rule about rules is very simple:
-+
---
-* Don't use global rules
-
-(except as a last resort).
---
+. The rule about rules is very simple: *Don't use global rules*
+(except as a last resort)
 
 . EXPRESS does not define the time (e.g. instance creation,
 instance usage) at which rules are tested.
-
-
-// begin notes
-
-== Kinds of rules
-
-_Local_ rules (WHERE) clauses in entities apply to each instance.
-
-_Global_ rules (RULEs) apply to (combinations of) (some) entity
-instances.
-
-Both are used to specify constraints. Other constraint methods
-are available.
-
-// end notes
 
 
 == Kinds of rules
 
 There are two kinds of rule:
 
-Local rules:: These are defined in entities or types and apply
+Local rules:: _Local_ rules (WHERE) clauses in entities apply to each instance.
+These are defined in entities or types and apply
 to each and every instance.
-Global rules:: These are defined outside of entities and apply to
+
+Global rules:: _Global_ rules (RULEs) apply to (combinations of) (some) entity
+instances.
+These are defined outside of entities and apply to
 specific entity instances, or combinations of entity instances.
+
+Both are used to specify constraints. Other constraint methods
+are available.
 
 Constraints can also be specified by UNIQUE clauses, INVERSE attributes,
 subtyping with attribute redeclaration, importation (USE, REFERENCE,
 subtype and select pruning).
+
 Sometimes DERIVED attributes can be considered as constraints.
 
 
@@ -63,42 +50,23 @@ Sometimes DERIVED attributes can be considered as constraints.
 
 == The NYM Principle
 
-This is a major guiding principle, particularly as much
-of the understanding of a model comes from the names used.
-
-// end notes
-
-
-== The NYM Principle
+The NYM principle is a major guiding principle in information modelling,
+particularly as much of the understanding of a model comes from the names used.
 
 * If things are the same, then they should have the same name.
 * If things are not the same, then they are different.
 * Different things should have different names.
 
-
 In general, '`One name, one meaning, one definition`'. Synonyms and
 homonyms in a model are a fruitful and never-ending source of confusion.
 
 
-// begin notes
-
-== RULES and the Nym principle
-
-This is an example that goes over several pages.
-
-We start with this model which is about -- what??? The schema
-names imply something -- stem:[tt "main"] and stem:[tt "sub"](sidiary),
-but the entity names...
-
-// end notes
-
-
-== Global RULES and the Nym principle
+== Global rules and the NYM principle
 
 Global rules should not change the meaning or potential for
 interoperability of the entity to which they are applied.
 
-[source%unnumbered]
+[source]
 ----
 SCHEMA main;
   ENTITY fred;
@@ -112,25 +80,20 @@ SCHEMA sub;
 ...
 ----
 
+The schema names imply something -- `main` and ``sub``(sidiary). But the entity
+names...
 
-// begin notes
-
-== (cont)
-
-And (still within the stem:[tt "sub"] schema) there is a constraint
-against stem:[tt "fred"].
+And (still within the `sub` schema) there is a constraint
+against `fred`.
 
 We can, but should not, use a RULE to express it. This requires
 an algorithmic approach which is quite possible to get wrong.
 
-// end notes
+There must be at least 5 ``joe``s in the list
+for attribute `a`.
 
 
-There must be at least 5 stem:[tt "joe"]s in the list
-for attribute stem:[tt "a"].
-
-
-[source%unnumbered]
+[source]
 ----
 RULE bad_rule FOR (fred);
 LOCAL
@@ -148,21 +111,13 @@ END_RULE;
 END_SCHEMA; -- sub
 ----
 
-
-// begin notes
-
-== (cont)
-
 Here are two better approaches, both involving subtyping. The second
 is the better as it involves less "`checking`" and is clearer
 to the reader.
 
-// end notes
+The constrained version of `fred` is better modeled as:
 
-
-The constrained version of stem:[tt "fred"] is better modeled as:
-
-[source%unnumbered]
+[source]
 ----
 SCHEMA sub;
   REFERENCE FROM main (fred);
@@ -176,7 +131,7 @@ END_ENTITY;
 
 Or, perhaps even better as:
 
-[source%unnumbered]
+[source]
 ----
 ENTITY sub_fred
   SUBTYPE OF (fred);
@@ -185,9 +140,10 @@ END_ENTITY;
 ----
 
 
-// begin notes
+== Local (WHERE) rules
 
-== Local (WHERE) Rules
+Local WHERE rules are defined within the definition of a type or entity and
+apply to each and every instance of the type or entity.
 
 These are one or more LOGICAL expressions.
 
@@ -195,15 +151,7 @@ There are problems with an instance if any of these is FALSE but
 no problems if all are TRUE. A mixture of TRUE and UNKNOWN leaves
 the instance in limbo regarding problems.
 
-// end notes
-
-
-== Local (WHERE) Rules
-
-Are defined within the definition of a type or entity and apply to
-each and every instance of the type or entity.
-
-[source%unnumbered]
+[source]
 ----
 WHERE
   label_1: logical_expression_1 ;
@@ -212,31 +160,30 @@ WHERE
 END_
 ----
 
+WHERE rules have the following properties:
 
 * An instance is non-conforming if any logical expression evaluates
 to FALSE.
+
 * An instance is conforming if all the logical expressions evaluate
 to TRUE.
+
 * An instance is considered to be not non-conforming if some or all the
 logical expressions evaluate to UNKNOWN and the remainder evaluate
 to TRUE.
 
 
-// begin notes
+=== "`Logical`" Rule
 
-== '`Logical`' Rule
-
-If the stem:[tt "z"] attribute has no value (represented as '`?`') the
+If the `z` attribute has no value (represented as '`?`') the
 expression evaluates to UNKNOWN.
 
-// end notes
-
-
-== '`Logical`' Rule
-
+.Example of using "Logical" rule
+[example]
+====
 This domain rule may evaluate to FALSE, UNKNOWN or TRUE.
 
-[source%unnumbered]
+[source]
 ----
 ENTITY vector;
   x, y : REAL;
@@ -245,24 +192,21 @@ WHERE
   w1: x**2 + y**2 + z**2 = 1.0;
 END_ENTITY;
 ----
+====
 
 
-// begin notes
-
-== '`Boolean`' Rule
+=== '`Boolean`' Rule
 
 The NVL function returns its first argument if it is valued otherwise
 (i.e., when it is ?) it returns its second argument. Now the
 expression will be either TRUE or FALSE.
 
-// end notes
-
-
-== '`Boolean`' Rule
-
+.Example of using "Boolean" rule
+[example]
+====
 This domain rule will only evaluate to FALSE or TRUE.
 
-[source%unnumbered]
+[source]
 ----
 ENTITY vector;
   x, y : REAL;
@@ -271,28 +215,31 @@ WHERE
   w1: x**2 + y**2 + NVL(z, 0.0)**2 = 1.0;
 END_ENTITY;
 ----
+====
 
-NOTE: If stem:[tt "x"] or stem:[tt "y"] does not have a value in a particular
-instance of stem:[tt "vector"], then the instance is non-conforming
+NOTE: If `x` or `y` does not have a value in a particular
+instance of `vector`, then the instance is non-conforming
 by definition.
 
 
-// begin notes
-
-== '`Function`' Rule
-
-For non-trivial WHERE rules you can use a FUNCTION that returns
-a LOGICAL or BOOLEAN result. (I think it also makes for a cleaner, i.e.,
-less cluttered, and therefore more understandable model).
-
-// end notes
-
-
-== '`Function`' Rule
+=== '`Function`' Rule
 
 A rule can be described using a logical (or boolean) function.
 
-[source%unnumbered]
+Functions are of most use when it is difficult to express the constraint
+as a single logical expression. They are also beneficial when the same
+constraint applies to different kinds of things.
+
+For non-trivial WHERE rules you can use a FUNCTION that returns
+a LOGICAL or BOOLEAN result.
+
+NOTE: It also makes for a cleaner, i.e., less cluttered, and therefore more
+understandable model.
+
+.Example of using FUNCTION
+[example]
+====
+[source]
 ----
 ENTITY vector;
   x, y : REAL;
@@ -306,23 +253,12 @@ FUNCTION unit_vector(v:vector):BOOLEAN;
          NVL(v.z, 0.0)**2 = 1.0);
 END_FUNCTION;
 ----
+====
 
-// begin notes
-
-== (cont)
-
-For non-trivial WHERE rules you can use a FUNCTION that returns
-a LOGICAL or BOOLEAN result. (I think it also makes for a cleaner, i.e.,
-less cluttered, and therefore more understandable model).
-
-// end notes
-
-
-Functions are of most use when it is difficult to express the constraint
-as a single logical expression. They are also beneficial when the same
-constraint applies to different kinds of things.
-
-[source%unnumbered]
+.Example of using a more complex FUNCTION
+[example]
+====
+[source]
 ----
 ENTITY vector;
   x, y : REAL;
@@ -341,24 +277,20 @@ FUNCTION unit_vector(u,v,w:REAL):LOGICAL;
   RETURN(u**2 + v**2 + w**2 = 1.0);
 END_FUNCTION;
 ----
+====
 
 
 // begin notes
 
-== UNIQUE
+=== Uniqueness constraints
 
 The next few examples illustrate how UNIQUE constraints
 may be used.
 
-A stem:[tt "circle"], defined via the location of its center
+A `circle`, defined via the location of its center
 and its radius, is used throughout.
 
-// end notes
-
-
-== UNIQUE
-
-[source%unnumbered]
+[source]
 ----
 ENTITY circle;
   centre : point;
@@ -369,16 +301,7 @@ END_ENTITY;
 There can be any number of circles in the object base with identical centres
 and/or radii.
 
-// begin notes
-
-== (cont)
-
-The stem:[tt "center"] of each stem:[tt "circle"] must be unique.
-
-// end notes
-
-
-[source%unnumbered]
+[source]
 ----
 ENTITY circle;
   centre : point;
@@ -388,20 +311,16 @@ UNIQUE
 END_ENTITY;
 ----
 
+* The `center` of each `circle` must be unique.
+
+
 There can be any number of circles in the object base with identical
 radii but none with identical centres.
-(No circles are concentric but some may have the same size.)
 
-// begin notes
-
-== (cont)
-
-Each stem:[tt "radius"] must be unique.
-
-// end notes
+NOTE: No circles are concentric but some may have the same size.
 
 
-[source%unnumbered]
+[source]
 ----
 ENTITY circle;
   centre : point;
@@ -411,24 +330,21 @@ UNIQUE
 END_ENTITY;
 ----
 
+* Each `radius` must be unique.
+
 There can be any number of circles in the object base with identical
 centres but none with identical radii.
-(No circles have the same size but some may be concentric.)
 
-// begin notes
+NOTE: No circles have the same size but some may be concentric.
 
-== (cont)
+Each `center` must be unique.
 
-Each stem:[tt "center"] must be unique.
-
-Separately, each stem:[tt "radius"] must be unique.
+Separately, each `radius` must be unique.
 
 This is probably not a realistic real-life requirement.
 
-// end notes
 
-
-[source%unnumbered]
+[source]
 ----
 ENTITY circle;
   centre : point;
@@ -443,18 +359,13 @@ There can be no circles in the object base with identical
 centres and no circles with identical radii.
 (Every circle is a different size and differently located.)
 
-// begin notes
 
-== (cont)
-
-The combination of stem:[tt "center"] and stem:[tt "radius"] must be unique.
+The combination of `center` and `radius` must be unique.
 
 This is probably the effect that was sought after by the previous example.
 
-// end notes
 
-
-[source%unnumbered]
+[source]
 ----
 ENTITY circle;
   centre : point;
@@ -466,27 +377,11 @@ END_ENTITY;
 
 There can be no circles in the object base with the identical
 combination of centre and radius.
-(No circles represent the same '`point set`'.)
+
+NOTE: No circles represent the same '`point set`'.
 
 
 // begin notes
-
-== Instance and Value
-
-Every entity instance has a unique '`object identifier`' or '`oid`'.
-Two instances may have the same attribute values but are distinguished
-by their oids. (EXPRESS leaves it up to an object base implementation
-to decide what an oid is).
-
-Everything else is, in some sense, anonymous.
-
-For comparisons `:<>:` and `:=:` are instance (un)equal,
-while `<>` and `=` are value (un)equal.
-
-stem:[tt "VALUE_UNIQUE"] is a built-in EXPRESS function.
-
-// end notes
-
 
 == Instance and Value
 
@@ -494,7 +389,7 @@ In EXPRESS comparisons for uniqueness
 are performed on the '`object-id`' for entity instances, and on values
 for '`anonymous`' types (e.g. REAL). Thus,
 
-[source%unnumbered]
+[source]
 ----
 TYPE pair = SET [2:2] OF point;
 END_TYPE;
@@ -503,9 +398,22 @@ END_TYPE;
 requires that `pair[1] :<>: pair[2]` is TRUE, but `pair[1] = pair[2]`
 may be TRUE or FALSE.
 
+
+Every entity instance has a unique '`object identifier`' or '`oid`'.
+Two instances may have the same attribute values but are distinguished
+by their oids. (EXPRESS leaves it up to an object base implementation
+to decide what an `oid` is).
+
+Everything else is, in some sense, anonymous.
+
+For comparisons `:<>:` and `:=:` are instance (un)equal,
+while `<>` and `=` are value (un)equal.
+
+`VALUE_UNIQUE` is a built-in EXPRESS function.
+
 For value uniqueness, do something like:
 
-[source%unnumbered]
+[source]
 ----
 TYPE vpair = SET [2:2] OF point;
 WHERE
@@ -516,18 +424,11 @@ END_TYPE;
 which requires `vpair[1] = vpair[2]` to be FALSE.
 
 
-// begin notes
-
 == Joint value uniqueness
 
 UNIQUE applied to entity instances is oid-based.
 
-// end notes
-
-
-== Joint value uniqueness
-
-[source%unnumbered]
+[source]
 ----
 ENTITY e;
  a1 : a;
@@ -538,29 +439,23 @@ UNIQUE
 END_ENTITY;
 ----
 
-The values of the attributes stem:[tt "a1"] and stem:[tt "a2"] are constrained
+The values of the attributes `a1` and `a2` are constrained
 to be jointly _instance unique_.
 
 If they are further required to be jointly _value unique,_
 use a global rule of the following kind to specify this additional
 constraint.
 
-// begin notes
-
-== (cont)
-
-stem:[tt "temp"] is an ENTITY (local to the RULE) whose only attributes are
+`temp` is an ENTITY (local to the RULE) whose only attributes are
 those involved in the value uniqueness constraint.
 
-The REPEAT loop creates an instance of stem:[tt "temp"] for each instance
-of stem:[tt "e"] and collects them into the SET stem:[tt "s"]. Now, if each
-member of stem:[tt "s"] is value unique, then the stem:[tt "e"] instances
+The REPEAT loop creates an instance of `temp` for each instance
+of `e` and collects them into the SET `s`. Now, if each
+member of `s` is value unique, then the `e` instances
 are also value unique on the attribute pair.
 
-// end notes
 
-
-[source%unnumbered]
+[source]
 ----
 RULE vu FOR (e);
   ENTITY temp;
@@ -582,22 +477,17 @@ Note the use of an ENTITY definition local to the rule, and the
 use of the entity constructor for instances of this entity type.
 
 
-// begin notes
+== Global rules
 
-== GLOBAL RULES
+=== General
 
-RULEs apply to (combinations) of entity instances.
-
-// end notes
-
-
-== GLOBAL RULES
-
-Are defined outside entities and only apply to entities.
+Global rules are defined outside entities and only apply to entities.
 Every instance of the specified entity(s) is examined. The
 entity instances are conforming the WHERE rules all evaluate to TRUE.
 
-[source%unnumbered]
+RULEs apply to (combinations) of entity instances.
+
+[source]
 ----
 RULE rname FOR (ent1, ent2, ...);
   body of rule (code)
@@ -613,14 +503,7 @@ rule execution (combinatorial explosion?).
 
 // begin notes
 
-== Global Rule Usage
-
-Do your best to avoid using RULEs, but sometimes this is not possible.
-
-// end notes
-
-
-== Global Rule Usage
+=== Usage
 
 Use a global rule when:
 
@@ -629,22 +512,17 @@ Use a global rule when:
 a particular entity type; or
 . The number of instances is to be constrained.
 
+NOTE: Do your best to avoid using RULEs, but sometimes this is not possible.
 
-// begin notes
 
-== Person Example
+=== Example: Person
 
 There now follows a sequence of models of a person.
 
 This is the initial model. What odd things does it allow?
 How can it be brought closer to reality?
 
-// end notes
-
-
-== Person Example
-
-[source%unnumbered]
+[source]
 ----
 ENTITY person;
   name   : STRING;
@@ -657,19 +535,10 @@ END_ENTITY;
 ----
 
 
-// begin notes
-
-== Person Example
-
 The intent of the WHERE rule is not particularly obvious.
 Is it correct?
 
-// end notes
-
-
-== Person Example
-
-[source%unnumbered]
+[source]
 ----
 ENTITY person;
   name   : STRING;
@@ -686,19 +555,10 @@ END_ENTITY;
 ----
 
 
-// begin notes
-
-== Person Example
-
 This eliminates the WHERE rule, making the model easier to
 understand. Are there any problems with this?
 
-// end notes
-
-
-== Person Example
-
-[source%unnumbered]
+[source]
 ----
 ENTITY person;
   name  : STRING;
@@ -718,20 +578,10 @@ ENTITY female
 END_ENTITY;
 ----
 
-
-// begin notes
-
-== Person Example
-
 This model eliminates hermaphrodites.
 Is all well now?
 
-// end notes
-
-
-== Person Example
-
-[source%unnumbered]
+[source]
 ----
 ENTITY person
   SUPERTYPE OF (ONEOF(male,female));
@@ -753,19 +603,12 @@ END_ENTITY;
 ----
 
 
-// begin notes
-
-== Example -- Married rule
+=== Example: Married rule
 
 The RULE (if it is coded properly) checks that
 husbands and wives are married to each other.
 
-// end notes
-
-
-== Example -- Married rule
-
-[source%unnumbered]
+[source]
 ----
 RULE married FOR (male, female);
   LOCAL
@@ -785,22 +628,12 @@ WHERE
 END_RULE;
 ----
 
-
-// begin notes
-
-== Example -- Married entity
-
 A simple model, and also one of broader applicability --
-in many cases someone's marital status is irrelevent.
-We could also SUBTYPE stem:[tt "married"] if it was necessary to
+in many cases someone's marital status is irrelevant.
+We could also SUBTYPE `married` if it was necessary to
 record further information about that (e.g., when it started).
 
-// end notes
-
-
-== Example -- Married entity
-
-[source%unnumbered]
+[source]
 ----
 ENTITY male SUBTYPE OF (person);
 END_ENTITY;
@@ -818,19 +651,12 @@ END_ENTITY;
 ----
 
 
-// begin notes
-
-== Limit instances
+=== Limit instances
 
 A RULE has to be used if only a certain number of instances are
 required or allowed.
 
-// end notes
-
-
-== Limit instances
-
-[source%unnumbered]
+[source]
 ----
 CONSTANT
 max_scj : INTEGER := 9;
@@ -845,22 +671,16 @@ WHERE
 END_RULE;
 ----
 
-This rule says that there shall be no more than `max_scj` stem:[tt "scj"]s
+This rule says that there shall be no more than `max_scj` ``scj``s
 (Supreme Court Justices).
 
-// begin notes
-
-== (cont)
-
 A similar restriction on numbers of instances.
-
-// end notes
 
 
 The following RULE states that there shall be one and only one point at the
 origin in the object-base.
 
-[source%unnumbered]
+[source]
 ----
 RULE unique_origin FOR (point);
 LOCAL
@@ -875,32 +695,30 @@ END_RULE;
 ----
 
 
-// begin notes
+== Recursion
 
-== Recursion -- Entity
+=== General
 
 Recursion is when something (apparently) applies itself to itself.
+
+=== Entity
 
 An ENTITY attribute may refer to the ENTITY (as a type).
 I have called this '`type recursive`' and it is a regular part of
 modeling. (A person may have a child, who is of course a person).
 
-In the first model an instance of a stem:[tt "node"] may list itself
-among its stem:[tt "children"]. This is almost certainly incorrect.
+In the first model an instance of a `node` may list itself
+among its `children`. This is almost certainly incorrect.
 
-In the second model an instance of a stem:[tt "node"] cannot list
+In the second model an instance of a `node` cannot list
 itself among its children, but could be listed among its
 grandchildren. This is probably incorrect.
 
-// end notes
 
-
-== Recursion -- Entity
-
-This stem:[tt "node"] entity is '`type recursive`' and may be
+This `node` entity is '`type recursive`' and may be
 '`instance recursive`'
 
-[source%unnumbered]
+[source]
 ----
 ENTITY node;
   local_data : data;
@@ -908,11 +726,11 @@ ENTITY node;
 END_ENTITY
 ----
 
-This stem:[tt "node"] entity is '`type recursive`' and not
+This `node` entity is '`type recursive`' and not
 '`self instance recursive`'
 but may be '`globally instance recursive`'.
 
-[source%unnumbered]
+[source]
 ----
 ENTITY node;
   local_data : data;
@@ -922,26 +740,18 @@ WHERE
 END_ENTITY;
 ----
 
-
-// begin notes
-
-== Recursion -- Function
+=== Function
 
 A function can call itself, but at some point there must be a condition
 that prevents this (in order to prevent an infinite recursion).
 
-The stem:[tt "NodeSet"] function generates the SET consisting of the
-input stem:[tt "node"] and all its descendents.
+The `NodeSet` function generates the SET consisting of the
+input `node` and all its descendents.
 
-The stem:[tt "NodeBag"] function generates the BAG consisting of the
-input stem:[tt "node"] and all its descendents.
+The `NodeBag` function generates the BAG consisting of the
+input `node` and all its descendents.
 
-// end notes
-
-
-== Recursion -- Function
-
-[source%unnumbered]
+[source]
 ----
 FUNCTION NodeSet(input: node): SET OF node;
 LOCAL
@@ -954,7 +764,7 @@ RETURN(result + input);
 END_FUNCTION;
 ----
 
-[source%unnumbered]
+[source]
 ----
 FUNCTION NodeBag(input: node): BAG OF node;
 LOCAL
@@ -970,22 +780,17 @@ END_FUNCTION;
 
 // begin notes
 
-== RULE with recursive functions
+=== RULE with recursive functions
 
 This RULE checks that any node is not also a descendent of itself.
-(stem:[tt "NodeBag"] lists all descendent nodes, including duplicates,
-and stem:[tt "NodeSet"]
+(`NodeBag` lists all descendent nodes, including duplicates,
+and `NodeSet`
 does the same but excludes duplicates).
-
-// end notes
-
-
-== RULE with recursive functions
 
 A tree of nodes must be acyclic. That is, a given node instance must only
 appear once in the tree.
 
-[source%unnumbered]
+[source]
 ----
 RULE acyclic_tree FOR (node);
 LOCAL
@@ -1004,22 +809,15 @@ END_RULE;
 ----
 
 
-// begin notes
-
-== Or
+=== QUERY with Or
 
 This does the same, but more concisely and less understandably.
-The QUERY returns a BAG of nodes where the SIZEOF the stem:[tt "NodeSet"]s
-and stem:[tt "NodeBag"]s are not the same.
+The QUERY returns a BAG of nodes where the SIZEOF the ``NodeSet``s
+and ``NodeBag``s are not the same.
 
 The SIZEOF is the number of nodes in the QUERY's BAG, which should be zero.
 
-// end notes
-
-
-Or
-
-[source%unnumbered]
+[source]
 ----
 RULE acyclic_tree FOR (node);
 WHERE
@@ -1031,25 +829,18 @@ END_RULE;
 ----
 
 
-// begin notes
-
-== More Recursion
+=== Recursive functions
 
 The next example is taken from the International STEP Standard.
 
-The constraint on stem:[tt "relationship"] instances is that the
-stem:[tt "parent"] / stem:[tt "child"] graph is acyclic. Equivalently
-ancestors and descendents must unique.
+The constraint on `relationship` instances is that the
+`parent` / `child` graph is acyclic. Equivalently
+ancestors and descendants must unique.
 
-// end notes
-
-
-== More Recursion
-
-This can be used to describe a relationship between two stem:[tt "obj"]
+This can be used to describe a relationship between two `obj`
 (Part 41, Annex D).
 
-[source%unnumbered]
+[source]
 ----
 ENTITY relationship;
   description : STRING;
@@ -1058,34 +849,27 @@ ENTITY relationship;
 END_ENTITY;
 ----
 
-In turn, the stem:[tt "obj"] that is a child in one of these may be the
-parent in another stem:[tt "relationship"], and so on.
-Often it is required that a string of stem:[tt "relationship"] be acyclic.
+In turn, the `obj` that is a child in one of these may be the
+parent in another `relationship`, and so on.
+Often it is required that a string of `relationship` be acyclic.
 More simply, a child cannot be its own ancestor, or equivalently a parent
 cannot be its own descendent.
 
 Use a function in a WHERE rule as:
 
-[source%unnumbered]
+[source]
 ----
 WHERE
 w1: acyclic(SELF,[SELF.parent],'...');
 ----
 
-
-// begin notes
-
-== (cont)
-
 This is a (helper) function that converts an AGGREGATE
 (ARRAY, LIST, BAG or SET) to a SET.
-
-// end notes
 
 
 Convert an AGGREGATE to a SET.
 
-[source%unnumbered]
+[source]
 ----
 FUNCTION Agg2Set(agg: AGGREGATE OF GENERIC:a):
                  SET OF GENERIC:a;
@@ -1099,23 +883,17 @@ RETURN(result);
 END_FUNCTION;
 ----
 
-// begin notes
 
-== (cont)
-
-This is the stem:[tt "acyclic"] function defined in STEP. Does it do
+This is the `acyclic` function defined in STEP. Does it do
 what it is meant to?
 
 An immediate answer is: Who knows?
 
 Seriously, it takes some time to work out if it works.
 
-// end notes
-
-
 Does the following (Part 41 p 156) work?
 
-[source%unnumbered]
+[source]
 ----
 FUNCTION acyclic(rel: relationship;
                  relatives: SET [1:?] OF obj;
@@ -1139,16 +917,11 @@ END_FUNCTION;
 ----
 
 
-// begin notes
-
 == Rem
 
-// end notes
+From Part 43, pp 10 to 12, a rewrite of `mapped_item`:
 
-
-From Part 43, pp 10 to 12, a rewrite of stem:[tt "mapped_item"]:
-
-[source%unnumbered]
+[source]
 ----
 ENTITY rep;
   items : SET [1:?] OF ri;
@@ -1177,19 +950,12 @@ WHERE
 END_ENTITY;
 ----
 
-Where the function stem:[tt "UsingReps"] returns the
-set of stem:[tt "rep"] which
-reference a given stem:[tt "ri"] (or stem:[tt "mi"]).
+Where the function `UsingReps` returns the
+set of `rep` which
+reference a given `ri` (or `mi`).
 
 
-// begin notes
-
-== Rem
-
-// end notes
-
-
-[source%unnumbered]
+[source]
 ----
 FUNCTION AcyclicMr(parents : SET OF rep;
                    children : SET OF ri):
@@ -1228,25 +994,25 @@ END_FUNCTION;
 ----
 
 
-// begin notes
 
 == TYPEOF function
 
-One of the EXPRESS built-in functions.
-
+One of the EXPRESS built-in functions, returns the number of items in an
+aggregate.
 Typically used to check if a variable is of a particular type.
 
-// end notes
+In the example, all that it is used for is checking that the
+two lists have the same number of entries -- it has nothing to do with
+whether or not the third, say, item in each list go together.
 
-
-== TYPEOF function
+A better model follows for correlating students and marks.
 
 `TYPEOF(V: GENERIC): SET OF STRING;` returns the set of uppercase
 strings holding the fully qualified names of the types of which the
-value (instance) stem:[tt "V"] could be a value of. That is, the result is
-the set of potential uses of stem:[tt "V"], not the actual usage.
+value (instance) `V` could be a value of. That is, the result is
+the set of potential uses of `V`, not the actual usage.
 
-[source%unnumbered]
+[source]
 ----
 SCHEMA s;
 
@@ -1261,23 +1027,6 @@ Note that given a subtype instance, the returned set will include the
 subtype and all its supertypes, but it excludes subtypes lower in the tree.
 
 
-// begin notes
-
-== SIZEOF function
-
-One of the EXPRESS built-in functions.
-
-It returns the number of items in an aggregate.
-
-In the example, all that it is used for is checking that the
-two lists have the same number of entries -- it has nothing to do with
-whether or not the third, say, item in each list go together.
-
-A better model follows for correlating students and marks.
-
-// end notes
-
-
 == SIZEOF function
 
 `SIZEOF(agg)` returns the number of element instances in
@@ -1287,7 +1036,7 @@ Usually used for controlling an iteration or for comparing the actual
 sizes of two aggregates.
 
 
-[source%unnumbered]
+[source]
 ----
 ENTITY PoorExamMarks;
   course   : STRING;
@@ -1303,24 +1052,18 @@ This has been used as an attempt to specify that there is a
 one-to-one correlation between the elements in the two lists.
 
 
-// begin notes
-
 == Correlated aggregates
 
 If a student and a mark go together, then define an ENTITY to
-capture this, as in stem:[tt "BetterExamMarks"] and stem:[tt "StudentMark"].
+capture this, as in `BetterExamMarks` and `StudentMark`.
 
 This, of course, solves one problem only to create another.
 
-The new problem is solved by stem:[tt "BestExamMarks"], and the
-function stem:[tt "UniqueStudents"].
-
-// end notes
+The new problem is solved by `BestExamMarks`, and the
+function `UniqueStudents`.
 
 
-== Correlated aggregates
-
-[source%unnumbered]
+[source]
 ----
 ENTITY BetterExamMarks;
   course : STRING;
@@ -1333,9 +1076,9 @@ ENTITY StudentMark;
 END_ENTITY;
 ----
 
-But what about student uniqueness in stem:[tt "BetterExamMarks"]?
+But what about student uniqueness in `BetterExamMarks`?
 
-[source%unnumbered]
+[source]
 ----
 ENTITY BestExamMarks;
   course : STRING;
@@ -1346,20 +1089,13 @@ END_ENTITY;
 ----
 
 
-// begin notes
-
 == UniqueStudents
 
-The function takes a bunch of stem:[tt "StudentMark"] and creates a BAG
+The function takes a bunch of `StudentMark` and creates a BAG
 of all the students. It also creates a SET of the students and checks
 if the BAG and SET are the same size.
 
-// end notes
-
-
-== UniqueStudents
-
-[source%unnumbered]
+[source]
 ----
 FUNCTION UniqueStudents
          (input: AGGREGATE OF StudentMark):
@@ -1376,8 +1112,6 @@ END_FUNCTION;
 ----
 
 
-// begin notes
-
 == QUERY function
 
 One of the EXPRESS built-in functions.
@@ -1386,19 +1120,18 @@ Given an aggregate, it tests every element against a logical condition,
 and puts each element that passes the test into a returned aggregate
 (of the same kind as the input one).
 
-// end notes
+[stem]
+----
+QUERY(v <* InAgg | Lexp(v)): OutAgg
+----
 
-
-== QUERY function
-
-`QUERY(v <* InAgg | Lexp(v)): OutAgg` +
-applies the logical expression stem:[tt "Lexp(v)"]
-to each element of the aggregate stem:[tt "InAgg"]. Each element for which
-stem:[tt "Lexp"] is TRUE is added to the returned aggregate stem:[tt "OutAgg"],
-which is of the same type as stem:[tt "InAgg"].
+applies the logical expression `Lexp(v)`
+to each element of the aggregate `InAgg`. Each element for which
+`Lexp` is TRUE is added to the returned aggregate `OutAgg`,
+which is of the same type as `InAgg`.
 It is equivalent to the following pseudo-EXPRESS.
 
-[source%unnumbered]
+[source]
 ----
 FUNCTION query(input: AGGREGATE OF GENERIC:GEN;
                LEXP):
@@ -1422,15 +1155,10 @@ END_FUNCTION;
 
 This model just uses SIZEOF. The next one uses QUERY.
 
-// end notes
-
-
-== Example
-
 A school party must have at least one adult for every 10 children
 and shall not be larger than 50 in total.
 
-[source%unnumbered]
+[source]
 ----
 ENTITY SchoolParty;
   adults, children : SET OF person;
@@ -1440,23 +1168,15 @@ WHERE
 END_ENTITY;
 ----
 
-
-// begin notes
-
-== (cont)
-
 This model uses both SIZEOF and QUERY.
 
-The assumption here is that a stem:[tt "person"] entity has
-an stem:[tt "age"] attribute. The first QUERY grabs all the adults
+The assumption here is that a `person` entity has
+an `age` attribute. The first QUERY grabs all the adults
 and the second grabs all the children.
-
-// end notes
-
 
 Or, reformulating the entity and using the QUERY function:
 
-[source%unnumbered]
+[source]
 ----
 ENTITY SchoolParty;
   group : SET [2:50] OF person;
@@ -1467,8 +1187,6 @@ w1: 10*SIZEOF(QUERY(p <* group | p.age >= 21))
 END_ENTITY;
 ----
 
-
-// begin notes
 
 == QUERY and SIZEOF
 
@@ -1481,14 +1199,9 @@ example are meant to indicate the kind of result the QUERY returns.
 * Between 2 and 5 ...
 * Every one
 
-// end notes
-
-
-== QUERY and SIZEOF
-
 `QUERY` and `SIZEOF` functions are often combined.
 
-[source%unnumbered]
+[source]
 ----
 SIZEOF(QUERY(p <* e | Bad(p)=TRUE)) = 0;
 
@@ -1521,39 +1234,28 @@ entity instance is used as a particular attribute.
 You could get the same information from an INVERSE attribute, if there
 was one, but USEDIN can be used even if there isn't.
 
-// end notes
+`USEDIN(T:GENERIC; R:STRING): BAG OF GENERIC;` returns the BAG of
+entity instances that uses instance `T` in role `R`.
 
-
-== USEDIN function
-
-stem:[tt "USEDIN(T:GENERIC; R:STRING): BAG OF GENERIC;"] returns the BAG of
-entity instances that uses instance stem:[tt "T"] in role stem:[tt "R"].
-
-If stem:[tt "T"] plays no roles and/or role stem:[tt "R"] is not found,
+* If `T` plays no roles and/or role `R` is not found,
 the returned BAG is empty.
 
-If stem:[tt "R"] is an empty string, every usage of instance stem:[tt "T"]
+* If `R` is an empty string, every usage of instance `T`
 is reported.
 
-Note that the stem:[tt "USEDIN"] function examines instances in an
+Note that the `USEDIN` function examines instances in an
 object-base. That is, it looks at actual data rather than the potential
 kinds (types) of data.
-
-
-// begin notes
-
-== USEDIN example
 
 It is not all that asy to work out what a USEDIN is trying to
 discover. It's at least doubly difficult if it is part of
 a QUERY (which often is embedded in a SIZEOF).
 
-// end notes
 
-
-== USEDIN example
-
-[source%unnumbered]
+.Example of USEDIN
+[example]
+====
+[source]
 ----
 ENTITY PoorEnt;
   attr : PoorColour;
@@ -1570,24 +1272,19 @@ WHERE
 END_ENTITY;
 ----
 
-Says that when an instance of stem:[tt "PoorColour"] is used as the
-stem:[tt "attr"] of the entity stem:[tt "PoorEnt"], then its value for
-stem:[tt "intensity"] shall be not more than half.
+Says that when an instance of `PoorColour` is used as the
+`attr` of the entity `PoorEnt`, then its value for
+`intensity` shall be not more than half.
+====
 
 
-// begin notes
-
-== (cont)
-
-With a little bit or rework,the model is much cleaner and understandable.
+With a little bit or rework, the model is much cleaner and understandable.
 (Why should a constraint by the user be put into the used?)
-
-// end notes
 
 
 This model is better written as:
 
-[source%unnumbered]
+[source]
 ----
 ENTITY Ent;
   attr : Colour;
@@ -1603,19 +1300,12 @@ END_ENTITY;
 ----
 
 
-// begin notes
-
-== (cont)
-
 An INVERSE could be used instead of the USEDIN, but this again obscures
 the intent.
 
-// end notes
-
-
 Or, it could be rewritten using an inverse.
 
-[source%unnumbered]
+[source]
 ----
 ENTITY Ent;
   attr : Colour;
@@ -1634,23 +1324,19 @@ WHERE
 END_ENTITY;
 ----
 
+== Example
 
-// begin notes
-
-== USEDIN example
+=== Second class
 
 This kind of thing is scattered throughout STEP
 (and encouraged to boot).
 
-The RULE is intended to say that stem:[tt "ent"] cannot be
+The RULE is intended to say that `ent` cannot be
 independently instantiated -- it is a second-class entity.
 
-// end notes
-
-
-== USEDIN example
-
-[source%unnumbered]
+[example]
+====
+[source]
 ----
 RULE SecondClass FOR (ent);
 WHERE
@@ -1660,30 +1346,25 @@ WHERE
 END_RULE;
 ----
 
-states that stem:[tt "ent"] shall not be independently instantiated.
+states that `ent` shall not be independently instantiated.
 
 * `USEDIN(e,'')` gives entities that reference instance
-stem:[tt "e"] of entity type stem:[tt "ent"]
+`e` of entity type `ent`
 * `SIZEOF(USEDIN(e,'')) >= 1` gives number of entities
-referencing stem:[tt "e"]
-* `NOT (SIZEOF...)` gives an stem:[tt "e"] that is not referenced
+referencing `e`
+* `NOT (SIZEOF...)` gives an `e` that is not referenced
 * and there should be none of these.
+====
 
-
-// begin notes
-
-== (cont)
 
 There is no need for the RULE as it is exactly the semantics
 of REFERENCE import into a SCHEMA.
-
-// end notes
 
 
 The semantics of this rule are exactly the same as the EXPRESS REFERENCE
 construct.
 
-[source%unnumbered]
+[source]
 ----
 SCHEMA good;        SCHEMA ap;
 REFERENCE FROM sub    ENTITY ent;
@@ -1699,28 +1380,20 @@ END_SCHEMA;           END_SCHEMA;
 ----
 
 
-// begin notes
-
-== ROLESOF function
+=== ROLESOF function
 
 One of the EXPRESS built-in functions.
 
 Another of the functions that examine the object base. Given
 an entity instance, it returns the names of the
-entities, and the atribute names, where it is used as an attribute.
-
+entities, and the attribute names, where it is used as an attribute.
 
 The model is the basis for an example which follows.
 
-// end notes
-
-
-== ROLESOF function
-
 `ROLESOF(V:GENERIC): SET OF STRING;` returns the set of roles that the
-instance stem:[tt "V"] plays in the object base.
+instance `V` plays in the object base.
 
-[source%unnumbered]
+[source]
 ----
 SCHEMA uk;
 ENTITY judge;
@@ -1735,23 +1408,18 @@ ENTITY criminal;
 END_ENTITY;
 ----
 
-// begin notes
-
-== (cont)
 
 Quite sensibly, in the UK a judge must not in jail. (This
 model would be incorrect in (parts of) the United States).
 
-There must be no instance where a stem:[tt "person"] simultaneously
-plays the role of stem:[tt "office_holder"] in stem:[tt "judge"] and
-the role of stem:[tt "prisoner"] in stem:[tt "criminal"].
-
-// end notes
+There must be no instance where a `person` simultaneously
+plays the role of `office_holder` in `judge` and
+the role of `prisoner` in `criminal`.
 
 
 In the UK schema, a person who is a judge shall not be a prisoner in gaol.
 
-[source%unnumbered]
+[source]
 ----
 RULE NoCriminalJudge FOR (person);
 WHERE
@@ -1764,8 +1432,6 @@ END_RULE;
 ----
 
 
-// begin notes
-
 == Required Optional Attributes
 
 Now two examples about putting constraints on the presence
@@ -1774,14 +1440,9 @@ or absence of values for optional attributes.
 An example of how to specify that at least one among several optional
 attributes must be present.
 
-// end notes
-
-
-== Required Optional Attributes
-
 At least one of the optional attributes must have a value:
 
-[source%unnumbered]
+[source]
 ----
 ENTITY ent;
   attr1 : OPTIONAL ...;
@@ -1792,19 +1453,9 @@ WHERE
 END_ENTITY;
 ----
 
-
-// begin notes
-
-== (cont)
-
-Only one of the attributes must have a value.
-
-// end notes
-
-
 One and only one of the optional attributes must have a value:
 
-[source%unnumbered]
+[source]
 ----
 ENTITY ent;
   attr1 : OPTIONAL ...;
@@ -1816,19 +1467,29 @@ END_ENTITY;
 ----
 
 
-// begin notes
-
 == Attribute Redeclaration
 
-A SUBTYPE can specialise inherited attrubutes (i.e., limit
+A SUBTYPE can specialise inherited attributes (i.e., limit
 the potential kinds and/or numbers of values).
 
-// end notes
+Given an original schema:
 
+[source]
+----
+ENTITY sub
+  SUBTYPE OF (t);
+WHERE
+  w1: 'INTEGER' IN TYPEOF(SELF\t.b);
+  w2: {1 <= SIZEOF(SELF\t.a) <= 4};
+  w3: SIZEOF(SELF\t.a) =
+      SIZEOF(Agg2Set(SELF\t.a));
+--  w4: subtyping of list elements
+END_ENTITY;
+----
 
-== Attribute Redeclaration
+To not confuse your readers, you could do this.
 
-[source%unnumbered]
+[source]
 ----
 ENTITY t;
   a : LIST OF d;
@@ -1847,40 +1508,8 @@ END_ENTITY;
 ----
 
 
-// begin notes
 
-== (cont)
-
-On the other hand, if you want to confuse your readers you could
-do this.
-
-// end notes
-
-
-Instead of:
-
-[source%unnumbered]
-----
-ENTITY sub
-  SUBTYPE OF (t);
-WHERE
-  w1: 'INTEGER' IN TYPEOF(SELF\t.b);
-  w2: {1 <= SIZEOF(SELF\t.a) <= 4};
-  w3: SIZEOF(SELF\t.a) =
-      SIZEOF(Agg2Set(SELF\t.a));
---  w4: subtyping of list elements
-END_ENTITY;
-----
-
-
-// begin notes
-
-== SUMMARY
-
-// end notes
-
-
-== SUMMARY
+== Conclusion
 
 * An EXPRESS information model is permissive (i.e. what is not explicitly
 prohibited is permissable).
@@ -1894,4 +1523,3 @@ limitations of objects as about the objects themselves.
 . Local constraints
 . Global rules
 --
-

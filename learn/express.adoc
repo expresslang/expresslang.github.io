@@ -589,18 +589,11 @@ Internally, though, they are implemented using a Level 2 or 3 architecture.
 image::../images/01-plevel4.svg[]
 
 
-// begin notes
-
 == Basic EXPRESS
 
-=== Primitives
+=== EXPRESS primitives
 
 These, plus literals, are the fundamental '`things`' of the EXPRESS language.
-
-* Aggregations are collections of things
-*
-
-These are later described in detail.
 
 Simple types::
 Number, Integer, Real, Binary, String, Boolean (T/F), Logical (T/F/U)
@@ -613,6 +606,8 @@ Array, Set, List, Bag
 
 Procedural language::
 A Pascal-like, imperative programming language.
+
+NOTE: These are later described in detail.
 
 
 === Simple types
@@ -1055,3 +1050,19 @@ END_SCHEMA;
 ----
 ====
 
+
+== Conclusion
+
+EXPRESS is:
+
+* A powerful object-oriented information modeling language:
+
+** Primary form is a computer processable text language.
+** EXPRESS-G as a graphical subset.
+** EXPRESS-I as an instantiation form
+** EXPRESS-X transformation specification
+
+* A language standardized at ISO.
+* Normative STEP information models.
+* Widely used in the modeling communities.
+* Software tools available.
