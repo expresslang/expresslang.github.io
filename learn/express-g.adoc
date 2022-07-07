@@ -3,7 +3,7 @@ layout: author-docs
 ---
 :stem:
 
-= The EXPRESS-G language
+= Introducing EXPRESS-G
 
 == Summary
 

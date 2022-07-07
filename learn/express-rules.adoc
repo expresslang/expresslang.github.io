@@ -3,7 +3,7 @@ layout: author-docs
 ---
 :stem:
 
-= Using EXPRESS rules
+= Using rules in EXPRESS
 
 == Principles
 
