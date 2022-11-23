@@ -36,6 +36,13 @@ definition, relation, usage, governance and dissemination of information models;
 . foster and host a user community for those who work with the EXPRESS language family.
 
 
+== Organization
+
+ELF is a registered public charity in the US. It has been approved by the US IRS
+as a tax-exempt organization under 501(c)(3), qualified to receive
+tax-deductible contributions, since January 19, 2022.
+
+
 == Standardization
 
 ELF is an international standardization organization, similar to the roles
