@@ -8,6 +8,8 @@ https://www.expresslang.org.
 It is a https://jekyllrb.com[Jekyll]-based site created with the Open Project
 Jekyll theme.
 
+The site is hosted at GitHub Pages.
+
 Refer to their respective docs for details.
 
 == Content management
