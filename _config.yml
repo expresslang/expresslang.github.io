@@ -9,9 +9,7 @@ permalink: /blog/:year-:month-:day-:title/
 seo:
   type: Organization
 
-url: https://www.expresslang.org
-
-github_repo_url: https://github.com/expresslang/expresslang.org
+github_repo_url: https://github.com/expresslang/expresslang.github.io
 github_repo_branch: main
 
 algolia_search:
