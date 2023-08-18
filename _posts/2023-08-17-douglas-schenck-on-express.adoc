@@ -1,0 +1,143 @@
+---
+layout: post
+title: Thoughts on EXPRESS
+date: 2023-08-17
+categories: announcements
+authors:
+  -
+    name: Douglas Schenck
+    email: dasche1@hotmail.com
+    social_links:
+
+excerpt: >-
+  Personal thoughts from language inventor, Douglas Schenck, on the origin and
+  hopes of EXPRESS.
+---
+
+= Thoughts about EXPRESS
+
+I was fortunate to have worked on the
+https://www.researchgate.net/publication/235037322_Product_Definition_Data_Interface[Product Definition Data Interface (PDDI)] effort; a contract to
+https://en.wikipedia.org/wiki/McDonnell_Douglas[McDonnell Douglas] from the
+https://www.airforce.com[United States Air Force]. There were two main parts to
+this effort: a descriptive language and a physical file to carry data from one
+place to another. These two parts correspond, roughly, to
+https://www.iso.org/standard/18348.html[Part 11] (aka EXPRESS) and
+https://www.iso.org/standard/20580.html[Part 21] of
+https://en.wikipedia.org/wiki/ISO_10303[ISO 10303] which would come
+later. The physical file might be compared to
+https://en.wikipedia.org/wiki/IGES[IGES].
+
+My main role was to create the descriptive language which was called the "Data
+Specification Language", sometimes called DSL. Some people jokingly (I hope) said
+it stood for "Doug Schenck Language". It was never called that by me.
+
+DSL attempted to provide a formal way to document the metadata needed to define
+a thing of interest. A `Point` might be defined by three numbers called `X`, `Y`
+and `Z`. These metadata would then be mapped somehow to the physical file. In
+theory the DSL and physical file were entirely separate. In other words, one DSL
+definition might be mapped to many different physical implementations.
+
+When the ISO 10303 effort started, I had the honor to carry on with the language
+work. First a week-long meeting at Madison, WI followed up by trips to Munich
+and Zurich. I went to the Zurich meeting with two main thoughts. First, the name
+EXPRESS. Second, the language would have to be much more powerful than DSL ever
+dreamed of.
+
+EXPRESS has a number of dictionary definitions. I liked the adjective meaning:
+directly, firmly and explicitly stated. This is in the spirit of being able to
+document every important aspect about a thing of interest.
+
+As for the power of the language. I had no clue about what this might entail.
+However, the opposite might also be a meaningful way to proceed. I would claim
+that for Part 21 to work, no language at all would be needed. At the time Part
+21 was built on a streaming model where the first token encountered would signal
+how to interpret the tokens that followed. Documentation might simply be a page
+that if the first token was a `305` then what follows is a point and expect
+three numbers called respectively `X`, `Y` and `Z`. This, of course, is a gross
+simplification.
+
+Of course, that approach would deny the ability to automatically generate
+another physical implementation form, and also would reduce the ability to
+document everything known about a thing.
+
+As it turned out I had at least one person who didn't think I was entirely nuts.
+That was Bernd Wenzel although I think he might have harbored some doubts. We
+met a number of times just him and me and eventually came close together in our
+thinking. There is no doubt that we were mavericks in the ISO community. When
+Phil Spiby and Peter Wilson joined the team we became much more in touch with
+the ISO norms, but thankfully not entirely so.
+
+Joe Eggers became my language expert back home at
+https://en.wikipedia.org/wiki/McDonnell_Douglas[McDonnell Douglas]. I would
+bring back the ideas from meetings and he would turn gibberish into BNF and
+analyze everything to make sure it made sense to a computer. Joe was an
+indispensable part of the team. As a side note the grammar diagrams in the book
+https://academic.oup.com/book/40825[Information Modeling the EXPRESS Way] were
+turned into LaTeX code which eventually produced camera ready copy. I wrote the
+code that did that and it was a chore. Peter Wilson and I collaborated on that
+book.
+
+We looked at many different computer languages then in common use as a model
+(not a clone) for EXPRESS. Some were https://fortran-lang.org[FORTRAN],
+https://en.wikipedia.org/wiki/COBOL[COBOL],
+https://en.wikipedia.org/wiki/ALGOL[Algol],
+https://en.wikipedia.org/wiki/Ada_(programming_language)[Ada],
+https://en.wikipedia.org/wiki/Pascal_(programming_language)[Pascal],
+https://www.open-std.org/jtc1/sc22/wg14/[C],
+https://isocpp.org[C++],
+https://en.wikipedia.org/wiki/ISO/IEC_9075[SQL]
+and some really strange ones. We settled on Pascal as a good starting point.
+The language had to have a syntax and grammar that a (computer) parser could
+easily digest and interpret. Lex and yacc were a couple tools used to validate
+the language as it evolved.  To the extent it was possible the language would be
+pretty, although that is a target for debate.
+
+Oddly, we found ourselves the center of political and commercial attack. Some
+factions insisted on something akin to SQL. Others preferred some kind of
+tabular presentation. Howard Mason and Nigel Shaw helped immeasurably to run
+interference and allow us to do our work in peace.
+
+EXPRESS has two features that are uncommon, if not unique. First is the ability
+to formalize constraints. For example, the radius of a circle cannot be a
+negative number. The critics of EXPRESS say that everyone knows that so there is
+no need to declare it. There are cases, however, where the “everyone knows”
+comment does not work. Anyway, it is nice to tell the computer, which is not
+(for the moment) as smart as we are. Second is the ability to declare derived
+attributes. Here is a simple illustration. A circle is defined as a center point
+and a radius. We also know some other facts about circles: circumference and
+area are a couple. These are derived (virtual) attributes. One mapping to the
+physical file deals only with the explicit attributes. Another one might want
+the derived attributes instead of the explicit ones. Both of these features are
+intended to give us the ability to describe something expressly.
+
+There are a few things about the language I don't like. No need to get into that
+here. However, there is one blunder for which I have to take blame for. As I
+recall Brend and me we sitting on a bench in a park somewhere. London maybe. The
+language was pretty much done and we needed something to talk about. One of us
+said something about multiple inheritance. Wow. That would be great if we could
+fit that into the grammar some way. Well, we could and we did. I regret to say
+that neither drugs or alcohol were involved. So be it.
+
+EXPRESS is intended for use in discrete manufacturing. That is, making things. I
+do not believe it is suitable for the process industry: Petroleum, beer,
+waterworks, etc.
+
+Here again are the key people to blame or praise for EXPRESS (BTW I never was
+happy with the convention to use all caps.)
+
+* Eggers, Joe
+
+* Schenck, Douglas
+
+* Spiby, Phil
+
+* Wenzel, Bernd
+
+* Wilson, Peter
+
+My apologies for any people I failed to credit.
+
+Douglas Schenck +
+Bay, Missouri +
+August 2023
