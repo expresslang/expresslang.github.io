@@ -33,11 +33,11 @@ jobs:
   #       if [ "$GITHUB_REF" = "refs/heads/main" ]
   #       then
   #         echo "::set-output name=my_env::production"
-  #         echo "::set-output name=my_url::https://www.tebako.org"
+  #         echo "::set-output name=my_url::https://www.expresslang.org"
   #       elif [ "$GITHUB_REF" = "refs/heads/staging" ]
   #       then
   #         echo "::set-output name=my_env::staging"
-  #         echo "::set-output name=my_url::https://staging-www.tebako.org"
+  #         echo "::set-output name=my_url::https://staging-www.expresslang.org"
   #       fi
 
   build:
