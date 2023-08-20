@@ -6,15 +6,15 @@ categories: announcements
 authors:
   -
     name: Douglas Schenck
-    email: dasche1@hotmail.com
-    social_links:
+    email: douglas.schenck@expresslang.org
+    use_picture: assets
 
 excerpt: >-
-  Personal thoughts from language inventor, Douglas Schenck, on the origin and
+  Personal thoughts from inventor of EXPRESS, Douglas Schenck, on the origin and
   hopes of EXPRESS.
 ---
 
-= Thoughts about EXPRESS
+= Thoughts on EXPRESS
 
 I was fortunate to have worked on the
 https://www.researchgate.net/publication/235037322_Product_Definition_Data_Interface[Product Definition Data Interface (PDDI)] effort; a contract to

@@ -7,9 +7,11 @@ authors:
   -
     name: Douglas Schenck
     email: douglas.schenck@expresslang.org
+    use_picture: assets
   -
     name: Peter Wilson
     email: peter.wilson@expresslang.org
+    use_picture: assets
   -
     name: Bernd Wenzel
     email: bernd.wenzel@expresslang.org
