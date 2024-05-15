@@ -1,0 +1,238 @@
+---
+layout: docs-base
+---
+:stem:
+
+== Annotated EXPRESS syntax
+
+=== General
+
+EXPRESS is a data modelling language offered in a code-like syntax.
+
+As in typical source code, you can insert comments that do not get parsed or
+interpreted by the compiler.
+For example, in C, block comments are realized wth `/* ... */`.
+
+In EXPRESS, the remark tag syntax is `(* ... *)`, indicating that anything in
+the `...` is considered documentation.
+
+Annotated EXPRESS is a set of rules that build on top of the EXPRESS remark tag
+syntax for documentation and description of EXPRESS code. It can be considered in the same
+category of Doxygen for C, JavaDoc for Java, RubyDoc for Ruby.
+
+Annotated EXPRESS accepts Metanorma AsciiDoc as content.
+
+=== Basic syntax
+
+Annotated EXPRESS uses the "named remark tag" syntax described in the EXPRESS
+language manual.
+
+----
+(*"NAME"
+...
+*)
+----
+
+Where:
+* `NAME` is a "tag" that references an EXPRESS object, such as a schema,
+entity, property, function, or rule.
+
+A tag looks like `schema_name.entity_name.property_name`.
+
+[example]
+====
+Given this schema `action_schema`:
+----
+SCHEMA action_schema;
+  ENTITY action;
+    name : label;
+    description : OPTIONAL text;
+    chosen_method : action_method;
+  DERIVE
+    id : identifier := get_id_value(SELF);
+  WHERE
+    WR1: SIZEOF(USEDIN(SELF, 'BASIC_ATTRIBUTE_SCHEMA.' + 'ID_ATTRIBUTE.IDENTIFIED_ITEM')) <= 1;
+  END_ENTITY;
+END_SCHEMA;
+----
+
+The tag references would be:
+
+* to the schema: `"action_schema"`
+* to the entity `action`: `"action_schema.action"`
+* to the property `name`: `"action_schema.action.name"`
+* to the derived property `id`: `"action_schema.action.id"`
+* to the where rule `WR1`: `"action_schema.action.wr:WR1"`
+====
+
+=== Types of remarks
+
+==== Basic objects
+
+In Annotated EXPRESS, there are a few types of named remarks:
+
+* `(*"{TAG}" ... *)` refers to the description of EXPRESS object `{TAG}`
+
+* `(*"{TAG}.__note" ... *)` refers to a note that applies to EXPRESS object
+`{TAG}`
+
+* `(*"{TAG}.__example" ... *)` refers to a usage example that applies to the
+EXPRESS object `{TAG}`
+
+* `(*"{TAG}.__figure" ... *)` refers to a figure that applies to the EXPRESS
+object `{TAG}`, which can be re-used within its notes or examples.
+
+* `(*"{TAG}.__table" ... *)` refers to a table that applies to the EXPRESS
+object `{TAG}`, which can be re-used within its notes or examples.
+
+These different types of remarks can be in multiple instances, for example,
+multiple `(*"{TAG}" ... *)` remarks can be made in an EXPRESS file to describe
+the particular object.
+
+These named remarks are not bound to any particular location in an EXPRESS file.
+For example, they can be made immediately after the declaration of the EXPRESS
+object, or collected at the top or bottom of the EXPRESS file.
+
+==== STEPmod remarks
+
+In STEPmod, which is the STEP modules library, two additional types of
+named remarks are used.
+
+* `(*"{SCHEMA_TAG}.__fund_cons" ... *)` describes the
+"Fundamental concepts and assumptions" of a schema. It is a ISO 10303 convention
+to describe the concepts and assumptions of the schema. The tag must reference
+an EXPRESS schema.
+
+* `(*"{SCHEMA_TAG}.__expressg" ... *)` provides EXPRESS-G diagrams relevant
+to the EXPRESS schema. These diagrams can describe an architecture view that
+involves the named schema. The tag must reference an EXPRESS schema.
+
+
+=== Content syntax
+
+==== General
+
+Annotated EXPRESS (in its current form) accepts Metanorma AsciiDoc.
+The syntax of Metanorma AsciiDoc is described at https://www.metanorma.org.
+
+There are several extensions to Metanorma AsciiDoc for the documentation of
+EXPRESS.
+
+==== EXPRESS object cross-references
+
+In Annotated EXPRESS remark content, it is often necessary to cross-reference
+other EXPRESS objects.
+
+In the generated EXPRESS documentation, these references become links to the
+definition of the target EXPRESS objects.
+
+The syntax is:
+
+----
+<<express:{TAG}>>
+----
+
+or
+
+----
+<<express:{TAG},{RENDER TEXT}>>
+----
+
+Where:
+
+* `{TAG}` is the EXPRESS named tag, e.g. `action_schema.action_method`
+* `{RENDER TEXT}` is the desired rendering text, if different from the named tag,
+  e.g. `action methods`
+
+
+
+== Usage
+
+=== Application on schemas
+
+Let's take
+https://github.com/metanorma/annotated-express/blob/main/data/resources/action_schema/action_schema_annotated.exp[`action_schema.exp`]
+as an example.
+
+----
+(*"action_schema"
+The subject of the *action_schema* is the description of actions, the reasons
+for these actions, and the status of these actions.
+*)
+
+(*"action_schema.__fund_cons"
+Action information can be attached to any aspect of product data.
+*)
+
+(*"action_schema.__example"
+Reasons for action include evolving user requirements, manufacturing problems
+and difficulties that arise when a product is in use.
+*)
+
+(*"action_schema.__expressg"
+[.svgmap]
+====
+image::action_schemaexpg1.svg[]
+
+* <<express:basic_attribute_schema>>; 1
+* <<express:action_schema>>; 2
+* <<express:support_resource_schema>>; 3
+====
+*)
+----
+
+* Content in `(*"action_schema" ... *)` provides a basic description (and
+purpose) of the schema.
+
+* Content in `(*"action_schema.__fund_cons" ... *)` describes the concepts and
+assumptions in creating this schema.
+
+* Content in `(*"action_schema.__example" ... *)` describes an example on how
+the schema can be used.
+
+* Content in `(*"action_schema.__expressg" ... *)` provides a graphical
+diagram (in Metanorma AsciiDoc syntax with an `svg` here) relevant to the
+understanding of the schema.
+
+
+=== Application on entities
+
+Entities inside the schema are accessed using the `{schema}.{entity}` syntax
+(potentially multiple dots).
+
+For example, the `action_schema.supported_item` entity is documented like this:
+
+----
+(*"action_schema.supported_item"
+The *supported_item* allows for the designation of an
+<<express:action_schema.action_directive,action_directive>>, an
+<<express:action_schema.action,action>>, or an
+<<express:action_schema.action_method,action_method>>.
+*)
+
+(*"action_schema.supported_item.__note"
+This specifies the use of an
+<<express:action_schema.action_resource,action_resource>>.
+*)
+----
+
+Notice that within the named remark `action_schema.supported_item.__note`,
+there is an `<<express:...>>` link which references another EXPRESS object
+`action_schema.action_resource`.
+
+
+=== Application on other EXPRESS objects
+
+Annotations can be made to any EXPRESS objects that are referencable,
+including:
+
+* ENTITY
+** properties
+** DERIVE properties
+** WHERE rules
+** IP: Informal proposition rules
+* TYPE
+* FUNCTION
+** LOCAL variables
+
+
