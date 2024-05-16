@@ -3,7 +3,9 @@ layout: docs-base
 ---
 :stem:
 
-== Annotated EXPRESS syntax
+== Annotated EXPRESS syntax (draft)
+
+This is a living specification for Annotated EXPRESS.
 
 === General
 
