@@ -49,6 +49,7 @@ legal:
 
 home_calls_to_action:
   - { url: "/language/", title: "Language introduction" }
+  - { url: "/docs/", title: "Standards and specifications" }
 
 collections:
   # Temporary fix
