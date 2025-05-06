@@ -3,3 +3,6 @@ javascript:.*
 https://www.linkedin.com*
 .*@.*example.com
 (ht|f)tps?://.*\.?example\.(com|org).*
+/docs
+https://www.researchgate.net/*
+https://academic.oup.com/*
