@@ -1,0 +1,318 @@
+---
+title: Programming with SDAI
+---
+
+= Programming with SDAI
+
+This module builds on the SDAI concepts introduced in the previous module, showing how to use SDAI in practice through a Java-based programming model. While the specific API calls shown here follow the late-binding pattern common in EXPRESS data management, the concepts — sessions, models, instances, aggregates, queries — apply across all SDAI language bindings.
+
+== Initialization
+
+An SDAI application begins by initializing the data access library and establishing a connection to a database. The database can be local (single-user mode) or remote (multi-user mode accessed via a server).
+
+In single-user mode, the application works directly with a local database file:
+
+[source,java]
+----
+// Initialize the SDAI library
+loadLibraries();
+
+// Specify single user mode
+initSingleUser();
+----
+
+In multi-user mode, the application connects to a server that manages concurrent access:
+
+[source,java]
+----
+// Initialize for remote access
+initMultiUser();
+----
+
+== Accessing the Database
+
+Once initialized, the application creates a context that provides access to the database and all system resources:
+
+[source,java]
+----
+// Create a local context
+Context context = createContext("databaseKey");
+
+// Open or create the database
+Database db = context.getServer().getDatabase("path", "dbName", "password");
+if (!db.exists()) {
+  db.create();
+}
+db.open();
+
+// Authenticate
+context.login("username", "group", "password");
+----
+
+The context is the "main gate" through which the application accesses:
+
+* **Server** — access to the database itself
+* **Worker factory** — compilers, validators, import/export operations
+* **Data factory** — access to SDAI data objects (instances, aggregates, selects)
+
+== Compiling Schemas
+
+Before data can be created or imported, the governing EXPRESS schema must be compiled:
+
+[source,java]
+----
+// Get the schema source file
+Stream source = context.getDataFactory().getLocalFile(new File("schema.exp"));
+
+// Compile the EXPRESS schema
+Compiler compiler = context.getWorkerFactory().getExpressCompiler();
+compiler.setSource(source);
+long options = compiler.getOptions();
+options |= CompilerOptions.DELETING_EXISTING_SCHEMAS;
+options |= CompilerOptions.STORING_SOURCE;
+compiler.setOptions(options);
+compiler.execute();
+
+// Check for errors
+int errors = compiler.getResult().getErrors();
+if (errors > 0) {
+  // Handle compilation errors
+}
+----
+
+The compilation process produces a schema definition that is stored in the database and can be used to validate data.
+
+== Working with Models and Instances
+
+=== Creating a Model
+
+A model is a collection of instances conforming to a specific schema:
+
+[source,java]
+----
+DataFactory df = context.getDataFactory();
+Schema schema = df.getExpressSchema("MySchema");
+Model myModel = df.getModel("repository", "myModel");
+myModel.create(schema, 0);  // 0 = default options
+myModel.setOpenMode(OpenModes.READ_WRITE);
+----
+
+=== Creating Instances
+
+Entity instances are created within a model and populated with attribute values:
+
+[source,java]
+----
+Instance myInst = myModel.createInstance("PART");
+myInst.setAttrBN("CAGE_CODE", "cage_code_value");
+myInst.setAttrBN("PART_ID", "PART_001");
+----
+
+The `setAttrBN` method sets an attribute value by name ("BN" = "by name"). The value is automatically typed according to the schema definition.
+
+=== Reading Attribute Values
+
+[source,java]
+----
+Select mySel = myInst.getAttrBN("CAGE_CODE");
+String cageCode = mySel.stringVal();
+
+Select partId = myInst.getAttrBN("PART_ID");
+String id = partId.stringVal();
+----
+
+SDAI uses a generic `Select` type for attribute values, which can hold any EXPRESS data type. The appropriate getter method (`stringVal()`, `intVal()`, `realVal()`, etc.) extracts the typed value.
+
+=== Setting Multiple Attributes at Once
+
+For efficiency, multiple attributes can be set in a single call:
+
+[source,java]
+----
+Select arg1 = context.getDataFactory().getSelect();
+arg1.setString("PRODUCT_1");
+Select arg2 = context.getDataFactory().getSelect();
+arg2.setString("Product description");
+Select[] args = {arg1, arg2};
+
+Instance prod = myModel.createInstance("PRODUCT");
+String[] attrNames = {"PRODUCT_ID", "DESCR"};
+prod.putAttrsBN(attrNames, args);
+----
+
+== Working with Aggregations
+
+Aggregation-valued attributes (ARRAY, LIST, SET, BAG) require special handling.
+
+=== Creating Aggregations
+
+[source,java]
+----
+Instance docDef = myModel.createInstance("Digital_document_definition");
+Aggregate files = docDef.createAggrAttrBN("FILES", null);
+
+Select mySel = context.getDataFactory().getSelect();
+for (int i = 0; i < 10; i++) {
+  Instance digitalFile = myModel.createInstance("Digital_file");
+  digitalFile.setAttrBN("ID", "ID-" + i);
+  mySel.setInstance(digitalFile);
+  files.append(mySel);
+}
+----
+
+=== Reading Aggregations
+
+[source,java]
+----
+Select mySel = myInst.getAttrBN("ITEMS");
+Aggregate items = mySel.aggrVal();
+int members = items.getMemberCount();
+
+for (int j = 0; j < members; j++) {
+  Select element = items.getElement(j);
+  Instance item = element.instVal();
+  Instance instType = item.getInstanceType();
+  String entityName = instType.getAttrBN("NAME").stringVal();
+}
+----
+
+== Handling SELECT Types
+
+SELECT types in EXPRESS allow an attribute to hold values of different types. When working with SELECT attributes that have nested type definitions, the typing information must be preserved:
+
+[source,java]
+----
+Instance circle = myModel.createInstance("circle");
+
+// Create type information for a nested SELECT (e.g., RADIUS within MM)
+DefinedType radiusType = context.getDataFactory().getDefinedType(myModel, "RADIUS");
+DefinedType mmType = context.getDataFactory().getDefinedType(myModel, "MM");
+DefinedType[] typeList = {radiusType, mmType};
+
+Select sel = context.getDataFactory().getSelect().setReal(3.3);
+long[] typeIds = getDefinedTypeIds(typeList);
+sel.setTypelist(sel.getSdaiType(), typeIds);
+circle.putAttrBN("DIMENSION", sel);
+----
+
+This ensures that the value is correctly typed when it is later read back or validated.
+
+== File Import and Export
+
+SDAI supports importing and exporting data in both Part 21 (STEP) and Part 28 (XML) formats.
+
+=== Import (Read from File)
+
+[source,java]
+----
+File p21File = new File("exchange.stp");
+Stream source = context.getDataFactory().getLocalFile(p21File);
+source.setFileFormat(FileFormats.STEP);
+
+Upload upload = context.getWorkerFactory().getUpload(source, dataModel);
+upload.getLogDescription().setLogFileName("import.log");
+upload.execute();
+
+int errors = upload.getResult().getErrors();
+----
+
+=== Export (Write to File)
+
+[source,java]
+----
+File p21File = new File("output.stp");
+Stream target = context.getDataFactory().getLocalFile(p21File);
+target.setFileFormat(FileFormats.STEP);
+
+Download download = context.getWorkerFactory().getDownload(dataModel, target);
+download.execute();
+----
+
+For Part 28 (XML), the file format is set to `XML` and an encoding can be specified:
+
+[source,java]
+----
+File xmlFile = new File("output.xml");
+Stream target = context.getDataFactory().getLocalFile(xmlFile);
+target.setFileFormat(FileFormats.XML);
+target.setXMLEncoding("UTF-8");
+
+Download download = context.getWorkerFactory().getDownload(dataModel, target);
+download.execute();
+----
+
+== Querying Data
+
+Instances can be selected based on entity type and filter conditions:
+
+[source,java]
+----
+DataFactory df = context.getDataFactory();
+WorkerFactory wf = context.getWorkerFactory();
+
+QueryResult target = df.getQueryResult();
+SelectInstances selector = wf.getSelectInstances(myModel, target);
+selector.setOptions(SelectOptions.INCLUDE_INSTANCE_IDS);
+selector.setEntityName("PART");
+selector.setCondition("Weight > 5");
+selector.execute();
+
+// Process results
+for (int i = 0; i < target.noOfRows(); i++) {
+  String partId = target.getRow(i).getAttrBN("PART_ID").stringVal();
+}
+----
+
+More complex queries can be executed using query functions defined in QUERY_SCHEMAs:
+
+[source,java]
+----
+QueryResult qResult = context.getDataFactory().getQueryResult();
+Query query = context.getWorkerFactory().getQuery(myModel, qResult);
+query.setQuerySchemaName("my_queries");
+query.setQueryFunctionName("get_part_list");
+query.setResultType(QueryOptions.RESULT_AS_MATRIX);
+query.execute();
+
+for (int i = 0; i < qResult.noOfRows(); i++) {
+  String cageCode = qResult.getRow(i).getAttrBN("CAGE_CODE").stringVal();
+  String partId = qResult.getRow(i).getAttrBN("PART_ID").stringVal();
+}
+----
+
+== Data Mapping and Migration
+
+When data needs to be transformed from one EXPRESS schema to another (for example, migrating between versions of a standard), the SDAI provides mapping operations:
+
+[source,java]
+----
+Model sourceModel = context.getDataFactory().getModel("repo", "sourceModel");
+Model targetModel = context.getDataFactory().getModel("repo", "targetModel");
+
+Merger merger = context.getWorkerFactory().getMerger(sourceModel, targetModel);
+merger.setSchemaMapName("source_to_target");
+long options = merger.getOptions();
+options |= MergerOptions.DELETING_EXISTING_MODEL;
+options |= MergerOptions.LOG_ERRORS;
+merger.setOptions(options);
+merger.execute();
+----
+
+== Logging
+
+Most SDAI operations support logging for debugging and audit purposes:
+
+[source,java]
+----
+LogDescription logger = worker.getLogDescription();
+logger.setLogFileName("operation.log");
+long options = logger.getOptions();
+options |= LogOptions.LOG_TO_FILE;
+options |= LogOptions.LOG_ERRORS;
+logger.setOptions(options);
+worker.execute();
+----
+
+== Summary
+
+SDAI provides a comprehensive programming interface for EXPRESS data access. The key patterns — session management, model access, instance manipulation, aggregation handling, file I/O, and querying — form a consistent model across all language bindings. By programming against the SDAI specification, applications remain portable across different EXPRESS data management implementations.

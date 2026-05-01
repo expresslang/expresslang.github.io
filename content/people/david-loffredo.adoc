@@ -1,0 +1,29 @@
+---
+title: David Loffredo
+role: Founder, Project Leader
+categories: founders
+---
+
+== Project Leader, ISO 10303-11:2004
+
+David Loffredo is a founding member of the EXPRESS Language Foundation and served
+as co-project leader of the second edition of the EXPRESS language standard
+(ISO 10303-11:2004), together with Peter Wilson.
+
+== Contributions
+
+Loffredo has been a long-time contributor to EXPRESS standardization and STEP
+implementations, bringing deep expertise in both the language specification and
+its practical application in industrial data exchange.
+
+He co-led the effort to update the EXPRESS language standard to its second edition,
+incorporating lessons learned from a decade of industrial use and clarifying
+ambiguities in the original specification.
+
+== Standardization
+
+* *ISO 10303-11:2004* — Co-project leader (with Peter Wilson), second edition of the EXPRESS language standard
+
+== At ELF
+
+* Founding member of the EXPRESS Language Foundation

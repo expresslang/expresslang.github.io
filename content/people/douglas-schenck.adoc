@@ -1,0 +1,38 @@
+---
+title: Douglas Schenck
+role: Founder, Project Leader
+categories: founders
+---
+
+== Inventor of EXPRESS
+
+Douglas Schenck is the original inventor of the EXPRESS information modelling language,
+created during the PDDI (Product Data Definition Interface) program in 1982 at
+McDonnell Aircraft (now merged into Boeing), initiated by the US Air Force.
+
+== Contributions to EXPRESS
+
+Schenck conceived and designed the EXPRESS language to facilitate "`expressiveness`"
+in modelling information — a need that arose from the challenges of exchanging product
+data across the aerospace supply chain.
+
+His key contributions include:
+
+* *Invention of EXPRESS* (1982) — the foundational information modelling language
+* *Co-author* of _Information Modelling: The EXPRESS Way_ (Oxford University Press, 1994), the authoritative reference manual on EXPRESS, co-authored with Peter Wilson
+* *Project leader* of ISO 10303-11:1994 (first edition), together with Prof. Bernd Wenzel, guiding the language through its international standardization at ISO
+
+== Impact
+
+EXPRESS has become the backbone of industrial data exchange, used globally in
+aerospace, automotive, construction, and smart manufacturing. Schenck's invention
+has enabled decades of interoperability across the manufacturing supply chain,
+and continues to power Industry 4.0 and digital twin applications.
+
+== Standardization
+
+* *ISO 10303-11:1994* — Project leader (with Bernd Wenzel), first edition of the EXPRESS language standard
+
+== At ELF
+
+* Founding member of the EXPRESS Language Foundation

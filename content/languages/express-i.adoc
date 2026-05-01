@@ -1,0 +1,83 @@
+---
+title: EXPRESS-I
+---
+
+== Overview
+
+EXPRESS-I is an instance definition language for creating and exchanging populated data models conforming to EXPRESS schemas.
+It provides a lexical syntax for defining concrete instances of entities defined in an EXPRESS schema, making it essential for conformance testing and example data exchange.
+
+EXPRESS-I enables users to define concrete data instances that can be validated against an EXPRESS schema, supporting:
+conformance testing of STEP implementations, exchange of reference test data,
+and documentation of populated data models.
+
+[[key-features]]
+== Key features
+
+* *Instance definitions* — create concrete entity instances conforming to EXPRESS schemas
+* *Population data* — define complete datasets of interrelated entity instances
+* *Schema conformance* — validate that instances comply with all EXPRESS constraints (WHERE rules, GLOBAL rules, type constraints)
+* *Conformance testing* — define test cases for STEP implementation validation
+* *Reference data exchange* — share example data sets across organizations
+
+[[syntax]]
+== Syntax
+
+EXPRESS-I uses a structured instance notation:
+
+.Example EXPRESS-I instance
+[source]
+----
+SCHEMA_INSTANCE example_model;
+
+  -- Instance of a point entity
+  #1 = POINT(0.0, 1.5, 2.0);
+  #2 = POINT(1.0, 0.0, 0.5);
+
+  -- Instance of a line referencing two points
+  #3 = LINE(#1, #2);
+
+END_SCHEMA_INSTANCE;
+----
+
+[[history]]
+== History
+
+EXPRESS-I was developed to address the need for exchanging and validating concrete data instances against EXPRESS schemas.
+It fills the gap between schema definition (EXPRESS) and data exchange (STEP physical files), providing a human-readable format for instance specification.
+
+=== Timeline
+
+[cols="1,4"]
+|===
+| *1994* | EXPRESS-I defined in ISO 10303-12 as part of the STEP standard suite
+| *Present* | Used primarily for conformance testing and validation reference data
+|===
+
+=== Key people
+
+EXPRESS-I was developed by the ISO TC 184/SC 4 committee as part of the STEP standards family, with contributions from the same team involved in EXPRESS development including Douglas Schenck, Peter Wilson, and other ISO TC 184/SC 4 experts.
+
+[[standardization]]
+== Standardization
+
+EXPRESS-I is defined by ISO 10303-12:
+
+* *ISO 10303-12* — EXPRESS-I: EXPRESS Test Suite Application Protocol Model and Abstract Test Suite
+
+EXPRESS-I complements ISO 10303-21 (STEP Part 21 physical file format) by providing an alternative instance notation more suitable for conformance testing specifications.
+
+[[applications]]
+== Applications
+
+* *Conformance testing* — defining test cases for STEP implementation validation
+* *Reference data* — sharing populated example datasets
+* *Documentation* — illustrating schema usage with concrete data examples
+* *Validation* — verifying that data implementations satisfy EXPRESS schema constraints
+
+[[resources]]
+== Learn more
+
+* link:/languages[EXPRESS Language Family] — overview of all EXPRESS languages
+* link:/standards[Standards & BNF] — ISO standards and grammar references
+* link:/learn/jotne-express/07-validation-execution[EXPRESS Course: Validation] — data validation concepts and techniques

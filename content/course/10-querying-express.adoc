@@ -1,0 +1,216 @@
+---
+title: Querying EXPRESS Data
+---
+
+= Querying EXPRESS Data
+
+Once an EXPRESS data population has been created — whether by importing a Part 21 file, a Part 28 XML document, or through programmatic API calls — the next challenge is retrieving meaningful information from it. EXPRESS-X's QUERY_SCHEMA provides a powerful mechanism for defining business objects and query operations that operate on an EXPRESS data population.
+
+This module covers the concepts behind querying EXPRESS data, the QUERY_SCHEMA declaration, and how business objects and query functions work.
+
+== The Query Challenge
+
+EXPRESS data populations can be large and complex. A single STEP data exchange might contain thousands or tens of thousands of entity instances across dozens of entity types. Finding specific information — "give me all products with their associated documents" or "find the assembly structure for part X" — requires a way to express these queries declaratively.
+
+Traditional approaches (writing custom code for each query) are fragile and expensive to maintain. The QUERY_SCHEMA approach allows queries to be defined formally, compiled, validated, and executed against any population of the underlying EXPRESS schema.
+
+== QUERY_SCHEMA Overview
+
+A QUERY_SCHEMA is always connected to an EXPRESS schema, called the **underlying EXPRESS schema**. It serves three purposes:
+
+* **Defining queries** — structured retrieval operations on the data population
+* **Defining business objects** — application-level views on the data (also called view entities)
+* **Defining operations** — functions and procedures that operate on business objects and entity instances
+
+Key properties:
+
+* Any number of QUERY_SCHEMAs can be defined for each EXPRESS schema
+* Each QUERY_SCHEMA is independent — changes to one do not affect others
+* All statements defined in EXPRESS-X (a superset of EXPRESS ISO 10303-11) can be used
+* Query operations can modify persistent data in the data population
+
+== QUERY_SCHEMA Declarations
+
+A QUERY_SCHEMA can contain the following declarations:
+
+* **GLOBAL** — defines the population identifier and global variables
+* **CONSTANT** — named constant values
+* **VIEW_ENTITY** — defines business objects (application-level views)
+* **QUERY_FUNCTION** — defines callable query operations
+* **FUNCTION** — reusable logic (same syntax as EXPRESS FUNCTION)
+* **PROCEDURE** — reusable operations (same syntax as EXPRESS PROCEDURE)
+
+No declarations in a QUERY_SCHEMA affect the underlying EXPRESS schema. The query schema can reference CONSTANT, ENTITY, TYPE, FUNCTION, and PROCEDURE declarations from the underlying schema. In case of name conflicts, the QUERY_SCHEMA declaration takes precedence.
+
+== QUERY_SCHEMA Declaration
+
+The QUERY_SCHEMA declaration names the schema and specifies its underlying EXPRESS schema:
+
+[source,express]
+----
+QUERY_SCHEMA Product_and_Document FOR PDM_schema;
+  (* All declarations here *)
+END_QUERY_SCHEMA;
+----
+
+The name must be unique among all QUERY_SCHEMAs for the same underlying EXPRESS schema.
+
+== GLOBAL Declaration
+
+The optional GLOBAL declaration defines the population identifier (used in FROM statements) and global variables:
+
+[source,express]
+----
+GLOBAL
+  DECLARE pop INSTANCE OF Pdm_Schema; -- pop is the 'name' of the population
+  Query_state : INTEGER;               -- global variable
+END_GLOBAL;
+----
+
+== Business Objects (VIEW_ENTITY)
+
+A VIEW_ENTITY defines a new view on the data — an application-level perspective that combines or transforms data from the underlying EXPRESS schema. View entities are called **business objects** because they typically represent the concepts that end users work with, rather than the raw data structures defined by the schema.
+
+=== Properties
+
+VIEW_ENTITY declarations have the following characteristics:
+
+* Any number of view entities can be defined in a QUERY_SCHEMA
+* They have explicit and derived attributes, like EXPRESS entities
+* They cannot have subtype/supertype declarations, INVERSE attributes, or WHERE/UNIQUE rules
+* All entities from the underlying schema and other view entities in the same QUERY_SCHEMA are valid data types
+* View entity instances are not made persistent — they must be converted to the underlying schema to be stored
+
+=== Example
+
+[source,express]
+----
+VIEW_ENTITY product_view;
+  Product       : Product;
+  Product_id    : STRING;
+  Product_name  : STRING;
+  Document      : Document;
+  Document_Name : STRING;
+  Document_type : Document_type;
+DERIVE
+  String_Sum : STRING := Product_id + '|' + Product_name;
+END_VIEW_ENTITY;
+----
+
+This view entity combines information from `Product` and `Document` entities into a single business object that is convenient for reporting or display purposes. The `DERIVE` attribute computes a concatenated string from the other attributes.
+
+== QUERY_FUNCTION Declaration
+
+A QUERY_FUNCTION is similar to an EXPRESS FUNCTION but is specifically designed to be invoked by applications through the data access interface. It can return any data type, including view entity instances.
+
+=== Example
+
+[source,express]
+----
+QUERY_FUNCTION Product_Documentation (prod_id, prod_name : STRING)
+                                          : SET OF Product_View;
+  LOCAL
+    result : SET OF Product_View;
+    curr_product : Product_View;
+  END_LOCAL;
+  ...
+  FROM (prod:pop::PRODUCT)
+  WHEN TRUE;
+  BEGIN
+    ...
+    result ++ curr_product;
+  END;
+  ...
+  RETURN(result);
+END_QUERY_FUNCTION;
+----
+
+The FROM clause iterates over all instances of `PRODUCT` in the population. The WHEN clause filters which instances to include. The function returns a set of `Product_View` business objects.
+
+== Complete Example
+
+A full QUERY_SCHEMA showing view entities and query functions together:
+
+[source,express]
+----
+QUERY_SCHEMA product_doc_approval FOR PDM_SCHEMA;
+
+GLOBAL
+  DECLARE exps INSTANCE OF PDM_SCHEMA;
+END_GLOBAL;
+
+VIEW_ENTITY product_view;
+  Product_Id        : STRING;
+  Product_Name      : STRING;
+  Document_Id       : STRING;
+  Document_Name     : STRING;
+  Product_Data_Type : STRING;
+END_VIEW_ENTITY;
+
+QUERY_FUNCTION product_documentation(prod_id, prod_name : STRING) : SET OF product_view;
+  LOCAL
+    result       : SET OF product_view;
+    curr_product : product_view;
+    found        : Boolean;
+    doc          : document;
+  END_LOCAL;
+
+  FROM(p:exps::PRODUCT)
+  WHEN TRUE;
+  BEGIN
+    curr_product := ?;
+    found := true;
+    IF (Exists(prod_id)) AND (prod_id <> '') AND
+       (NOT (p.id LIKE prod_id)) THEN found := false; END_IF;
+    IF (found = true) AND (Exists(prod_name)) AND (prod_name <> '') AND
+       (NOT (p.name LIKE prod_name)) THEN found := false; END_IF;
+    IF (found = true) THEN
+      NEW curr_product;
+      curr_product.product_id := p.id;
+      curr_product.product_name := p.name;
+      result ++ curr_product;
+      FROM(a_d_r:exps::APPLIED_DOCUMENT_REFERENCE)
+      WHEN TRUE;
+      BEGIN
+        REPEAT i := 1 TO SizeOf(a_d_r.items);
+          IF ((a_d_r.items[i] IS PRODUCT_DEFINITION) AND
+              (a_d_r.items[i].formation.of_product :=: p)) THEN
+            doc := a_d_r.assigned_document;
+            curr_product.Document_Id := doc.id;
+            curr_product.Document_Name := doc.name;
+            curr_product.Product_Data_Type := doc.kind.product_data_type;
+          END_IF;
+        END_REPEAT;
+      END;
+    END_IF;
+  END;
+  RETURN(result);
+END_QUERY_FUNCTION;
+
+END_QUERY_SCHEMA;
+----
+
+This example demonstrates a complete query that:
+
+1. Takes product ID and name as search criteria
+2. Iterates over all products matching the criteria
+3. For each matching product, finds associated documents
+4. Returns a set of view entities combining product and document information
+
+== Compilation and Execution
+
+A QUERY_SCHEMA is written using a text editor and compiled by an EXPRESS-X compiler. The compiler checks the query for syntactic correctness, validates references to the underlying schema, and produces a compiled form that can be executed against any population of the underlying schema.
+
+Query execution is invoked through the data access interface, typically by specifying the query schema name, the query function name, and the argument values. The execution engine handles all iteration, filtering, and view entity construction automatically.
+
+== Testing and Debugging
+
+When developing query schemas:
+
+* Start with simple queries and build up to complex ones
+* Test against small data populations first
+* Use trace and logging facilities to understand iteration behaviour
+* Verify that the FROM/WHEN clauses produce the expected number of iterations
+* Check that view entity attributes are populated correctly before relying on them
+
+The key insight is that QUERY_SCHEMAs allow complex data retrieval logic to be expressed declaratively, compiled once, and executed many times against different data populations — a significant improvement over writing custom query code for each data access need.

@@ -1,0 +1,19 @@
+---
+title: Jean Brange
+role: Founder
+categories: founders
+---
+
+== EXPRESS Standards Contributor
+
+Jean Brange is a founding member of the EXPRESS Language Foundation and a contributor
+to the development and promotion of EXPRESS language standards.
+
+== Contributions
+
+Brange has been active in the STEP and EXPRESS community, contributing expertise
+in the application of EXPRESS standards for industrial data exchange.
+
+== At ELF
+
+* Founding member of the EXPRESS Language Foundation

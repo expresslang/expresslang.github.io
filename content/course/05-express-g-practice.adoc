@@ -1,0 +1,146 @@
+---
+title: EXPRESS-G in Practice
+---
+
+= EXPRESS-G in Practice
+
+The PDM Schema (Product Data Management Schema) Version 1.2 provides an excellent real-world example for studying EXPRESS-G diagrams in depth. With over 90 entity types and approximately 200 relationships spread across 40 pages of EXPRESS-G, it demonstrates how the notation scales to industrial-strength data models.
+
+This module uses the PDM Schema as a case study to illustrate practical techniques for reading, navigating, and understanding complex EXPRESS-G diagrams.
+
+== PDM Schema Overview
+
+The PDM Schema is one of the most widely deployed STEP data models. It covers product data management across the full product life cycle, including product identification, document management, assembly structures, configuration management, approvals, and organizational information.
+
+Version 1.2, finalized in 2001, has been adopted by major aerospace and automotive organizations including AIRBUS and the Eurofighter consortium. It serves as both a production data exchange format and a training reference for understanding complex EXPRESS-G notation.
+
+== Core Entities
+
+=== Product Hierarchy
+
+The central entity hierarchy in the PDM Schema follows this pattern:
+
+```
+product
+  └── product_related_product_category (products SET)
+       └── product_context (frame_of_reference)
+
+product_definition_formation
+  └── of_product → product
+  └── source / make_or_buy
+
+product_definition
+  └── formation → product_definition_formation
+  └── frame_of_reference → product_definition_context
+```
+
+This three-level structure is fundamental to the PDM Schema:
+
+* **product** — represents a product or product family, with identification, name, and description
+* **product_definition_formation** — represents a specific version or revision of a product
+* **product_definition** — represents a particular view or context of a product version (e.g., "design view", "manufacturing view")
+
+Understanding this hierarchy is the first step in navigating any PDM-related EXPRESS-G diagram.
+
+=== Assembly Structure
+
+Assembly relationships model how products are composed from other products:
+
+[cols="1,2"]
+|===
+| Entity | Purpose
+
+| `product_definition_usage` | Base entity for all usage relationships
+| `next_assembly_usage_occurrence` | Links a child component to its parent assembly
+| `promissory_usage_occurrence` | Placeholder usage for incomplete assemblies
+| `quantified_assembly_component_usage` | Usage relationship with an associated quantity
+| `make_from_usage_option` | Manufacturing usage (made-from relationship)
+| `assembly_component_usage_substitute` | Defines an alternate component for a given usage
+|===
+
+These entities form an inheritance hierarchy visible in EXPRESS-G as thick lines connecting subtype to supertype. The `product_definition_usage` supertype branches into specialized subtypes, each adding specific attributes for its use case.
+
+=== Document Management
+
+The PDM Schema models documents and digital files:
+
+[cols="1,2"]
+|===
+| Entity | Purpose
+
+| `document` | A document with identification and type classification
+| `document_file` | A digital file (subtype of document)
+| `product_definition_with_associated_documents` | Links a product definition to its associated documents
+|===
+
+The relationship between products and documents is typically expressed through applied document references, which in EXPRESS-G appear as attribute lines connecting product entities to document entities.
+
+=== Configuration Management
+
+Configuration management entities control which product versions are authorized for specific contexts:
+
+[cols="1,2"]
+|===
+| Entity | Purpose
+
+| `configuration_design` | Associates a configuration with a specific item
+| `product_concept` | Represents a product concept or variant
+| `product_concept_context` | Defines the market segment context for a concept
+| `configuration_item` | A specific, identified configuration of a product
+|===
+
+== Reading the PDM EXPRESS-G Diagram
+
+When approaching the 40-page PDM Schema diagram:
+
+1. **Start at the application context** — page 1 contains the root entity and the overall context of the schema.
+
+2. **Follow the product hierarchy** — trace the three-level path from `product` through `product_definition_formation` to `product_definition`. These are the most frequently referenced entities.
+
+3. **Navigate cross-page references** — when a line ends in a circle with a page/position number (e.g., `3,55`), go to that page to find the connected entity.
+
+4. **Identify subtype structures** — look for ONEOF, ANDOR, and AND markers on thick inheritance lines. These indicate which subtype combinations are valid.
+
+5. **Check SELECT types** — dashed rectangles define SELECT types, which specify which entity types can fill a given role. These are critical for understanding polymorphic relationships.
+
+6. **Trace attribute cardinalities** — the notation on attribute lines (e.g., `S[1:?]` for SET, `L[0:?]` for LIST) indicates how many values an attribute can hold.
+
+== EXPRESS-G Notation Summary
+
+The PDM Schema diagram demonstrates all key EXPRESS-G symbols:
+
+* **Bold rectangles** — entity types
+* **Thin rectangles** — defined types (TYPE declarations)
+* **Dashed rectangles** — SELECT types
+* **Circles with `*`** — attribute connections (inverse shown with `(INV)`, derived with `(DER)`)
+* **Thick lines** — subtype/supertype (inheritance) relationships
+* **Thin lines** — attribute relationships
+* **Numbers on lines** — page cross-references for navigating large diagrams
+* **Cardinality markers** — showing aggregation bounds on relationship endpoints
+
+== Schema Statistics
+
+[cols="1,1"]
+|===
+| Metric | Value
+
+| Schema version | PDM Schema 1.2 (2001)
+| EXPRESS-G pages | 40
+| Core entities | ~60+
+| Total entity types | ~90+
+| Relationships | ~200+
+| SELECT types | ~10
+| Abstract entities | ~10
+|===
+
+These numbers illustrate why EXPRESS-G is essential for understanding large schemas — a textual listing of 90+ entities and 200+ relationships would be extremely difficult to navigate without visual aids.
+
+== Significance
+
+The PDM Schema was one of the first STEP schemas to demonstrate the full power of EXPRESS-G as a communication tool. Its EXPRESS-G diagram serves multiple purposes:
+
+* **Training** — the diagram is used worldwide as a teaching example for EXPRESS-G notation
+* **Reference design** — organizations designing their own product data schemas use the PDM Schema as a reference for structure and naming conventions
+* **Interoperability** — the schema enables PDM systems from different vendors to exchange product structure data reliably
+
+The PDM Schema remains one of the best-documented EXPRESS data models, and its EXPRESS-G diagrams are an invaluable resource for anyone learning to work with complex EXPRESS schemas.

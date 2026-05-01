@@ -1,0 +1,205 @@
+---
+title: The EXPRESS Language
+---
+
+= The EXPRESS Language
+
+EXPRESS is a formally defined data modelling language published as ISO 10303-11. It was designed to specify the structure and constraints of complex information models with a level of precision that makes them both human-readable and fully computer-interpretable. EXPRESS is not a general-purpose programming language — it deliberately omits input/output operations — but it includes many constructs familiar to programmers, such as functions, procedures, and conditional logic, which are used to express data validation rules.
+
+== History and Motivation
+
+EXPRESS was developed in the late 1980s and early 1990s by ISO TC 184/SC 4 to support the STEP standard. The language was designed to meet the requirements of the world's most experienced data modellers, who needed a formalism capable of capturing the full complexity of industrial product data.
+
+The first edition of the EXPRESS standard, ISO 10303-11:1994, established the core language. A second edition, ISO 10303-11:2004, added features for modularizing large data models, including extensible types and schema versioning.
+
+EXPRESS, together with ISO 10303-21 (the STEP Physical File format) and ISO 10303-28 (XML representations of EXPRESS data), forms the technical foundation of the STEP standard. It is also used in other ISO standards including ISO 13584 (Parts Library), ISO 15926 (process plants), and in industry standards such as IFC (buildingSMART).
+
+EXPRESS has two notations:
+
+* **Textual notation** — the complete language, validated by EXPRESS compilers
+* **EXPRESS-G** — a graphical notation used for documentation and communication with domain experts
+
+== Data Types
+
+EXPRESS provides a rich type system that supports precise data definition:
+
+[cols="1,2"]
+|===
+| Category | Types
+
+| Simple | NUMBER, REAL, INTEGER, LOGICAL, BOOLEAN, STRING, BINARY
+| Aggregation | ARRAY, LIST, BAG, SET
+| Named | TYPE, ENTITY
+| Constructed | SELECT, ENUMERATION
+| Generalized | AGGREGATE, GENERIC
+|===
+
+=== Simple Data Types
+
+The simple data types form the foundation of EXPRESS type declarations:
+
+* **NUMBER** — an abstract type representing all numeric values; typically specialized to REAL or INTEGER in practice
+* **REAL** — rational, irrational, and scientific real numbers. Precision can be specified, for example `REAL(5)` guarantees at least 5 significant digits. Examples: `3.14`, `3.5e-5`, `1.E6`
+* **INTEGER** — all integer numbers, with no practical limitation on magnitude. Examples: `1234567890`, `-9876543210`
+* **LOGICAL** — a three-valued type: `TRUE`, `UNKNOWN`, or `FALSE`. This is particularly useful in data validation, where a constraint may be undetermined
+* **BOOLEAN** — a two-valued type: `TRUE` or `FALSE`
+* **STRING** — sequences of characters from the ISO 10646 (Unicode) character set. Maximum width and the FIXED qualifier can constrain the type: `STRING(10)`, `STRING(2) FIXED`
+* **BINARY** — sequences of bits, prefixed with the `%` symbol. Like STRING, width and FIXED can be specified: `BINARY(10)`, `BINARY(2) FIXED`
+
+=== Aggregation Data Types
+
+EXPRESS provides four aggregation types for representing collections of values:
+
+*Ordered collections:*
+
+* **ARRAY** — a fixed-size, indexed collection with bounds specified at declaration. Supports UNIQUE (no duplicate values) and OPTIONAL (elements may be unset): `ARRAY [1:10] OF INTEGER`, `ARRAY [-10:100] OF UNIQUE STRING(10)`
+* **LIST** — a variable-size ordered sequence. Supports UNIQUE: `LIST [1:?] OF REAL`, `LIST OF UNIQUE PRODUCT`
+
+*Unordered collections:*
+
+* **BAG** — a variable-size, unordered collection that allows duplicate values: `BAG [1:100] OF NUMBER`, `BAG OF ELEMENT`
+* **SET** — a variable-size, unordered collection that does not allow instance-equal duplicates: `SET [1:10] OF STRING(10) FIXED`, `SET OF PERSON`
+
+Aggregations can be nested to any depth: `ARRAY [1:10] OF LIST OF DOCUMENT` or `LIST OF SET OF ARRAY[-10:10] OF INTEGER`. EXPRESS provides operations on aggregations including UNION, DIFFERENCE, INTERSECTION, SUBSET, and SUPERSET.
+
+== Declarations
+
+EXPRESS schemas are built from several kinds of declarations:
+
+=== SCHEMA
+
+A SCHEMA defines a namespace for a collection of related declarations. It provides a grouping and partitioning mechanism for a specific area of interest. Declarations in one schema can be made available to other schemas through interface declarations (USE FROM and REFERENCE FROM).
+
+[source,express]
+----
+SCHEMA Ship_schema;
+  (* entities, types, rules, functions, procedures *)
+END_SCHEMA;
+----
+
+=== TYPE
+
+A TYPE declaration creates a new named type based on an underlying type. Named types serve two purposes: they distinguish conceptually different values that happen to share the same representation, and they allow local constraints (WHERE rules) to be attached to the type.
+
+[source,express]
+----
+TYPE label = STRING; END_TYPE;
+
+TYPE age = INTEGER;
+  WHERE SELF >= 0;
+END_TYPE;
+----
+
+The TYPE declaration also encompasses the constructed types SELECT and ENUMERATION, which define types whose values are drawn from a specified set of options.
+
+=== ENTITY
+
+The ENTITY is the primary declaration in EXPRESS. An entity defines a data structure with named attributes, each having a specific data type. Entities support inheritance (subtype/supertype relationships), constraints (WHERE rules), uniqueness rules, inverse attributes, and derived attributes.
+
+[source,express]
+----
+ENTITY Person;
+  name     : STRING;
+  lives_in : Address;
+  owns     : SET OF Telephone;
+END_ENTITY;
+
+ENTITY Address;
+  street : STRING;
+  city   : STRING;
+END_ENTITY;
+
+ENTITY Telephone;
+  no : INTEGER;
+END_ENTITY;
+----
+
+=== Inheritance (Subtype/Supertype)
+
+EXPRESS provides a powerful inheritance model that goes beyond simple single inheritance. An entity can have multiple supertypes, and the supertype can control which combinations of subtypes are valid through three operators:
+
+* **ONEOF** — exactly one of the listed subtypes may be instantiated (exclusive alternatives)
+* **ANDOR** — any combination of the listed subtypes may coexist in a single instance
+* **AND** — both listed subtypes must be present in a single instance
+
+EXPRESS also supports multiple inheritance (a subtype with more than one supertype) and repetitive inheritance (an entity appearing multiple times in the inheritance graph).
+
+=== WHERE Rules
+
+WHERE rules define local constraints on entity instances and type values. Each rule has an optional label and a logical expression that must evaluate to TRUE for every valid instance.
+
+[source,express]
+----
+ENTITY Cylinder;
+  radius : REAL;
+  height : REAL;
+WHERE
+  positive_radius : radius > 0;
+  positive_height : height > 0;
+END_ENTITY;
+----
+
+=== RULE
+
+A RULE declaration specifies a global constraint that applies across all instances of specified entity types in a schema. Unlike WHERE rules, which constrain individual instances, global rules can express constraints involving multiple instances and their relationships.
+
+[source,express]
+----
+RULE unique_person_names FOR (Person);
+  LOCAL
+    names : SET OF STRING := [];
+  END_LOCAL;
+  REPEAT i := 1 TO SIZEOF(Person);
+    IF (Person[i].name IN names) THEN
+      RETURN (FALSE);
+    END_IF;
+    names := names + Person[i].name;
+  END_REPEAT;
+  RETURN (TRUE);
+END_RULE;
+----
+
+=== FUNCTION and PROCEDURE
+
+FUNCTION and PROCEDURE declarations allow reusable logic to be defined within an EXPRESS schema. Functions return a value and can be called from WHERE rules, derived attribute definitions, and other functions. Procedures perform actions without returning a value.
+
+[source,express]
+----
+FUNCTION positive(n : INTEGER) : BOOLEAN;
+  RETURN (n > 0);
+END_FUNCTION;
+----
+
+== Identifiers
+
+EXPRESS identifiers follow simple rules: the first character must be a letter, remaining characters may be letters, digits, or underscores. Identifiers are case-insensitive (the names `MyEntity`, `myentity`, and `MYENTITY` all refer to the same declaration), have no maximum length, and must not be EXPRESS reserved words.
+
+== Expressiveness and Power
+
+EXPRESS provides several capabilities that make it particularly well-suited for data modelling:
+
+* **Strong inheritance** with ONEOF, ANDOR, AND operators, partial complex entities, multiple and repetitive inheritance, and subtype specialization
+* **Powerful aggregation** with four collection types, nested aggregations, and operations (union, difference, intersection, subset, superset)
+* **Flexible data typing** through ENUMERATION, SELECT, and named types
+* **Rich constraint system** with local WHERE rules, global RULE declarations, uniqueness constraints, and inverse attributes
+* **Derived attributes** that define computed properties algorithmically
+
+== Modularization
+
+EXPRESS supports modularization through a short-form/long-form mechanism:
+
+* **Short form** — the source form of a schema, which can reference declarations from other schemas via USE FROM and REFERENCE FROM. This enables modular, reusable data models.
+* **Long form** — the fully expanded schema produced by resolving all interface declarations. This is the form used for implementation.
+
+Schemas in short form can be compiled, validated, and maintained independently, while the long form provides a complete, self-contained model suitable for generating code, databases, or file exchange definitions.
+
+== Successful Deployments
+
+EXPRESS-based data models have been deployed across a wide range of industries:
+
+* **AP214 and AP203** — automotive and aerospace configuration-controlled design
+* **AP242** — managed model-based 3D engineering (successor to AP203 and AP214)
+* **PDM Schema** — product data management, deployed at AIRBUS and the Eurofighter consortium
+* **ISO 15926** — oil and gas process plant data
+* **IFC** — building and construction (buildingSMART)
+* **PLCS (AP239)** — product life cycle support for defence and aerospace

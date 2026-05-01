@@ -1,0 +1,27 @@
+---
+title: Thomas Thurman
+role: President
+categories: leadership
+---
+
+== President, EXPRESS Language Foundation
+
+Thomas Thurman is a founding member and current President of the EXPRESS Language
+Foundation, providing strategic leadership for the organization's mission to maintain
+and promote the EXPRESS language family.
+
+== Contributions
+
+As President, Thurman oversees the foundation's activities in education,
+standardization, research, and promotion of the EXPRESS languages. He was instrumental
+in establishing ELF as a registered 501(c)(3) public charity in the United States in
+January 2022.
+
+Thurman has been active in the EXPRESS and STEP communities, contributing to
+the development and adoption of ISO 10303 standards across industries.
+
+== At ELF
+
+* President of the EXPRESS Language Foundation
+* Founding member of the organization
+* Leads strategic direction and governance

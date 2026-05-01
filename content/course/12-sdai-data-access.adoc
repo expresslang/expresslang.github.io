@@ -1,0 +1,235 @@
+---
+title: SDAI and Data Access
+---
+
+= SDAI and Data Access
+
+The Standard Data Access Interface (SDAI), defined in ISO 10303-22, provides a standard programming interface for accessing EXPRESS-defined data. SDAI allows applications to create, read, update, and delete entity instances in a way that is independent of the underlying data storage implementation.
+
+This module introduces the SDAI concepts, data model, and the operations it provides for working with EXPRESS data programmatically.
+
+== Why a Standard Data Access Interface?
+
+EXPRESS defines the structure and constraints of data, and the Part 21/Part 28 formats define how to serialize it. But applications need a way to work with data in memory — to create instances, navigate relationships, evaluate constraints, and perform computations. Without a standard API, each EXPRESS data management system provides its own proprietary interface, making application code non-portable.
+
+SDAI addresses this by defining a language-independent model for data access, with standardized bindings for specific programming languages. Applications written to the SDAI specification can work with any SDAI-compliant data management system.
+
+== SDAI Data Model
+
+SDAI defines a layered data model that mirrors the organization of EXPRESS data:
+
+=== Sdai_Session
+
+The session is the top-level handle for all SDAI operations. It provides access to the available repositories and maintains the overall state of the SDAI interaction.
+
+[source,express]
+----
+ENTITY sdai_session;
+  sdai_implementation : implementation;          -- version identification
+  known_servers       : SET OF sdai_repository;  -- all known repositories
+  active_servers      : SET OF sdai_repository;  -- currently open repositories
+  active_models       : SET OF sdai_model;       -- currently open models
+  dictionary_rep      : sdai_repository;          -- schema definitions
+END_ENTITY;
+----
+
+=== Sdai_Repository
+
+A repository is a named container for models. It groups related data sets together and provides a scope for model naming.
+
+[source,express]
+----
+ENTITY sdai_repository;
+  name     : STRING;
+  contents : sdai_repository_contents;
+  schemas  : SET OF schema_definition;
+  mode     : OPTIONAL ACCESS_TYPE;
+INVERSE
+  session  : sdai_session FOR known_servers;
+END_ENTITY;
+----
+
+=== Sdai_Model
+
+A model is a collection of entity instances that conform to a specific EXPRESS schema. It is the primary unit of data access.
+
+[source,express]
+----
+ENTITY sdai_model;
+  underlying_schema     : schema_definition;  -- the governing EXPRESS schema
+  name                  : STRING;
+  mode                  : OPTIONAL ACCESS_TYPE;
+  contents              : sdai_model_contents;
+  rep                   : sdai_repository;
+END_ENTITY;
+----
+
+=== Sdai_Model_Contents
+
+The model contents provide access to individual entity instances, organized by entity type:
+
+[source,express]
+----
+ENTITY sdai_model_contents;
+  instances         : SET OF entity_instance;
+  folders           : SET OF entity_extent;      -- one per entity type
+  populated_folders : SET OF entity_extent;       -- entity types with instances
+END_ENTITY;
+
+ENTITY entity_extent;
+  definition : entity_definition;
+  instances  : SET OF entity_instance;
+END_ENTITY;
+----
+
+This organization allows efficient access to all instances of a particular entity type — a common operation in data processing and validation.
+
+== Data Type Mapping
+
+SDAI defines how EXPRESS data types map to programming language types. The mapping is consistent across all language bindings:
+
+[cols="1,2,3"]
+|===
+| EXPRESS Data Type | SDAI Type | Description
+
+| INTEGER | SdaiInteger | Integer values
+| REAL | SdaiReal | Floating-point values
+| BOOLEAN | SdaiBoolean | TRUE/FALSE
+| LOGICAL | SdaiLogical | TRUE/FALSE/UNKNOWN
+| STRING | SdaiString | Character sequences
+| BINARY | SdaiBinary | Bit sequences
+| ENUMERATION | SdaiEnumeration | Named constant values
+| ENTITY | SdaiInstance | Entity instance references
+| ARRAY, LIST, BAG, SET | SdaiAggr | Aggregation collections
+| SELECT | tSdaiSelect | Polymorphic values
+| NUMBER | (mapped as REAL) | Numeric values
+|===
+
+=== Select Type Handling
+
+SELECT types require special handling because they can hold values of different types. SDAI defines a select data structure that carries both the value and its type information:
+
+[source,c]
+----
+typedef struct {
+   SdaiInteger       nTypes;     /* number of typing levels */
+   SdaiPrimitiveType type;
+   SdaiEntity        typeList;   /* array of type identifiers */
+   union {
+      SdaiInteger    intVal;
+      SdaiReal       realVal;
+      SdaiBoolean    boolVal;
+      SdaiLogical    logicalVal;
+      SdaiString     stringVal;
+      SdaiEnumeration enumVal;
+      SdaiInstance   instVal;
+      SdaiAggr       aggrVal;
+      SdaiADB        adbVal;
+      SdaiBinary     binVal;
+   } value;
+} tSdaiSelect;
+----
+
+The `type` field identifies which union member is active, and `typeList` carries typing information for nested select types.
+
+== Core Operations
+
+SDAI provides operations organized into several categories:
+
+=== Session Management
+
+* Open and close sessions
+* Access available repositories
+* Manage the dictionary (compiled schemas)
+
+=== Repository Management
+
+* Create and delete repositories
+* Open repositories for access
+
+=== Model Management
+
+* Create new models (with a governing schema)
+* Open and close models
+* Delete models
+
+=== Instance Management
+
+* Create new entity instances
+* Delete instances
+* Get and set attribute values (by name or by definition)
+* Test attribute values (check if set or unset)
+* Unset attribute values
+
+=== Classification
+
+* Check if an instance is of a particular entity type (`IsInstanceOf`)
+* Check if an instance is a kind of a particular entity type (including subtypes)
+* Get the entity type of an instance
+* Determine subtype/supertype relationships
+
+=== Aggregation Operations
+
+* Access members by index
+* Get the size of an aggregation
+* Append, insert, and remove members
+* Iterate over aggregation members
+
+=== File I/O
+
+* Import data from Part 21 (STEP physical files) and Part 28 (XML)
+* Export data to Part 21 and Part 28 formats
+
+=== Validation
+
+* Validate an entire model
+* Validate all instances of a specific entity type
+* Validate a single instance
+* Execute specific global rules or WHERE rules
+
+== Memory Management
+
+SDI operations that return strings, enumeration values, or binary data typically allocate memory that the calling application must free. The specific memory management rules vary by language binding but the general principle is consistent: any dynamically allocated data returned by SDAI operations must be explicitly released by the application.
+
+== Programming Patterns
+
+The typical SDAI programming pattern follows these steps:
+
+[source,c]
+----
+/* 1. Open the database and start a session */
+openDatabase("location", "dbName", "password");
+sessionId = sdaiOpenSession();
+
+/* 2. Open or create a repository */
+repositoryId = sdaiOpenRepository(sessionId, "myRepo");
+
+/* 3. Open or create a model */
+modelId = sdaiCreateModelBN(repositoryId, "myModel", "MySchema");
+/* or: modelId = sdaiOpenModelBN(repositoryId, "myModel", "MySchema"); */
+
+/* 4. Work with instances */
+pointId = sdaiGetEntity(modelId, "point");
+pointInst = sdaiCreateInstanceBN(modelId, "point");
+sdaiPutAttrsBN(pointInst, 2, "x", sdaiREAL, 1.5,
+                                 "y", sdaiREAL, 2.5);
+
+/* 5. Read attribute values */
+SdaiReal x, y;
+sdaiGetAttrBN(pointInst, "x", sdaiREAL, &x);
+sdaiGetAttrBN(pointInst, "y", sdaiREAL, &y);
+
+/* 6. Clean up */
+sdaiCloseModel(modelId);
+sdaiCloseSession(sessionId);
+----
+
+== Performance Considerations
+
+* **Use instance IDs rather than names** — operations that identify entities and attributes by numeric ID are faster than those that use string names. When performing many operations, resolve names to IDs once and reuse them.
+
+* **Batch attribute operations** — functions that set or get multiple attributes in a single call (like `sdaiPutAttrsBN`) are more efficient than individual attribute operations.
+
+* **Choose the right access mode** — read-only access is faster than read-write when modifications are not needed.
+
+* **Use transactions wisely** — wrapping related modifications in a transaction ensures atomicity and can improve performance by reducing the number of validation passes.

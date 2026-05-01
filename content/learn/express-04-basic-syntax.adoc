@@ -1,0 +1,483 @@
+---
+layout: author-docs
+---
+:stem:
+
+= Basic EXPRESS Syntax
+
+
+=== EXPRESS primitives
+
+These, plus literals, are the fundamental '`things`' of the EXPRESS language.
+
+Simple types::
+Number, Integer, Real, Binary, String, Boolean (T/F), Logical (T/F/U)
+
+Structural types::
+Schema, Entity, Rule, Function, Procedure, Type (Defined, Select, Enumeration)
+
+Aggregations (collection of things)::
+Array, Set, List, Bag
+
+Procedural language::
+A Pascal-like, imperative programming language.
+
+NOTE: These are later described in detail.
+
+
+=== Simple types
+
+==== Number types
+
+* NUMBER is any kind of number with any value.
+* REAL is a decimal kind of NUMBER.
+* INTEGER is an integer kind of NUMBER and is a kind of REAL number.
+
+Specifically, `n : NUMBER` has the following '`subtypes`':
+
+* `i : INTEGER`
+* `r : REAL`
+
+The numbers have infinite precision and can be as large or small
+as you like.
+
+The procedural language lets you perform operations on NUMBERs.
+
+These types may be given a '`precision`'. E.g `REAL(6)`
+
+Various operations such as stem:[+, -, //, ">="], etc. may be
+applied to these types.
+
+==== Logical and boolean types
+
+EXPRESS provides for both 2- and 3-valued logical statements and
+expressions.
+
+The procedural language lets you perform operations on logicals.
+
+* `l : LOGICAL` has values `FALSE`, `UNKNOWN`, and `TRUE`,
+with `FALSE < UNKNOWN < TRUE`.
+
+* `b : BOOLEAN` is a '`subtype`' of `LOGICAL` having values of
+`FALSE` and `TRUE` only.
+
+Comparisons on Booleans and Logicals can be performed
+(e.g stem:[=], stem:[<], stem:[<=], stem:[<>], etc.).
+
+Other operations include `NOT`, `AND`, `OR`, `XOR`.
+
+==== String and binary
+
+A STRING is any sequence of any number of characters:
+
+* `s : STRING` - a sequence of characters
+
+A BINARY is a specialisation of a STRING as it is limited to the digits 0 and 1:
+
+* `bin : BINARY` - a sequence of bits (0s and 1s)
+
+The procedural language lets you perform operations (concatenation,
+subsetting and comparison) on strings.
+
+These may be dynamic or fixed with a maximum size.
+
+.STRING can be of a fixed size
+[example]
+`STRING(6) FIXED`
+
+These types may be concatenated and compared, and subsets addressed via
+indexing.
+
+.STRING types can be concatenated, compared and substrings addressed via indexing
+[example]
+====
+[source]
+----
+s1 : STRING := 's';
+s2 : STRING := 'its';
+.....
+s1 := s1 + s2;
+IF s1[2:3] = 'it' THEN ...
+----
+====
+
+
+=== Aggregations
+
+Aggregations are collections of things. A collection may be ordered or
+unordered, and fixed or expandible in size, and with or without duplicates.
+
+General form is `AGGR [L:H] OF ...` where L and H are the Low and High
+bounds respectively (stem:[H >= L]), and containing N elements. Bags, Lists and
+Sets may have an indefinite high bound denoted by '`?`' character.
+
+ARRAY:: Ordered collection of elements.
+Satisfies constraint stem:[N = (H-L+1)].
+
+BAG:: Unordered collection with possibly duplicate elements.
+Satisfies constraint stem:[L <= N <= H " where " L >= 0].
+
+
+LIST:: Ordered collection with possibly duplicate elements.
+Satisfies constraint stem:[L <= N <= H " where " L >= 0].
+
+SET:: Unordered collection with no duplicate elements.
+Satisfies constraint stem:[L <= N <= H " where " L >= 0].
+
+NOTE: `LIST [L:H] OF UNIQUE ...` is used for an ordered collection
+with no duplicates.
+
+
+=== Types
+
+A TYPE is a user-defined extension to the EXPRESS-defined simple types
+and aggregations. Every TYPE has a name chosen by the user.
+
+These are the available TYPEs:
+
+Defined type `TYPE`:: A '`renaming`' of a simple type or aggregation.
++
+.Example of using ENUMERATION
+[example]
+====
+----
+TYPE volume = REAL; END_TYPE;
+----
+====
+
+Selection `SELECT`:: A selection among some types.
++
+.Example of using ENUMERATION
+[example]
+====
+----
+TYPE choose = SELECT(a,b,c); END_TYPE;
+----
+====
+
+Enumeration `ENUMERATION`:: An ordered set of values represented by names.
++
+.Example of using ENUMERATION
+[example]
+====
+----
+TYPE enum = ENUMERATION OF (up, down);
+END_TYPE;
+----
+====
+
+.Example of an aggregation of an aggregation
+[example]
+====
+[source]
+----
+TYPE things = SET [1:?] OF
+              LIST [1:?] OF thing;
+END_TYPE;
+----
+
+"things" illustrates an aggregation of an aggregation.
+====
+
+// .Example of using an ENUMERATION
+// [example]
+// ====
+// [source]
+// ----
+// TYPE gender = ENUMERATION OF
+//               (male, female);
+// END_TYPE;
+// ----
+
+// "gender" is an ENUMERATION because the possibilities (except for some
+// pathological cases) are known.
+// ====
+
+.Example of an ENUMERATION with limited scope
+[example]
+====
+[source]
+----
+TYPE hair_type = ENUMERATION OF
+                 (blonde, black, bald);
+END_TYPE;
+----
+
+"hair_type" is not a particularly good example, but it does imply
+a limited scope for the model.
+====
+
+.Example of a SELECT between two alternatives
+[example]
+====
+[source]
+----
+TYPE choose_thing = SELECT
+                    (thing1, thing2);
+END_TYPE;
+----
+
+"choose_thing" is a selection between two alternatives.
+====
+
+
+[source]
+----
+TYPE date = ARRAY [1:3] OF INTEGER;
+END_TYPE;
+----
+
+
+=== Entity
+
+==== General
+
+An ENTITY is a user defined object, representing an object of interest in the
+model of the Universe of Discourse. Simply put, an ENTITY represents some thing.
+
+It has various components which will be described. Every ENTITY has a
+user-defined name.
+
+The characteristics (properties) of an entity are defined in terms of data
+(attributes) and behaviour (constraints).
+
+An entity may `inherit`' properties from another entity.
+
+==== Attributes
+
+An attribute is some kind of data element that helps characterize the ENTITY.
+An attribute consists of a user-defined name and a specification of the
+kind of data.
+
+The kind of data may be a (collection of) simple types, TYPEs or ENTITYs.
+
+Attributes are either _explicit_ or _derived_.
+
+[source]
+----
+ENTITY circle;
+  center : point;
+  radius : length;
+DERIVE
+  perimeter : length := 2.0*PI*radius;
+END_ENTITY;
+
+TYPE length = REAL; END_TYPE;
+----
+
+The data for calculating a derived attribute must be accessible from
+the entity.
+
+==== Constraints
+
+Constraints limit the kind and/or values of the attributes' data.
+
+Attribute values within entity instances may be constrained by either
+uniqueness requirements or by domain rules (WHERE clauses). These apply to
+_every_ instance of the entity.
+
+[source]
+----
+ENTITY circle;
+  center : point;
+  radius : length;
+UNIQUE
+  un1 : center, radius;
+WHERE
+  pos_rad : radius > 0.0;
+END_ENTITY;
+----
+
+A WHERE (domain) rule fails if it evaluates to `FALSE`.
+
+UNIQUE:: In this case no two circles can have the same center AND radius.
+
+WHERE:: Expresses logical expressions. In this case
+the radius must be positive length.
+
+
+==== Example ENTITY
+
+[source]
+----
+ENTITY person;
+  first_name : STRING;
+  last_name  : STRING;
+  nickname   : OPTIONAL STRING;
+  ss_no      : INTEGER;
+  sex        : gender;
+  spouse     : OPTIONAL person;
+  children   : SET [0:?] OF person;
+UNIQUE
+  un1 : ss_no;
+WHERE
+  w1 : (EXISTS(spouse) AND sex <> spouse.sex)
+       OR NOT EXISTS(spouse);
+END_ENTITY;
+----
+
+* The attributes are those things of interest about a person.
+
+* Not everyone has a nickname.
+
+* Not everyone has a spouse.
+
+* No two people have the same social security number.
+
+* The WHERE rule states that if someone has a spouse then the spouse must
+be of the opposite sex.
+
+
+==== Subtyping
+
+A Subtype ENTITY is a special kind of its supertype(s).
+
+Subtypes inherit their properties of their Supertypes.
+
+[source]
+----
+ENTITY natural_number;
+  value : INTEGER;
+END_ENTITY;
+
+ENTITY odd_number
+  SUBTYPE OF (natural_number);
+  ...
+END_ENTITY;
+
+ENTITY prime_number
+  SUBTYPE OF (natural_number);
+  ...
+END_ENTITY;
+----
+
+Forgetting about Cantor and degrees of infinity:
+
+* There are fewer odd numbers than there are natural numbers.
+* There are fewer prime numbers than there are natural numbers.
+
+
+=== Function
+
+`FUNCTION` is used for constraint definition and for derived attributes.
+
+[source]
+----
+FUNCTION subset(sub,super :
+         AGGREGATE OF GENERIC) : BOOLEAN;
+
+  IF (SIZEOF(sub) > SIZEOF(super)) THEN
+    RETURN(FALSE);
+  END_IF;
+  REPEAT i := 1 TO SIZEOF(sub);
+    IF (sub[i] IN super) THEN
+      super := super - sub[i];
+    ELSE
+      RETURN(FALSE);
+    END_IF;
+  END_REPEAT;
+  RETURN(TRUE);
+
+END_FUNCTION;
+----
+
+The particular example takes two aggregations and returns either
+TRUE or FALSE depending on whether or not the first is a subset of
+the second (i.e., every member of "sub" is also in "super").
+
+
+=== Predefined Functions
+
+EXPRESS includes a variety of predefined functions.
+
+These include:
+
+* Mathematical (e.g ABS, SIN, SQRT etc)
+* Aggregation sizes (e.g LOBOUND, HIBOUND, SIZEOF, LENGTH)
+* Number/String conversion (FORMAT, VALUE)
+* EXISTS(V) checks for existance of OPTIONAL attribute V.
+* NVL(ATTR; SUBS) if ATTR has a value, then ATTR is returned,
+else SUBS is returned.
+* TYPEOF(V) returns the set of types of V.
+* USEDIN(T; R) takes an entity T and its role R that it plays in other
+entities and returns each entity instance that uses T in role R.
+
+NOTE: There is more on these later in the course.
+
+=== Constants
+
+EXPRESS includes the mathematical constants stem:[Pi] and stem:[e] (to infinite
+precision).
+
+You can also define your own constants, but this is not often done.
+
+* Some predefined constants (PI, e).
+* User-defined constants
++
+--
+[source]
+----
+CONSTANT
+  thousand : NUMBER := 1000;
+  million  : NUMBER := thousand**2;
+  origin   : point := point(0.0, 0.0);
+END_CONSTANT;
+----
+--
+
+
+=== Schema
+
+A `SCHEMA` contains the objects, relationships and constraints for a
+particular domain of interest.
+
+Schemas provide a mechanism for partitioning the '`real world`' into
+relevant domains.
+An EXPRESS model may contain more than one Schema.
+
+NOTE: Where multiple Schemas are used there is normally one '`main`' schema
+and n '`subsidiary`' schemas.
+
+TYPE, ENTITY, FUNCTION definitions are contained within a SCHEMA.
+
+The minimum EXPRESS model consists of a single empty SCHEMA.
+A model usually consists of more than one SCHEMA.
+
+There must be well defined limits to the domain represented via a Schema
+-- a single Schema should not be used to describe two different
+domains of interest.
+
+NOTE: From within a SCHEMA, you can get at anything in any other SCHEMA
+(there is no way to '`hide`' something).
+
+.Example of a SCHEMA
+====
+[source,expresslang]
+----
+SCHEMA main;
+  REFERENCE FROM sub1 ...
+  -- types, entities, rules, etc.
+END_SCHEMA;
+
+SCHEMA sub1;
+  -- types, entities, rules, etc.
+END_SCHEMA;
+----
+====
+
+
+== Conclusion
+
+EXPRESS is:
+
+* A powerful object-oriented information modeling language:
+
+** Primary form is a computer processable text language.
+** EXPRESS-G as a graphical subset.
+** EXPRESS-I as an instantiation form
+** EXPRESS-X transformation specification
+
+* A language standardized at ISO.
+* Normative STEP information models.
+* Widely used in the modeling communities.
+* Software tools available.

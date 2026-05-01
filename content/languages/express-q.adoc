@@ -1,0 +1,76 @@
+---
+title: EXPRESS-Q
+---
+
+== Overview
+
+EXPRESS-Q is a query language for interrogating and retrieving data from EXPRESS-defined datasets.
+It provides a declarative syntax for defining views, queries, and business objects over EXPRESS schema data, enabling efficient data retrieval and reporting.
+
+EXPRESS-Q complements the other EXPRESS languages by providing a way to extract and present information from EXPRESS datasets without modifying the underlying schemas.
+
+[[key-features]]
+== Key features
+
+* *VIEW_ENTITY declarations* — define virtual entities as projections over source data
+* *QUERY_FUNCTION definitions* — reusable parameterized queries
+* *Business objects* — define domain-specific views over technical EXPRESS data
+* *Data retrieval* — efficient extraction of subsets from large EXPRESS datasets
+* *Report generation* — structured output of queried data
+
+[[syntax]]
+== Syntax
+
+EXPRESS-Q uses declarative query constructs integrated with EXPRESS type definitions:
+
+.Example EXPRESS-Q view entity
+[source]
+----
+VIEW_ENTITY fastener_summary
+  FROM fastener;
+  .identifier := source.part_number;
+  .diameter := source.diameter;
+  .material := source.material.name;
+WHERE
+  source.diameter > 5.0;
+END_VIEW_ENTITY;
+----
+
+[[history]]
+== History
+
+EXPRESS-Q was developed alongside EXPRESS-X as part of ISO 10303-14, recognizing that schema mapping and querying are complementary operations in the EXPRESS data management lifecycle.
+
+=== Timeline
+
+[cols="1,4"]
+|===
+| *2001* | EXPRESS-Q published as part of ISO 10303-14 alongside EXPRESS-X
+| *Present* | Supported by commercial and open-source EXPRESS tooling
+|===
+
+=== Key people
+
+EXPRESS-Q was developed by the ISO TC 184/SC 4 community, building on the EXPRESS and EXPRESS-X foundation established by Peter Wilson and Douglas Schenck.
+
+[[standardization]]
+== Standardization
+
+EXPRESS-Q is defined within ISO 10303-14:
+
+* *ISO 10303-14* — EXPRESS-X: Includes EXPRESS-Q query language definitions
+
+[[applications]]
+== Applications
+
+* *Data reporting* — generating summary views from EXPRESS datasets
+* *Business intelligence* — defining domain-specific views over technical data
+* *Data validation* — querying datasets for compliance checking
+* *Supply chain visibility* — extracting status information from product data
+
+[[resources]]
+== Learn more
+
+* link:/learn/jotne-express/10-querying-express[EXPRESS Course: Querying EXPRESS Data] — querying concepts and techniques
+* link:/languages/express-x[EXPRESS-X] — the companion schema mapping language
+* link:/standards[Standards & BNF] — ISO standards references

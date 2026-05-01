@@ -1,9 +1,18 @@
-_site
-.jekyll-cache
+# Dependencies
 node_modules
+.vite
+
+# Build output
+dist
+.vite-ssg-temp
+
+# Generated content
+src/content
+
+# IDE
+.vscode
+
+# Misc
 tmp
 artifacts
-dist
 .DS_Store
-Gemfile.lock
-

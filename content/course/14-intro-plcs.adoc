@@ -1,0 +1,127 @@
+---
+title: Introduction to PLCS
+---
+
+= Introduction to PLCS
+
+Product Life Cycle Support (PLCS), defined as ISO 10303-239, is a STEP Application Protocol that addresses the management of product information throughout the operational phase of a product's life. While most STEP Application Protocols focus on design and manufacturing data exchange, PLCS targets the support phase — keeping the information needed to operate and maintain complex products aligned with the evolving product over its entire life cycle.
+
+PLCS is relevant for products with long operational lives — aircraft, naval vessels, power plants, and other complex engineered assets that may remain in service for 25 to 50 years. During this time, the product undergoes modifications, upgrades, and changes in operational context, creating a continuous need for accurate, up-to-date information.
+
+== What is PLCS?
+
+PLCS is several things at once:
+
+* **A concept** — Product Life Cycle Support as an approach to managing product information across organizational and system boundaries
+* **An initiative** — a joint industry and government effort to improve the availability and quality of product support information
+* **A standard** — ISO 10303-239, a formally specified information model in EXPRESS
+* **A data model** — a comprehensive EXPRESS schema covering 460 entity data types with approximately 1,100 attributes
+
+What PLCS is **not** is equally important: it is not data application software, infrastructure, a methodology, or a specific solution. PLCS defines the information model — the "what" — not the implementation — the "how."
+
+== Why PLCS is Needed
+
+Managing product support information presents unique challenges that traditional data management approaches struggle with:
+
+* **Data provenance** — much of the data needed for product support originates in design and manufacturing, which are typically outside the direct control of support organizations
+* **Cross-organizational boundaries** — support activities span many systems and organizations, making it difficult to impose a single application solution
+* **Configuration alignment** — obsolescence, upgrades, and changes to the operational context can create misalignment between the actual product configuration and the technical data that describes it
+* **Feedback capture** — optimization of support delivery depends on capturing adequate feedback from in-service operations, but the context that gives feedback its meaning is often lost when data is recorded
+* **Long time horizons** — product support data must remain useful for decades, far outlasting the systems that originally created it
+
+PLCS addresses these challenges by providing a durable, standard information model that can be extended and adapted over time without requiring the underlying standard to be revised.
+
+== Information Scope
+
+PLCS covers a product "in focus" — whether that is a specific design, a fleet of individual products, one particular product instance, or support equipment — and captures information about:
+
+* **Product definition** — identification, versions, variants, configurations
+* **Product structure** — breakdowns, assemblies, effectivity
+* **Maintenance** — schedules, tasks, work orders, work reports
+* **Support resources** — tools, test equipment, facilities, storage, transportation
+* **Personnel** — organizations, positions, qualifications
+* **Feedback** — operational data, observations, condition monitoring
+* **Change management** — work requests, approvals, modification histories
+* **Consumables and software** — spares, supplies, software versions
+
+== Product Data Along the Life Cycle
+
+PLCS fits within the broader STEP product data landscape, covering the operational support phase:
+
+* **Requirements** (AP233) — concepts, analyses
+* **Design** (AP209, AP203, AP214, AP242) — detailed design
+* **Manufacturing** (AP238) — manufacturing processes
+* **Support** (AP239) — as-built structure, support requirements, delivery
+* **Operations** — day-to-day operation, feedback
+* **End of Life** — decommissioning, disposal
+
+PLCS's primary contribution is in the support phase, where the gap between the design-time product definition and the as-maintained reality is most acute.
+
+== PLCS Editions
+
+PLCS has been published in two editions:
+
+* **ISO 10303-239:2005** (Edition 1) — developed 1999–2004, published 2005
+* **ISO 10303-239:2010** (Edition 2) — revised edition
+
+Key innovations in PLCS include:
+
+* A new vision for life cycle support based on a formally specified EXPRESS model
+* The ability to tailor and extend the data model using external reference data — "update the reference data, not the standard"
+* Easy integration with existing standards through a shared core set of entities
+* Basis in ISO's modular architecture for STEP
+
+== Data Exchange Specifications (DEXs)
+
+PLCS introduced the concept of Data Exchange Specifications (DEXs) — standardized templates for specific data exchange scenarios. DEXs define which subsets of the PLCS model are used in a particular context, making it practical to implement and validate data exchanges.
+
+Key DEXs include:
+
+* **DEX 1** — Product Breakdown
+* **DEX 3** — Task Specification
+* **DEX 4** — Work Package
+* **DEX 5** — Maintenance Plan
+* **DEX 7** — Work Report
+
+DEXs are developed and maintained by the OASIS PLCS Technical Committee, which provides a governance framework for extending and adapting PLCS without modifying the ISO standard itself.
+
+== Modelling Principles
+
+PLCS introduced several innovative modelling principles:
+
+* **Durable data model** — create a standard that can be extended over time without re-modelling or re-ballot
+* **Classification over explicit typing** — identify key generic concepts and extend them through classification and reference data libraries rather than creating domain-specific entity types
+* **Build on existing standards** — reuse the PDM Schema core and STEP modular architecture
+* **Accommodate temporal change** — support values that change over time, multiple values for the same property, and back-tracking of histories
+* **Relationship-centric** — use relationships extensively instead of direct attributes, enabling more flexible data structures
+
+These principles allow PLCS to be adapted to different industries and use cases without modifying the standard itself.
+
+== PLCS Architecture
+
+PLCS represents a new breed of modular Application Protocol:
+
+* **No explicit domain attributes** — instead of hard-coding industry-specific attributes, PLCS provides generic mechanisms (like `property_assignment`) that allow domain-specific data to be attached through reference data defined outside the standard
+* **Classification-based typing** — entities are not typed to represent specific domain concepts; instead, classes are assigned through reference data
+* **Minimal built-in attributes** — most built-in attributes are set to `/IGNORE` in practice
+* **ARM-level implementation** — implementations work at the Application Reference Model level, not the Application Interpreted Model level
+* **Single conformance class** — AP239 has one conformance class (CC1) that includes everything, with DEX guidance provided by the OASIS Technical Committee
+
+== PLCS in OASIS
+
+The OASIS PLCS Technical Committee extends the ISO standard by:
+
+* Establishing structured data exchange and sharing capabilities for complex engineered assets
+* Defining, developing, testing, and publishing DEXs based on AP239
+* Maintaining liaison with ISO TC 184/SC 4
+* Promoting the adoption of PLCS across industries and governments
+
+The OASIS TC is organized into:
+
+* **Technical Committee** — co-chairs, main reporting group
+* **TOG** (Technical Oversight Group) — architecture and project coordination
+* **Project teams** — publication, DEXLIB development, DEX development, reference data
+
+== Significance
+
+PLCS represents one of the most ambitious STEP Application Protocols, both in scope and in modelling approach. Its emphasis on durability, extensibility, and classification-based adaptation has influenced the broader STEP community's approach to standard development. For organizations managing complex assets with long service lives, PLCS provides a solid foundation for ensuring that product support information remains accurate, accessible, and interoperable throughout the product's entire life cycle.

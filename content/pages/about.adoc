@@ -1,0 +1,124 @@
+---
+layout: docs-base
+html-class: docs-page
+title: About the EXPRESS Language Foundation
+---
+:page-liquid:
+
+== Our mission
+
+To facilitate the education, standardization, research, promotion, definition,
+usage of information modelling and programming languages, with a focus on the
+EXPRESS language family.
+
+
+== Our purpose
+
+The EXPRESS Language Foundation is established in response to user needs
+of the EXPRESS language family, juxtaposed upon the current technology
+and usage environment that places additional demands on the language family
+not previously addressed.
+
+Linguists consider languages as living things, and members of the EXPRESS
+language family are no different!
+
+
+== Our work
+
+ELF funds future development and maintenance of the EXPRESS family of languages,
+and aims to support users of these languages.
+
+Specifically, ELF aims to:
+
+. develop and publish best practices, documentation and related tools for the
+definition, relation, usage, governance and dissemination of information models;
+
+. foster and host a user community for those who work with the EXPRESS language family.
+
+
+== Organization
+
+ELF is a registered public charity in the US. It has been approved by the US IRS
+as a tax-exempt organization under 501(c)(3), qualified to receive
+tax-deductible contributions, since January 19, 2022.
+
+
+== Standardization
+
+ELF is an international standardization organization, similar to the roles
+played by ISO and IEC.
+
+ELF creates international standards and contributes to the domains of
+information modelling, abstract languages and data management, relating to the
+understanding of shared data and the relationships between them,
+specifically for the EXPRESS language families.
+
+
+== Membership
+
+ELF serves organizations and individuals alike with a need in defining
+interchangeable information models across information systems.
+
+Please refer to the link:/membership[membership] page for more details.
+
+
+== Governance structure
+
+ELF consists of a board and members of the organization. Our members are
+organized into a central office with multiple technical committees:
+
+* The central office functions to support the activities of technical
+committees, including for the publication of standards.
+
+* Technical committees are organized by volunteers who are experts in a selected
+domain of the technical committee and develop best practices and information for
+the international arena.
+
+ELF is composed of the following internal bodies and roles:
+
+* Board of Directors
+
+* Executive functions
+** President
+** Vice-President
+** Executive Director
+** Chief Financial Officer
+
+* Technical Coordination Committee
+
+
+== Technical work
+
+Technical work at ELF is performed by its Technical Committees, including:
+
+* TC EXPRESS
+* TC EXPRESS-G
+* TC EXPRESS-I
+
+
+== International cooperation
+
+The mission of ELF is international in nature, given that its founding team is
+spread across the globe.
+
+ELF consists of international experts and will work with international partners.
+
+
+== Founders
+
+The founders of ELF include the original inventors of EXPRESS, experts involved
+in enhancing EXPRESS, as well as EXPRESS stakeholders deeply interested in the
+achievement of the Foundation's mission.
+
+See the link:/leadership[Leadership & Founders] page for detailed profiles.
+
+* link:/people/douglas-schenck[Douglas Schenck] — Inventor of EXPRESS; Project Leader, ISO 10303-11:1994
+* link:/people/bernd-wenzel[Prof. Bernd Wenzel] — Project Leader, ISO 10303-11:1994
+* link:/people/peter-wilson[Peter Wilson] — Designer of EXPRESS-G & EXPRESS-X; Project Leader, ISO 10303-11:2004
+* link:/people/allison-barnard-feeney[Allison Barnard Feeney] — Standards Pioneer at NIST
+* link:/people/david-loffredo[David Loffredo] — Project Leader, ISO 10303-11:2004
+* link:/people/jean-brange[Jean Brange]
+* link:/people/phil-spiby[Phil Spiby]
+* link:/people/thomas-thurman[Thomas Thurman] — President
+* link:/people/hiroshi-murayama[Hiroshi Murayama] — Vice-President
+* link:/people/ronald-tse[Ronald Tse] — Secretary

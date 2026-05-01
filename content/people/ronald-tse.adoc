@@ -1,0 +1,22 @@
+---
+title: Ronald Tse
+role: Secretary
+categories: leadership
+---
+
+== Secretary, EXPRESS Language Foundation
+
+Ronald Tse is a founding member and Secretary of the EXPRESS Language Foundation,
+managing organizational operations and administrative functions.
+
+== Contributions
+
+Tse has been actively involved in open source and open standards communities,
+bringing experience in governance, community building, and technical standards
+development to the foundation.
+
+== At ELF
+
+* Secretary of the EXPRESS Language Foundation
+* Founding member of the organization
+* Operations and administration

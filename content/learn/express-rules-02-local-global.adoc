@@ -1,0 +1,559 @@
+---
+layout: author-docs
+---
+:stem:
+
+= Local and Global Rules
+
+
+Local WHERE rules are defined within the definition of a type or entity and
+apply to each and every instance of the type or entity.
+
+These are one or more LOGICAL expressions.
+
+There are problems with an instance if any of these is FALSE but
+no problems if all are TRUE. A mixture of TRUE and UNKNOWN leaves
+the instance in limbo regarding problems.
+
+[source]
+----
+WHERE
+  label_1: logical_expression_1 ;
+  label_2: logical_expression_2 ;
+  ....
+END_
+----
+
+WHERE rules have the following properties:
+
+* An instance is non-conforming if any logical expression evaluates
+to FALSE.
+
+* An instance is conforming if all the logical expressions evaluate
+to TRUE.
+
+* An instance is considered to be not non-conforming if some or all the
+logical expressions evaluate to UNKNOWN and the remainder evaluate
+to TRUE.
+
+
+=== "`Logical`" Rule
+
+If the `z` attribute has no value (represented as '`?`') the
+expression evaluates to UNKNOWN.
+
+.Example of using "Logical" rule
+[example]
+====
+This domain rule may evaluate to FALSE, UNKNOWN or TRUE.
+
+[source]
+----
+ENTITY vector;
+  x, y : REAL;
+  z    : OPTIONAL REAL;
+WHERE
+  w1: x**2 + y**2 + z**2 = 1.0;
+END_ENTITY;
+----
+====
+
+
+=== '`Boolean`' Rule
+
+The NVL function returns its first argument if it is valued otherwise
+(i.e., when it is ?) it returns its second argument. Now the
+expression will be either TRUE or FALSE.
+
+.Example of using "Boolean" rule
+[example]
+====
+This domain rule will only evaluate to FALSE or TRUE.
+
+[source]
+----
+ENTITY vector;
+  x, y : REAL;
+  z    : OPTIONAL REAL;
+WHERE
+  w1: x**2 + y**2 + NVL(z, 0.0)**2 = 1.0;
+END_ENTITY;
+----
+====
+
+NOTE: If `x` or `y` does not have a value in a particular
+instance of `vector`, then the instance is non-conforming
+by definition.
+
+
+=== '`Function`' Rule
+
+A rule can be described using a logical (or boolean) function.
+
+Functions are of most use when it is difficult to express the constraint
+as a single logical expression. They are also beneficial when the same
+constraint applies to different kinds of things.
+
+For non-trivial WHERE rules you can use a FUNCTION that returns
+a LOGICAL or BOOLEAN result.
+
+NOTE: It also makes for a cleaner, i.e., less cluttered, and therefore more
+understandable model.
+
+.Example of using FUNCTION
+[example]
+====
+[source]
+----
+ENTITY vector;
+  x, y : REAL;
+  z    : OPTIONAL REAL;
+WHERE
+  w1: unit_vector(SELF);
+END_ENTITY;
+
+FUNCTION unit_vector(v:vector):BOOLEAN;
+  RETURN(v.x**2 + v.y**2 +
+         NVL(v.z, 0.0)**2 = 1.0);
+END_FUNCTION;
+----
+====
+
+.Example of using a more complex FUNCTION
+[example]
+====
+[source]
+----
+ENTITY vector;
+  x, y : REAL;
+  z    : OPTIONAL REAL;
+WHERE
+  w1: unit_vector(x,y,z);
+END_ENTITY;
+
+FUNCTION unit_vector(u,v,w:REAL):LOGICAL;
+  IF (NOT EXISTS(w)) THEN
+    IF (NOT EXISTS(v)) THEN
+      RETURN(u**2 = 1.0);
+    END_IF;
+    RETURN(u**2 + v**2 = 1.0);
+  END_IF;
+  RETURN(u**2 + v**2 + w**2 = 1.0);
+END_FUNCTION;
+----
+====
+
+
+// begin notes
+
+=== Uniqueness constraints
+
+The next few examples illustrate how UNIQUE constraints
+may be used.
+
+A `circle`, defined via the location of its center
+and its radius, is used throughout.
+
+[source]
+----
+ENTITY circle;
+  centre : point;
+  radius : positive_number;
+END_ENTITY;
+----
+
+There can be any number of circles in the object base with identical centres
+and/or radii.
+
+[source]
+----
+ENTITY circle;
+  centre : point;
+  radius : positive_number;
+UNIQUE
+  not_concentric : centre;
+END_ENTITY;
+----
+
+* The `center` of each `circle` must be unique.
+
+
+There can be any number of circles in the object base with identical
+radii but none with identical centres.
+
+NOTE: No circles are concentric but some may have the same size.
+
+
+[source]
+----
+ENTITY circle;
+  centre : point;
+  radius : positive_number;
+UNIQUE
+  different_sizes : radius;
+END_ENTITY;
+----
+
+* Each `radius` must be unique.
+
+There can be any number of circles in the object base with identical
+centres but none with identical radii.
+
+NOTE: No circles have the same size but some may be concentric.
+
+Each `center` must be unique.
+
+Separately, each `radius` must be unique.
+
+This is probably not a realistic real-life requirement.
+
+
+[source]
+----
+ENTITY circle;
+  centre : point;
+  radius : positive_number;
+UNIQUE
+  not_concentric : centre
+  different_sizes : radius;
+END_ENTITY;
+----
+
+There can be no circles in the object base with identical
+centres and no circles with identical radii.
+(Every circle is a different size and differently located.)
+
+
+The combination of `center` and `radius` must be unique.
+
+This is probably the effect that was sought after by the previous example.
+
+
+[source]
+----
+ENTITY circle;
+  centre : point;
+  radius : positive_number;
+UNIQUE
+  all_different : centre, radius;
+END_ENTITY;
+----
+
+There can be no circles in the object base with the identical
+combination of centre and radius.
+
+NOTE: No circles represent the same '`point set`'.
+
+
+// begin notes
+
+== Instance and Value
+
+In EXPRESS comparisons for uniqueness
+are performed on the '`object-id`' for entity instances, and on values
+for '`anonymous`' types (e.g. REAL). Thus,
+
+[source]
+----
+TYPE pair = SET [2:2] OF point;
+END_TYPE;
+----
+
+requires that `pair[1] :<>: pair[2]` is TRUE, but `pair[1] = pair[2]`
+may be TRUE or FALSE.
+
+
+Every entity instance has a unique '`object identifier`' or '`oid`'.
+Two instances may have the same attribute values but are distinguished
+by their oids. (EXPRESS leaves it up to an object base implementation
+to decide what an `oid` is).
+
+Everything else is, in some sense, anonymous.
+
+For comparisons `:<>:` and `:=:` are instance (un)equal,
+while `<>` and `=` are value (un)equal.
+
+`VALUE_UNIQUE` is a built-in EXPRESS function.
+
+For value uniqueness, do something like:
+
+[source]
+----
+TYPE vpair = SET [2:2] OF point;
+WHERE
+ vun: VALUE_UNIQUE(SELF);
+END_TYPE;
+----
+
+which requires `vpair[1] = vpair[2]` to be FALSE.
+
+
+== Joint value uniqueness
+
+UNIQUE applied to entity instances is oid-based.
+
+[source]
+----
+ENTITY e;
+ a1 : a;
+ a2 : b;
+ a3 : c
+UNIQUE
+  ju : a1, a2;
+END_ENTITY;
+----
+
+The values of the attributes `a1` and `a2` are constrained
+to be jointly _instance unique_.
+
+If they are further required to be jointly _value unique,_
+use a global rule of the following kind to specify this additional
+constraint.
+
+`temp` is an ENTITY (local to the RULE) whose only attributes are
+those involved in the value uniqueness constraint.
+
+The REPEAT loop creates an instance of `temp` for each instance
+of `e` and collects them into the SET `s`. Now, if each
+member of `s` is value unique, then the `e` instances
+are also value unique on the attribute pair.
+
+
+[source]
+----
+RULE vu FOR (e);
+  ENTITY temp;
+    a1 : a;
+    a2 : b;
+  END_ENTITY;
+LOCAL
+  s : SET OF temp := [];
+END_LOCAL;
+REPEAT i := 1 TO SIZEOF(e);
+  s := s + temp(e[i].a1, e[i].a2);
+END_REPEAT;
+WHERE
+  jvu: VALUE_UNIQUE(s);
+END_RULE;
+----
+
+Note the use of an ENTITY definition local to the rule, and the
+use of the entity constructor for instances of this entity type.
+
+
+== Global rules
+
+=== General
+
+Global rules are defined outside entities and only apply to entities.
+Every instance of the specified entity(s) is examined. The
+entity instances are conforming the WHERE rules all evaluate to TRUE.
+
+RULEs apply to (combinations) of entity instances.
+
+[source]
+----
+RULE rname FOR (ent1, ent2, ...);
+  body of rule (code)
+WHERE
+  label_1: logical_expression_1 ;
+   ...
+END_RULE;
+----
+
+All instances of entities of the given type(s) are examined during
+rule execution (combinatorial explosion?).
+
+
+// begin notes
+
+=== Usage
+
+Use a global rule when:
+
+. A combination of different entity types must be constrained; or
+. A constraint only applies to some, but not all, instances of
+a particular entity type; or
+. The number of instances is to be constrained.
+
+NOTE: Do your best to avoid using RULEs, but sometimes this is not possible.
+
+
+=== Example: Person
+
+There now follows a sequence of models of a person.
+
+This is the initial model. What odd things does it allow?
+How can it be brought closer to reality?
+
+[source]
+----
+ENTITY person;
+  name   : STRING;
+  ss_no  : INTEGER;
+  sex    : gender;
+  spouse : OPTIONAL person;
+UNIQUE
+  un1: ss_no;
+END_ENTITY;
+----
+
+
+The intent of the WHERE rule is not particularly obvious.
+Is it correct?
+
+[source]
+----
+ENTITY person;
+  name   : STRING;
+  ss_no  : INTEGER;
+  gender : sex;
+  spouse : OPTIONAL person;
+UNIQUE
+  un1: ss_no;
+WHERE
+  w1: (EXISTS(spouse) AND
+       gender <> spouse.gender)
+      XOR (NOT EXISTS(spouse));
+END_ENTITY;
+----
+
+
+This eliminates the WHERE rule, making the model easier to
+understand. Are there any problems with this?
+
+[source]
+----
+ENTITY person;
+  name  : STRING;
+  ss_no : INTEGER;
+UNIQUE
+  un1: ss_no;
+END_ENTITY;
+
+ENTITY male
+  SUBTYPE OF (person);
+  wife : OPTIONAL female;
+END_ENTITY;
+
+ENTITY female
+  SUBTYPE OF (person);
+  husband : OPTIONAL male;
+END_ENTITY;
+----
+
+This model eliminates hermaphrodites.
+Is all well now?
+
+[source]
+----
+ENTITY person
+  SUPERTYPE OF (ONEOF(male,female));
+  name  : STRING;
+  ss_no : INTEGER;
+UNIQUE
+  un1: ss_no;
+END_ENTITY;
+
+ENTITY male
+  SUBTYPE OF (person);
+  wife : OPTIONAL female;
+END_ENTITY;
+
+ENTITY female
+  SUBTYPE OF (person);
+  husband : OPTIONAL male;
+END_ENTITY;
+----
+
+
+=== Example: Married rule
+
+The RULE (if it is coded properly) checks that
+husbands and wives are married to each other.
+
+[source]
+----
+RULE married FOR (male, female);
+  LOCAL
+    ok1, ok2 : BOOLEAN := TRUE;
+  END_LOCAL;
+  IF (EXISTS(male.wife) AND
+      male :<>: male.wife.husband) THEN
+    ok1 := FALSE;
+  END_IF;
+  IF (EXISTS(female.husband) AND
+      female :<>: female.husband.wife) THEN
+    ok2 := FALSE;
+  END_IF;
+WHERE
+  r1: ok1;
+  r2: ok2;
+END_RULE;
+----
+
+A simple model, and also one of broader applicability --
+in many cases someone's marital status is irrelevant.
+We could also SUBTYPE `married` if it was necessary to
+record further information about that (e.g., when it started).
+
+[source]
+----
+ENTITY male SUBTYPE OF (person);
+END_ENTITY;
+
+ENTITY female SUBTYPE OF (person);
+END_ENTITY;
+
+ENTITY married;
+  husband : male;
+  wife    : female;
+UNIQUE
+  no_bigamy: husband;
+  no_polyandry: wife;
+END_ENTITY;
+----
+
+
+=== Limit instances
+
+A RULE has to be used if only a certain number of instances are
+required or allowed.
+
+[source]
+----
+CONSTANT
+max_scj : INTEGER := 9;
+END_CONSTANT;
+
+ENTITY scj SUBTYPE OF (person);
+END_ENTITY;
+
+RULE max_no FOR (scj);
+WHERE
+  r1: SIZEOF(scj) <= max_scj;
+END_RULE;
+----
+
+This rule says that there shall be no more than `max_scj` ``scj``s
+(Supreme Court Justices).
+
+A similar restriction on numbers of instances.
+
+
+The following RULE states that there shall be one and only one point at the
+origin in the object-base.
+
+[source]
+----
+RULE unique_origin FOR (point);
+LOCAL
+  origin : SET OF point;
+END_LOCAL;
+  origin := QUERY(temp <* point |
+                  (temp.x = 0.0) AND
+                  (temp.y = 0.0));
+WHERE
+  r1: SIZEOF(origin) = 1;
+END_RULE;
+----

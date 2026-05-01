@@ -1,0 +1,119 @@
+---
+layout: author-docs
+---
+:stem:
+
+= Extensibles and Relationships
+
+== Introduction
+
+This page describes advanced EXPRESS concepts, including features
+introduced by EXPRESS edition 2.
+
+
+== Extensibles
+
+EXPRESS Edition 2 (2004) introduced EXTENSIBLE types. These are
+SELECT and ENUMERATION types whose item lists can be extended.
+This provides increased flexibility and reuse in modeling.
+
+In some sense, EXTENSIBLE types are analogous to SUBTYPEs, except that
+subtyping reduces the domain while extending increases the domain.
+
+* SELECT specifies a list of things to choose from
+* ENUMERATION specifies a list of items (names)
+* It is possible to extend these lists
+
+[source]
+----
+TYPE approval = EXTENSIBLE ENUMERATION OF
+     (approved, rejected);
+END_TYPE;
+
+TYPE your_approval = ENUMERATION BASED_ON
+     approval WITH (cancelled);
+END_TYPE;
+
+TYPE my_approval = EXTENSIBLE ENUMERATION
+     BASED_ON approval WITH (pending);
+END_TYPE;
+----
+
+== Constraints and relationships
+
+=== Relationships
+
+If one entity serves as an attribute of another entity, then the two
+entities are related, or more precisely there is a relationship
+between the two entities.
+
+When an attribute of an entity is of type entity, then a relationship is
+established between the two entity types.
+
+[source]
+----
+ENTITY door;
+  hinges : SET [2:?] OF hinge;
+  knob   : handle;
+  ...
+END_ENTITY;
+
+ENTITY hinge;
+  id : name;
+  ...
+END_ENTITY;
+
+ENTITY handle;
+ ...
+END_ENTITY;
+----
+
+The relationships established here are:
+
+* A `door` must have at least two ``hinge``s.
+
+* A `door` must have a `handle`.
+
+
+=== Cardinality
+
+Cardinality is how many of one thing is needed/used by another thing.
+
+NOTE: '`Cardinality`' is related to '`cardinal number`' -- a number used for
+counting.
+
+The cardinality of the '`attribute`' entity with respect to the '`owning`'
+entity is defined in the owning entity.
+Cardinality constraint from the referring entity to the referenced
+entity is specified via the attribute definition (e.g OPTIONAL, aggregation).
+
+By default, the cardinality of the owning entity with respect to the
+attribute entity is zero to many (`[0:?]`).
+
+`INVERSE` attributes can be used to specify other cardinalities.
+
+In the last model, a `door` required one `handle` but from the point of view of
+a `handle`, any number could be used on a `door` (or this could be restated as
+`handles` know nothing about `doors`).
+
+In this model a `handle` can be used on either one or no doors.
+
+[source]
+----
+ENTITY door;
+  hinges : SET [2:?] OF hinge;
+  knob   : handle;
+  ...
+END_ENTITY;
+
+ENTITY handle;
+ ...
+INVERSE
+  knob_for : SET [0:1] OF door FOR knob;
+END_ENTITY;
+----
+
+Here, the INVERSE clause states that a handle is '`used`' by zero or one doors.
+
+
+== Subtypes and supertypes

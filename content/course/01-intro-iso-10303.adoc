@@ -1,0 +1,174 @@
+---
+title: Introduction to ISO 10303 (STEP)
+---
+
+= Introduction to ISO 10303 (STEP)
+
+== What is STEP?
+
+STEP — the **STandard for the Exchange of Product model data** — is a comprehensive suite of international standards for representing and exchanging product data throughout its entire life cycle. Defined under ISO 10303 and maintained by ISO Technical Committee 184, Subcommittee 4 (ISO TC 184/SC 4), STEP provides a computer-interpretable definition of the physical and functional characteristics of a product, from initial design through manufacturing, operation, and eventual retirement.
+
+Product data is central to modern engineering and manufacturing. Every product — whether an aircraft, an automobile, a building, or a piece of industrial equipment — generates enormous amounts of data across its life cycle: geometric shapes, material properties, assembly structures, configuration management records, analysis results, and more. Without a standard way to represent this data, organizations are locked into proprietary formats that make collaboration between partners, suppliers, and regulatory bodies costly and error-prone.
+
+STEP addresses this challenge by providing a neutral, vendor-independent format for product data exchange. When a design team using one CAD system needs to share a model with a manufacturer using a different system, STEP ensures that the data is transferred faithfully and completely.
+
+== Data Sharing Approaches
+
+Organizations have historically pursued three approaches to sharing data between systems:
+
+1. **Single-system approach**: All parties use the same software. This eliminates exchange problems but creates vendor lock-in and limits flexibility.
+
+2. **Dedicated interfaces**: Build custom translators between each pair of systems. This quickly becomes unmanageable — with *n* systems, you need *n*(*n*−1)/2 interfaces.
+
+3. **Standard neutral format**: All systems export to and import from a single standard format. This is the STEP approach, requiring only 2*n* interfaces and providing long-term data stability.
+
+STEP was designed from the outset as a neutral format that any software can implement, ensuring that product data remains accessible and interpretable for decades.
+
+== History and Scope of ISO 10303
+
+The STEP effort began in 1984 within ISO TC 184/SC 4, with the first stable parts of the standard published in 1994. The subcommittee also maintains several related standards families:
+
+* **ISO 8000** — Data quality
+* **ISO 10303** — STEP (EXPRESS language, application protocols, implementation methods)
+* **ISO 13584** — Parts Library (PLIB)
+* **ISO 14306** — JT 3D visualization format
+* **ISO 15531** — Manufacturing data exchange (MANDATE)
+* **ISO 15926** — Process plants, including oil and gas
+* **ISO 18876** — Integration of industrial data
+
+Together, these standards form an ecosystem for industrial data management. STEP itself is the foundation, providing the modelling language (EXPRESS), the file formats (Parts 21 and 28), and a growing library of application protocols tailored to specific industries.
+
+== What is a Product Model?
+
+At the heart of STEP is the concept of a **product model** — a structured, formal representation of a product that captures all relevant properties across its life cycle. A product model may include:
+
+* **Shape and geometry** — 3D models, drawings, surface definitions
+* **Material properties** — composition, thermal characteristics, mechanical properties
+* **Product structure** — assembly hierarchies, bill of materials, configuration variants
+* **Analysis data** — finite element meshes, simulation parameters, test results
+* **Configuration management** — versioning, effectivity, change orders
+* **Life cycle information** — design intent, manufacturing process plans, maintenance records
+
+Product models follow a **three-layer architecture**:
+
+* **External Level** — discipline-specific views such as stress analysis, manufacturing planning, or assembly instructions
+* **Conceptual Level** — the integrated product model, written in EXPRESS, that provides a single, coherent definition of all product data
+* **Physical Level** — the implementation layer, using file formats (Part 21, Part 28) or database interfaces (SDAI) to store and exchange data
+
+== The Role of Information Modelling
+
+Information modelling is a way of thinking about real-world facts and ideas in a structured, unambiguous manner. Models are abstractions that capture the essential characteristics of a domain while omitting irrelevant details. Good models ease communication — both among people and among computer systems.
+
+Different types of models serve different purposes: use case diagrams capture functional requirements, activity models describe processes, data flow diagrams show how information moves through an organization, and information models define the structure and constraints of the data itself.
+
+STEP uses information modelling as its foundation. The modelling language at the core of STEP is **EXPRESS** (ISO 10303-11), a formally defined language that allows precise specification of data structures and constraints.
+
+== The EXPRESS Language
+
+EXPRESS is a data modelling language — not a general-purpose programming language — designed specifically for specifying the structure, constraints, and semantics of complex information models. It was developed to meet the needs of the "world's best data modellers" working on STEP and has been an international standard since 1994 (ISO 10303-11:1994).
+
+EXPRESS is used across a wide range of industrial standards:
+
+* **ISO 10303** (STEP) — product data representation and exchange
+* **ISO 13584** (PLIB) — parts library data
+* **ISO 15926** — oil and gas process plant data
+* **IFC** (Industry Foundation Classes) — building and construction
+* **ISO 15531** (MANDATE) — manufacturing data
+
+Key characteristics of EXPRESS:
+
+* **Readable by humans** — the textual syntax is designed for clarity
+* **Computer-interpretable** — parsers and compilers can fully validate a schema
+* **Case-insensitive** — identifiers may use any case without ambiguity
+* **Graphical companion** — EXPRESS-G provides a visual notation for diagrams and documentation
+* **Constraint-rich** — supports local (WHERE) rules, global rules, uniqueness constraints, and derived attributes
+
+EXPRESS Edition 2 (ISO 10303-11:2004) added features for modularizing large data models, including extensible enumerations, extensible select types, and schema version identifiers.
+
+== STEP Architecture: Key Parts
+
+STEP is organized into numbered parts, each addressing a specific aspect of product data management:
+
+=== Implementation Methods
+
+* **Part 11** — EXPRESS language reference manual (the modelling language)
+* **Part 21** — STEP physical file format (clear text encoding of instance data)
+* **Part 22** — Standard Data Access Interface (SDAI) for programmatic access to EXPRESS data
+* **Parts 23–27** — SDAI language bindings (C, C++, Java, etc.)
+* **Part 28** — XML representation of EXPRESS data
+
+=== Conformance Testing
+
+* **Part 31** — General conformance testing requirements
+* **Parts 32–34** — Conformance testing methodologies and abstract test suites
+
+=== Integrated Resources
+
+The integrated resources provide reusable building blocks for product models:
+
+* **Part 41** — Fundamentals of product description and support
+* **Part 42** — Geometric and topological representation
+* **Part 43** — Representation structures
+* **Part 44** — Product structure configuration
+* **Part 45** — Material and other engineering properties
+* **Part 46** — Visual presentation
+* **Part 47** — Shape variation tolerances
+* **Part 49** — Process structure and properties
+* **Parts 50–56** — Mathematical constructs, mesh topology, numerical analysis, classification, state, risk
+* **Parts 61–62** — Systems engineering and equivalence validation
+
+All integrated resources are collected in the **STEP Module and Resource Library (SMRL)**, also known as Part 1000.
+
+=== Integrated Application Resources
+
+Application resources provide domain-specific extensions:
+
+* **Part 101** — Draughting
+* **Part 104** — Finite element analysis
+* **Part 105** — Kinematics
+* **Part 113** — Mechanical features
+
+== Application Protocols
+
+Application Protocols (APs) are the part of STEP designed for actual implementation. Each AP captures the information requirements for a specific industrial domain, expressed as an EXPRESS schema. The AP schema defines exactly what data must be exchanged for a particular use case.
+
+Major application protocols include:
+
+* **AP203/AP242** — Configuration-controlled 3D design (AP242 is the successor, merging AP203 and AP214)
+* **AP209** — Composite and metallic structural analysis
+* **AP210** — Electronic assembly, interconnect, and packaging
+* **AP233** — Systems engineering
+* **AP238** — Computer numerical controllers
+* **AP239** — Product Life Cycle Support (PLCS)
+
+=== Industry Coverage
+
+STEP application protocols span many industries:
+
+[cols="1,2"]
+|===
+| Industry | Relevant APs
+
+| General / cross-industry | AP201, AP202 (draughting), AP203 (configuration control), AP239 (PLCS)
+| Electronics | AP210, AP212
+| Mechanical / automotive | AP207, AP214, AP224, AP238, AP242
+| Building & construction | AP225
+| Engineering analysis | AP209, AP243
+| Process plants | AP221, AP227
+| Shipbuilding | AP215, AP216, AP218
+| Furniture | AP236
+|===
+
+== The STEP Stack
+
+STEP provides a layered stack of standards that together safeguard product data:
+
+* **Language layer** — EXPRESS (ISO 10303-11) defines the data modelling language
+* **Semantics layer** — Application Protocols and integrated resources define domain-specific data models
+* **Data layer** — Part 21 (physical file) and Part 28 (XML) define how data is serialized for exchange
+
+This layered approach ensures that product data is both human-understandable (through EXPRESS schemas) and machine-processable (through standardized file formats and APIs).
+
+== Implementation Support
+
+The CAx Implementor Forum (https://www.cax-if.org) provides implementation support and conformance testing for STEP application protocols, helping organizations deploy STEP-based data exchange with confidence.

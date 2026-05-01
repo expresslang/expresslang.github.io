@@ -1,0 +1,104 @@
+---
+title: EXPRESS
+---
+
+== Overview
+
+EXPRESS is a formally defined information modelling language designed for specifying data schemas, entities, types, constraints, and rules.
+It is the core language of the EXPRESS family and serves as the foundation for data exchange standards within ISO 10303 (STEP).
+
+EXPRESS is a machine-readable language that combines data modelling with algorithmic expressiveness.
+Unlike general-purpose programming languages, EXPRESS is purpose-built for defining the structure and constraints of information models used in industrial data exchange.
+
+[[key-features]]
+== Key features
+
+* *Entity declarations* — define object types with attributes and constraints
+* *Inheritance hierarchies* — SUBTYPE/SUPertype relationships with complex constraints (ONEOF, ANDOR, AND)
+* *WHERE rules* — local constraints on entity instances
+* *GLOBAL rules* — schema-level constraints spanning multiple entities
+* *FUNCTION and PROCEDURE* — algorithmic constructs for constraint evaluation
+* *ENUMERATION and SELECT types* — extensible type definitions
+* *Schema partitioning* — modular organization of large information models
+
+[[syntax]]
+== Syntax
+
+EXPRESS uses a Pascal-like lexical syntax. A schema definition typically includes:
+
+* `SCHEMA` declarations containing entities, types, functions, and rules
+* `ENTITY` declarations with `ATTRIBUTE` fields, `WHERE` clauses, and `SUBTYPE` constraints
+* `TYPE` declarations for user-defined types including `ENUMERATION`, `SELECT`, and `DEFINED` types
+* `FUNCTION` and `PROCEDURE` for reusable algorithmic logic
+* `RULE` declarations for global constraints
+
+.Example entity declaration
+[source,express]
+----
+ENTITY point
+  x : REAL;
+  y : REAL;
+  z : REAL;
+WHERE
+  not_at_origin : (x <> 0.0) OR (y <> 0.0) OR (z <> 0.0);
+END_ENTITY;
+----
+
+[[history]]
+== History
+
+The EXPRESS language originated from the PDDI (Product Data Definition Interface) program, created in 1982 by the US Air Force at McDonnell Aircraft (now merged into Boeing).
+The language's name reflects its purpose — to facilitate "`expressiveness`" in modelling information.
+
+=== Timeline
+
+[cols="1,4"]
+|===
+| *1982* | EXPRESS conceived during the PDDI program at McDonnell Aircraft, initiated by the US Air Force
+| *1984* | Language entered standardization process at the National Bureau of Standards (now NIST)
+| *1986* | NBS proposed EXPRESS as an International Standard at ISO
+| *1994* | First edition published as ISO 10303-11:1994, by Douglas Schenck and Prof. Bernd Wenzel
+| *1994* | First authoritative reference manual published: "`Information Modelling: The EXPRESS Way`" by Douglas Schenck and Peter Wilson
+| *2004* | Second edition published as ISO 10303-11:2004, with David Loffredo and Peter Wilson as project leaders
+|===
+
+=== Key people
+
+Douglas Schenck:: Original inventor of EXPRESS at McDonnell Aircraft during the PDDI program. Project leader of ISO 10303-11:1994 (first edition) together with Prof. Bernd Wenzel. Author of the foundational reference work on the language.
+
+Prof. Bernd Wenzel:: Co-project leader of ISO 10303-11:1994 (first edition) together with Douglas Schenck.
+
+Peter Wilson:: Assisted Douglas Schenck with the first edition of ISO 10303-11:1994. Co-author of the authoritative EXPRESS reference. Designer of EXPRESS-G (the graphical notation) and EXPRESS-X (the schema mapping language). Led the second edition of ISO 10303-11:2004.
+
+David Loffredo:: Co-project leader for ISO 10303-11:2004 (Edition 2) together with Peter Wilson. Long-time contributor to EXPRESS standardization and STEP implementations.
+
+Allison Barnard Feeney:: Key contributor to the standardization of EXPRESS within ISO 10303 at NIST.
+
+[[standardization]]
+== Standardization
+
+EXPRESS is defined by ISO 10303-11, part of the STEP (Standard for the Exchange of Product model data) family of standards.
+
+* *ISO 10303-11:1994* — First edition of the EXPRESS language reference
+* *ISO 10303-11:2004* — Second edition (current), with enhanced EXPRESS-X support and clarifications
+
+EXPRESS is used as the schema definition language for all Application Protocols (APs) within ISO 10303, making it the backbone of industrial data exchange standards used in aerospace, automotive, construction, and digital twin applications.
+
+[[applications]]
+== Applications
+
+EXPRESS is used across multiple industries:
+
+* *Aerospace* — Airbus, Boeing, and suppliers exchange product data using STEP/EXPRESS schemas
+* *Automotive* — Automotive manufacturers use EXPRESS-defined APs for design and manufacturing data exchange
+* *Construction and AEC* — Building information models reference EXPRESS-defined schemas (e.g., IFC, which is derived from STEP)
+* *Digital twins* — EXPRESS schemas define the information models for digital representations of physical assets
+* *Smart manufacturing* — Industry 4.0 data exchange leverages EXPRESS-defined standards
+
+[[resources]]
+== Learn more
+
+* link:/learn[Tutorial: Learn EXPRESS] — comprehensive introductory course by Peter Wilson
+* link:/standards[Standards & BNF] — download the formal EXPRESS grammar
+* link:/learn/jotne-express/01-intro-iso-10303[EXPRESS Course] — structured course covering ISO 10303 and EXPRESS topics
+* *Information Modelling: The EXPRESS Way* — Douglas Schenck and Peter Wilson (Oxford University Press, 1994)

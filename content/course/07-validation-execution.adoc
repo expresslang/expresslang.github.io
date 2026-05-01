@@ -1,0 +1,178 @@
+---
+title: Validation and Execution
+---
+
+= Validation and Execution
+
+Validation is one of the most important capabilities of an EXPRESS-based data management system. An EXPRESS schema defines not only the structure of data (entities, attributes, types) but also the constraints that data must satisfy (WHERE rules, global rules, uniqueness constraints, inverse relationships). Validation is the process of checking whether a population of instances conforms to all of these constraints.
+
+This module covers how validation works in practice, what kinds of validation exist, how validation results are reported, and the underlying execution model that makes it all possible.
+
+== Why Validation Matters
+
+In industrial data exchange, incorrect data can have serious consequences — a malformed geometry definition could cause a manufacturing error, an invalid configuration could lead to safety issues, and inconsistent data could result in costly rework. EXPRESS's rich constraint language exists precisely to catch such problems early, before data propagates through the supply chain.
+
+Validation serves several purposes:
+
+* **Quality assurance** — ensuring data meets all defined quality criteria before it is shared or archived
+* **Conformance testing** — verifying that a data exchange conforms to the requirements of an Application Protocol
+* **Business rule enforcement** — checking domain-specific rules that go beyond the base schema constraints
+* **Regulatory compliance** — ensuring data satisfies constraints mandated by standards bodies or regulatory authorities
+
+== Types of Validation
+
+=== WHERE Rule Validation
+
+WHERE rules are local constraints defined within ENTITY and TYPE declarations. They must evaluate to TRUE for every valid instance. Validation of WHERE rules checks each instance independently.
+
+[source,express]
+----
+ENTITY Cylinder;
+  radius : REAL;
+  height : REAL;
+WHERE
+  positive_radius : radius > 0;
+  positive_height : height > 0;
+END_ENTITY;
+----
+
+When validating a population of `Cylinder` instances, each instance's `radius` and `height` are checked against the WHERE rules. Any instance that fails generates a violation report.
+
+=== Global Rule Validation
+
+Global rules (RULE declarations) apply across all instances of specified entity types in a schema. They can express constraints involving relationships between multiple instances.
+
+[source,express]
+----
+RULE unique_person_names FOR (Person);
+  LOCAL
+    names : SET OF STRING := [];
+  END_LOCAL;
+  REPEAT i := 1 TO SIZEOF(Person);
+    IF (Person[i].name IN names) THEN
+      RETURN (FALSE);
+    END_IF;
+    names := names + Person[i].name;
+  END_REPEAT;
+  RETURN (TRUE);
+END_RULE;
+----
+
+This rule cannot be checked on a single instance — it requires access to the entire population of `Person` instances. Validation engines must therefore iterate over all instances and maintain state during the check.
+
+=== Uniqueness Constraint Validation
+
+UNIQUE constraints ensure that no two instances of an entity share the same values for specified attribute combinations. They are functionally similar to unique indexes in database systems.
+
+[source,express]
+----
+ENTITY Person;
+  person_number : STRING;
+  country : STRING;
+UNIQUE
+  un1: person_number, country;
+END_ENTITY;
+----
+
+Validation checks all pairs of `Person` instances for duplicates on the specified attributes.
+
+=== Inverse Attribute Consistency
+
+INVERSE attributes define bidirectional relationships between entities. Validation ensures that when entity A references entity B via an attribute, entity B's corresponding inverse attribute correctly references back to entity A.
+
+== The Validation Engine
+
+An EXPRESS validation engine (sometimes called a "virtual machine" or "validation processor") is responsible for executing validation operations. Its core functions are:
+
+1. **Load the schema definition** — the compiled EXPRESS schema, including all rules and constraints
+2. **Access the data population** — the model containing the instances to validate
+3. **Execute validation logic** — evaluate WHERE rules, global rules, uniqueness constraints, and inverse relationships
+4. **Collect results** — record which instances passed or failed, with details about which constraints were violated
+
+The validation engine must handle all EXPRESS constructs, including:
+
+* Arithmetic and logical expressions
+* Function and procedure calls
+* Aggregation operations (SIZEOF, queries, indexing)
+* Entity navigation (following attribute references)
+* Type checking (IS INSTANCE OF, IS KIND OF)
+* String operations
+
+=== Execution Model
+
+The execution model for validation follows these steps:
+
+1. **Initialize** — load the compiled schema and open the data model
+2. **Select scope** — determine what to validate (a single instance, all instances of a type, or the entire model)
+3. **Evaluate** — for each constraint in scope, execute the validation logic and record the result
+4. **Report** — produce a summary of all violations, including the entity type, instance identifier, constraint name, and failure details
+
+The execution engine must be able to handle complex validation scenarios, including:
+
+* **Nested function calls** — WHERE rules that call user-defined functions
+* **Aggregation traversal** — rules that iterate over SET, LIST, BAG, or ARRAY values
+* **Cross-entity references** — rules that follow attribute references to other entities
+* **Recursive structures** — entities that reference themselves (directly or indirectly)
+
+== Validation Scope
+
+Validation can be performed at different levels of granularity:
+
+* **Instance-level** — validate a single instance against all applicable WHERE rules
+* **Entity-level** — validate all instances of a particular entity type against WHERE rules, uniqueness constraints, and any global rules that reference that type
+* **Model-level** — validate the entire data model against all rules and constraints in the schema
+* **Rule-level** — execute a specific global rule against its target entity types
+
+Choosing the appropriate scope depends on the use case. During data entry, instance-level validation provides immediate feedback. Before data exchange, model-level validation provides comprehensive assurance.
+
+== Validation Result Reporting
+
+Validation results are typically reported in one of three ways:
+
+1. **Textual report** — a human-readable list of violations, showing the entity type, instance identifier, constraint name, and a description of the failure. This is the most common format and is suitable for both developers and domain experts.
+
+2. **Result population** — the validation engine creates a population of "violation" instances that can be further processed by applications to produce customized reports, dashboards, or corrective actions.
+
+3. **Integrated reporting** — validation logic can include output statements that generate reports as part of the validation process, producing domain-specific messages and summaries.
+
+A good validation report includes:
+
+* The schema and entity type involved
+* The instance identifier (or all violating instances for global rules)
+* The constraint that was violated (WHERE rule label, global rule name, or uniqueness constraint name)
+* The actual values that caused the violation
+* A suggested correction (when possible)
+
+== Extended Validation with Rule Schemas
+
+Beyond the constraints defined in the base EXPRESS schema, many applications need to enforce additional business rules that vary by domain, region, or regulatory framework. Rule schemas (defined using EXPRESS-X's RULE_SCHEMA declaration) allow these rules to be added without modifying the base schema.
+
+Rule schemas can define:
+
+* Additional WHERE rules for existing entities
+* Additional uniqueness constraints
+* Global rules that span multiple entity types
+* Helper functions and procedures used by the rules
+
+This approach allows a base schema to be extended with context-specific validation logic, supporting scenarios such as:
+
+* Different validation rules for different countries or regulatory regimes
+* Industry-specific constraints layered on top of a generic base schema
+* Project-specific rules that apply only to a particular data exchange
+
+Rule schemas are covered in more detail in the module on business rules in EXPRESS.
+
+== Performance Considerations
+
+Validation performance depends on several factors:
+
+* **Population size** — the number of instances in the model affects global rule and uniqueness constraint validation, which may require quadratic or worse time complexity
+* **Rule complexity** — rules that involve function calls, aggregation traversal, or cross-entity navigation are more expensive to evaluate
+* **Scope** — validating the entire model is naturally more expensive than validating a single instance
+
+Techniques for improving validation performance include:
+
+* **Incremental validation** — only re-validate instances that have changed
+* **Indexing** — build indexes on frequently checked attributes to speed up uniqueness and lookup operations
+* **Parallel validation** — evaluate independent rules concurrently
+* **Selective validation** — validate only the rules relevant to the current operation

@@ -1,0 +1,38 @@
+---
+title: Peter Wilson
+role: Founder, Project Leader
+categories: founders
+---
+
+== Co-designer of the EXPRESS Language Family
+
+Peter Wilson is the designer of EXPRESS-G (the graphical notation), EXPRESS-X
+(the schema mapping language), and co-designer of the EXPRESS language. He is
+the co-author of the authoritative reference on EXPRESS.
+
+== Contributions to EXPRESS
+
+Wilson's contributions span the entire EXPRESS language family:
+
+* *Co-designer of EXPRESS* — contributed to the core language specification
+* *Designer of EXPRESS-G* — the graphical notation for EXPRESS, published as part of ISO 10303-11
+* *Designer of EXPRESS-X* — the schema mapping language for defining transformations between EXPRESS schemas, published as ISO 10303-14
+* *Co-author* of _Information Modelling: The EXPRESS Way_ (Oxford University Press, 1994), the definitive reference manual, co-authored with Douglas Schenck
+* *Project leader* of ISO 10303-11:2004 (second edition), together with David Loffredo, updating the EXPRESS language standard
+
+== Tutorial contribution
+
+Wilson authored the comprehensive EXPRESS tutorial series available on this site,
+covering the language from basics through advanced topics including entities, types,
+rules, constraints, and practical exercises. This tutorial is
+link:/learn[available for free] as a contribution to the EXPRESS community.
+
+== Standardization
+
+* *ISO 10303-11:1994* — Co-contributor to the first edition
+* *ISO 10303-11:2004* — Project leader (with David Loffredo), second edition
+
+== At ELF
+
+* Founding member of the EXPRESS Language Foundation
+* Author of the EXPRESS Tutorial series

@@ -1,0 +1,198 @@
+---
+title: Business Rules in EXPRESS
+---
+
+= Business Rules in EXPRESS
+
+EXPRESS schemas define structural constraints (data types, attributes, cardinalities) and basic validation rules (WHERE rules, global RULE declarations, uniqueness constraints). However, many real-world applications require additional business rules that go beyond what is captured in the base schema — rules that vary by domain, region, regulatory framework, or specific project.
+
+EXPRESS-X's RULE_SCHEMA provides a mechanism for adding validation rules to an EXPRESS schema without modifying the schema itself. This module covers the concepts, syntax, and practical application of business rules in EXPRESS.
+
+== Why Separate Business Rules?
+
+Separating business rules from the base schema offers several advantages:
+
+* **Non-invasive** — rules can be added to standardized schemas (like STEP Application Protocols) without modifying the standard
+* **Context-specific** — different rule sets can apply to different scenarios (e.g., different countries, different industries, different project phases)
+* **Maintainable** — rules can be updated independently of the schema
+* **Composable** — multiple rule schemas can coexist, each addressing a different concern
+
+Common scenarios where separate rule schemas are valuable include:
+
+* Public authority requirements that vary by country or region
+* Data exchange rules specific to a particular trading partner relationship
+* Data merge and consolidation rules for combining data from multiple sources
+* Project-specific quality constraints that go beyond the standard's requirements
+
+== RULE_SCHEMA Overview
+
+A RULE_SCHEMA is connected to an underlying EXPRESS schema and can contain:
+
+* **GLOBAL** — population identifier and global variables
+* **CONSTANT** — named constant values
+* **ENTITY** — additional WHERE and UNIQUE rules for existing entities
+* **TYPE** — additional WHERE rules for existing types
+* **RULE** — global rules spanning multiple entity types
+* **FUNCTION** — reusable logic (same syntax as EXPRESS)
+* **PROCEDURE** — reusable operations (same syntax as EXPRESS)
+
+Key properties:
+
+* One RULE_SCHEMA per set of rules
+* Any number of RULE_SCHEMAs for each EXPRESS schema
+* Each RULE_SCHEMA is independent
+* Rules use the same syntax as in EXPRESS (WHERE, UNIQUE, RULE)
+* All EXPRESS-X statements and built-in functions are available
+
+No declarations in a RULE_SCHEMA affect the underlying EXPRESS schema. The rule schema can reference declarations from the underlying schema, with rule schema declarations taking precedence in case of name conflicts.
+
+== RULE_SCHEMA Declaration
+
+[source,express]
+----
+RULE_SCHEMA Check_Wheel_Chair_Access FOR IFC_schema;
+  (* All rules declared here *)
+END_RULE_SCHEMA;
+----
+
+The name must be unique among all RULE_SCHEMAs for the same underlying EXPRESS schema.
+
+== GLOBAL Declaration
+
+The optional GLOBAL declaration defines the population identifier and global variables:
+
+[source,express]
+----
+GLOBAL
+  DECLARE pop INSTANCE OF Pdm_Schema; -- 'pop' names the population within this rule schema
+  Rule_Violations   : INTEGER;
+  Violation_Header  : STRING := '\nViolation of: ';
+END_GLOBAL;
+----
+
+Global variables are useful for tracking rule violations, counting errors, or maintaining state across multiple rule evaluations.
+
+== TYPE Declaration for Additional Rules
+
+A TYPE declaration in a RULE_SCHEMA adds WHERE rules to an existing type in the underlying schema:
+
+* The type identifier must match an existing type in the underlying schema
+* No new types can be declared (only rules for existing types)
+* Must contain at least one WHERE declaration
+
+[source,express]
+----
+TYPE string_identifier;      -- matches existing type, no underlying type repeated
+  WHERE
+    wr1: {10 <= Length(SELF) <= 25};
+    wr2: ({'a' <= SELF[1] <= 'z'}) OR ({'A' <= SELF[1] <= 'Z'});
+END_TYPE;
+----
+
+These rules would check that any `string_identifier` value is between 10 and 25 characters and starts with a letter — constraints not present in the original type definition.
+
+== ENTITY Declaration for Additional Rules
+
+An ENTITY declaration in a RULE_SCHEMA adds WHERE rules and/or UNIQUE constraints to an existing entity:
+
+* The entity identifier must match an existing entity
+* Cannot declare new entities, attributes, or subtype/supertype relationships
+* Must contain at least one UNIQUE or WHERE declaration
+
+[source,express]
+----
+ENTITY Person;
+  UNIQUE
+    un1: person_number, country;
+  WHERE
+    wr1: Check_Person(SELF);
+END_ENTITY;
+----
+
+This adds a uniqueness constraint (the combination of `person_number` and `country` must be unique) and a WHERE rule (the `Check_Person` function validates the instance).
+
+== Complete Rule Schema Example
+
+[source,express]
+----
+RULE_SCHEMA DEX3_rules FOR PLCS;
+
+GLOBAL
+  DECLARE sch INSTANCE OF PLCS;
+END_GLOBAL;
+
+(* Uniqueness rules to ensure primary keys *)
+ENTITY PART;
+  UNIQUE
+    UR1: id;
+END_ENTITY;
+
+RULE DEX003_rule001 FOR(TASK_METHOD);
+  LOCAL
+    instance_input : src::TASK_METHOD;
+  END_LOCAL;
+  REPEAT ii := 1 TO SIZEOF(TASK_METHOD);
+    instance_input := TASK_METHOD[ii];
+    IF (hasIdentificationOfClass(instance_input,
+        MAINTENANCE_TASK_CODE)) THEN
+    ...
+END_RULE_SCHEMA;
+----
+
+This example shows a rule schema that:
+
+1. Declares a global population identifier
+2. Adds a uniqueness rule to the `PART` entity
+3. Defines a global rule `DEX003_rule001` that validates `TASK_METHOD` instances
+
+== Validation with Rule Schemas
+
+A data population can be validated against the rules in a RULE_SCHEMA in the same way as against rules defined directly in the EXPRESS schema. Validation is performed by the execution engine and can be invoked at different levels:
+
+* **Model-level** — validate the entire data model against all rules in the rule schema
+* **Entity-type-level** — validate all instances of a specific entity type
+* **Instance-level** — validate a single instance
+* **Rule-level** — execute a specific global rule
+* **WHERE-rule-level** — evaluate a specific WHERE rule for an entity or type
+
+== Validation Result Reporting
+
+There are three primary approaches to reporting validation results:
+
+1. **Standard textual report** — a generic, technical report listing all violations. While comprehensive, these reports may not be directly useful for end users who are not data modelling specialists.
+
+2. **Validation result population** — the validation engine generates a population of violation instances that can be further processed by applications. This enables the creation of customized, user-friendly reports, dashboards, and alerts.
+
+3. **In-schema reporting** — the rule schema itself includes output statements (such as printf-style functions) that produce human-readable messages as part of the validation process. This allows domain-specific error messages to be generated alongside the raw validation results.
+
+In-schema reporting is particularly powerful because it allows the rule author to provide context-specific guidance about what went wrong and how to fix it, rather than just reporting a generic constraint violation.
+
+== Developing and Testing Rule Schemas
+
+When developing rule schemas:
+
+* **Write rules in a text editor** — use the same development workflow as for EXPRESS schemas
+* **Compile with an EXPRESS-X compiler** — the compiler validates syntax and checks references to the underlying schema
+* **Test incrementally** — start with simple rules and add complexity one rule at a time
+* **Use small test populations** — create minimal data sets that exercise each rule's pass and fail conditions
+* **Leverage debugging tools** — interactive debuggers, trace facilities, and logging can help understand complex rule behaviour
+
+=== Best Practices
+
+* Give each rule a descriptive label (the identifier before the colon in WHERE clauses) — this makes violation reports much easier to interpret
+* Use helper functions for complex validation logic rather than embedding long expressions directly in WHERE rules
+* Include end-user-friendly reporting in the rule schema itself, rather than relying solely on generic violation reports
+* Keep rule schemas focused — one rule schema per concern or regulatory framework — rather than combining unrelated rules
+* Document the purpose and expected behaviour of each rule, especially for rules that implement regulatory requirements
+
+== Relationship to EXPRESS Constraints
+
+Rule schemas complement the validation capabilities built into EXPRESS itself:
+
+* **EXPRESS WHERE rules** — define fundamental constraints that every valid instance must satisfy. These are part of the schema definition and cannot be turned off.
+
+* **EXPRESS global RULE declarations** — define population-wide constraints. Like WHERE rules, these are always active.
+
+* **RULE_SCHEMA rules** — define additional, context-specific constraints that can be applied selectively. Different rule schemas can be active in different scenarios.
+
+Together, these three layers provide a comprehensive validation framework: the EXPRESS schema defines what is structurally valid, and rule schemas define what is valid within specific business contexts.

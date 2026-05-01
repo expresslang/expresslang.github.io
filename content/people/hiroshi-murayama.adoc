@@ -1,0 +1,23 @@
+---
+title: Hiroshi Murayama
+role: Vice-President
+categories: leadership
+---
+
+== Vice-President, EXPRESS Language Foundation
+
+Hiroshi Murayama is a founding member and current Vice-President of the EXPRESS
+Language Foundation, contributing to the organization's international outreach and
+technical coordination.
+
+== Contributions
+
+Murayama has been involved in the EXPRESS and STEP standardization community,
+contributing to the development and promotion of ISO 10303 standards. His work
+spans both the technical and organizational aspects of the EXPRESS ecosystem.
+
+== At ELF
+
+* Vice-President of the EXPRESS Language Foundation
+* Founding member of the organization
+* International coordination and outreach

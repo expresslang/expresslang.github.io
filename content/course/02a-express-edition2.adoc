@@ -1,0 +1,221 @@
+---
+title: EXPRESS Edition 2
+---
+
+= EXPRESS Edition 2
+
+EXPRESS Edition 2, published as ISO 10303-11:2004, extends the original EXPRESS language (ISO 10303-11:1994) with features designed to support the modularization of large data models. While the first edition provided a powerful foundation for data modelling, real-world deployments — especially the STEP modular architecture — revealed the need for schemas that could be extended and combined without modifying the original definitions.
+
+Edition 2 is published as a new, consistent document that supersedes the 1994 edition. However, the STEP implementation methods (SDAI, Part 21 file format, etc.) were not updated alongside it. In practice, this means that tools and implementations generally need to work with Edition 1 concepts, and the Edition 2 document (Annex G) describes how to convert Edition 2 constructs into their Edition 1 equivalents.
+
+Tool support for Edition 2 exists for syntax checking, compilation, and long-form generation (converting a short-form schema with Edition 2 features into an Edition 1-compatible long form). Edition 2 features are actively used in several Application Protocols including AP203 Edition 2, AP209 Edition 2, AP233 (systems engineering), AP236 (furniture), AP239 (PLCS), and AP242 (managed model-based 3D engineering).
+
+== Key Changes from Edition 1
+
+Edition 2 introduces the following features, all motivated by the need to build modular, extensible data models:
+
+* **Schema version identifiers** — allowing schemas to declare their version
+* **Extensible enumeration types** — enumerations that can be extended by other schemas
+* **Extensible select types** — select types whose member list can grow
+* **GENERIC_ENTITY** — a new generalized type for all entity instances
+* **ABSTRACT ENTITY** — entities that can never be directly instantiated
+* **SUBTYPE_CONSTRAINT** — a new declaration for specifying subtype/supertype constraints separately from entity declarations
+* **TOTAL_OVER** — a constraint ensuring complete coverage of a supertype by its subtypes
+* **Renamed attributes** — allowing attributes to be given new names in subtypes
+
+== Schema Version Identifier
+
+A schema version identifier is an optional string that follows the schema name. It is intended for human interpretation and is not used by the EXPRESS language itself to distinguish schemas.
+
+[source,express]
+----
+SCHEMA geometry_schema 'version_1';
+SCHEMA support_resource_schema '{ISO standard 10303 part(41) object(1) version(9)}';
+----
+
+The second form follows the ISO information object identifier convention. While tools may use this identifier for documentation purposes, no EXPRESS-defined method uses it for automated schema resolution.
+
+== Extensible Enumeration Types
+
+Extensible enumerations address a fundamental challenge in modular data modelling: how to define a base set of enumeration values that can be extended by other schemas without modifying the original definition.
+
+=== Concept
+
+There are three roles an enumeration type can play:
+
+* The **extensible enumeration** — the base type that declares itself open to extension
+* The **enumeration extension** — a new type that adds values using `BASED_ON`
+* An enumeration can be both extensible and an extension of another type
+
+When a type extends an extensible enumeration using `BASED_ON`, the domain of the extensible type grows to include the new items. The extending type's domain includes its own items plus the items of its direct parent (but not the parent's other extensions).
+
+=== Example
+
+[source,express]
+----
+TYPE general_approval = EXTENSIBLE ENUMERATION OF (approved, rejected);
+END_TYPE;
+
+TYPE domain_approval = ENUMERATION BASED_ON general_approval WITH (pending);
+END_TYPE;
+----
+
+After this declaration, both types have the same domain:
+
+* `general_approval` — approved, rejected, pending (extended by domain_approval)
+* `domain_approval` — approved, rejected, pending (its own items plus the base items)
+
+Extensible enumerations may even be declared with no initial values, serving as pure extension points: `TYPE general_approval = EXTENSIBLE ENUMERATION;`
+
+== Extensible Select Types
+
+Select types in Edition 1 were fixed: once declared, their member list could not change. This made it difficult to create schemas that could accommodate new entity types defined in downstream modules. Edition 2 introduces extensible select types that work analogously to extensible enumerations.
+
+=== Example
+
+[source,express]
+----
+TYPE attachment_method = EXTENSIBLE SELECT (nail, screw);
+END_TYPE;
+
+TYPE permanent_attachment = SELECT BASED_ON attachment_method WITH (glue, weld);
+END_TYPE;
+
+TYPE simple_attachment = SELECT BASED_ON attachment_method WITH (needle, tape);
+END_TYPE;
+
+ENTITY nail;    END_ENTITY;
+ENTITY screw;   END_ENTITY;
+ENTITY glue;    END_ENTITY;
+ENTITY weld;    END_ENTITY;
+ENTITY needle;  END_ENTITY;
+ENTITY tape;    END_ENTITY;
+----
+
+The resulting domains are:
+
+* `attachment_method` — nail, screw, glue, weld, needle, tape (all extensions included)
+* `permanent_attachment` — nail, screw, glue, weld
+* `simple_attachment` — nail, screw, needle, tape
+
+An extensible select can be restricted to only entity data types using the `GENERIC_ENTITY` keyword:
+
+[source,express]
+----
+TYPE attachment_method = EXTENSIBLE GENERIC_ENTITY SELECT (nail, screw);
+END_TYPE;
+----
+
+== ABSTRACT Entity
+
+An `ABSTRACT` entity is one that cannot be directly instantiated — instances can only be created through its concrete subtypes. This differs from the Edition 1 concept of `ABSTRACT SUPERTYPE`, which is a constraint on the supertype/subtype graph rather than on the entity itself.
+
+[source,express]
+----
+ENTITY general_approval ABSTRACT;
+END_ENTITY;
+----
+
+Abstract entities are useful for defining common attributes and behaviour that must be specialized by subtypes. They may declare explicit and derived attributes whose data types use the generalized types (except `GENERIC`), and type labels can ensure that multiple generalized-type attributes resolve to the same concrete type at instantiation time.
+
+== GENERIC_ENTITY
+
+`GENERIC_ENTITY` is a new generalized data type that represents "any entity type." It is a generalization of all entity data types and a subtype of the existing `GENERIC` type.
+
+`GENERIC_ENTITY` is used in two contexts:
+
+* As the data type of an attribute in an `ABSTRACT` entity, allowing the attribute to hold any entity instance
+* As a constraint on a select type, limiting its members to entity types only (excluding defined types)
+
+When an abstract entity has attributes typed as `GENERIC_ENTITY` or `AGGREGATE`, those attributes must be redeclared with concrete, instantiable data types in at least one subtype before instances can be created.
+
+[source,express]
+----
+ENTITY general_approval ABSTRACT;
+  approved_items : BAG OF GENERIC_ENTITY;
+  status : approval_status;
+END_ENTITY;
+----
+
+== AGGREGATE Type
+
+The `AGGREGATE` type in Edition 2 serves as a generalized type representing any of the four aggregation kinds (ARRAY, LIST, BAG, SET). Like `GENERIC_ENTITY`, it is primarily used in abstract entity declarations where the specific aggregation kind is determined by subtypes.
+
+[source,express]
+----
+ENTITY start_numbers ABSTRACT;
+  a_bunch_of_digits : AGGREGATE OF INTEGER;
+END_ENTITY;
+----
+
+== SUBTYPE_CONSTRAINT Declaration
+
+Edition 2 introduces the `SUBTYPE_CONSTRAINT` declaration, which separates subtype/supertype constraints from the entity declarations themselves. This is essential for modular schemas, where a constraint on an entity may need to be defined in a different schema than the entity's original declaration.
+
+A subtype constraint can specify:
+
+* Whether the supertype is `ABSTRACT`
+* Relationships among subtypes using `ONEOF`, `TOTAL_OVER`, `AND`, `OR`, and `ANDOR`
+
+The traditional inline syntax (`SUPERTYPE OF (ONEOF(a, b))` within the entity declaration) remains valid but is deprecated in Edition 2.
+
+[source,express]
+----
+ENTITY airplane;
+  type_name : STRING;
+END_ENTITY;
+
+ENTITY airbus
+  SUBTYPE OF (airplane);
+END_ENTITY;
+
+ENTITY boeing
+  SUBTYPE OF (airplane);
+END_ENTITY;
+
+SUBTYPE_CONSTRAINT real_planes FOR airplane;
+  ABSTRACT SUPERTYPE;
+  ONEOF(airbus, boeing);
+END_SUBTYPE_CONSTRAINT;
+----
+
+== TOTAL_OVER Constraint
+
+`TOTAL_OVER` is a new constraint that declares a set of subtypes as providing "total coverage" of their supertype within a given context. This means that every instance of the supertype must include at least one of the specified subtypes.
+
+The rules for `TOTAL_OVER` are:
+
+* All subtypes listed in the constraint must be direct subtypes of the supertype
+* Other subtypes (not listed in the TOTAL_OVER) must always be combined with at least one of the listed subtypes
+* A supertype may have multiple TOTAL_OVER constraints for different contexts
+
+[source,express]
+----
+SUBTYPE_CONSTRAINT not_so_real_planes FOR airplane;
+  ABSTRACT SUPERTYPE;
+  TOTAL_OVER(airbus, boeing);
+  ONEOF(airbus, boeing);
+END_SUBTYPE_CONSTRAINT;
+----
+
+The order of statements within the constraint is significant: the `TOTAL_OVER` and `ONEOF` declarations interact, and their sequence determines the final constraint interpretation.
+
+== Renamed Attributes
+
+Edition 2 allows attributes to be renamed as part of a redeclaration in a subtype. This can be done with or without specializing the attribute's data type.
+
+[source,express]
+----
+ENTITY point;
+  x : NUMBER;
+  y : NUMBER;
+END_ENTITY;
+
+ENTITY integer_point
+  SUBTYPE OF (point);
+  SELF\point.x RENAMED integer_x : INTEGER;  -- with specialization
+  SELF\point.y RENAMED integer_y : INTEGER;
+END_ENTITY;
+----
+
+Renamed attributes improve readability when a subtype gives a more specific meaning to an inherited attribute. In the example above, `integer_point` inherits the coordinates from `point` but renames them to reflect that they are now integer-valued.
