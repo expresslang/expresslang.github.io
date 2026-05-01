@@ -171,4 +171,4 @@ This layered approach ensures that product data is both human-understandable (th
 
 == Implementation Support
 
-The CAx Implementor Forum (https://www.cax-if.org) provides implementation support and conformance testing for STEP application protocols, helping organizations deploy STEP-based data exchange with confidence.
+The CAx Implementor Forum (https://www.mbx-if.org/home/) provides implementation support and conformance testing for STEP application protocols, helping organizations deploy STEP-based data exchange with confidence.
