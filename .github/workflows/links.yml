@@ -34,5 +34,5 @@ jobs:
     - name: Run lychee
       uses: lycheeverse/lychee-action@v2
       with:
-        args: --verbose --no-progress --base 'dist' --cache --max-cache-age 1d --root-dir / 'dist/**/*.html'
+        args: --verbose --no-progress --cache --max-cache-age 1d --root-dir dist/ 'dist/**/*.html'
         fail: true
