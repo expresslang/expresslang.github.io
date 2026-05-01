@@ -1,0 +1,140 @@
+---
+layout: author-docs
+---
+:stem:
+
+= Rule Principles
+
+== Principles
+
+The basic premise is that global RULEs are bad.
+
+It's also important that there is no guarantee as to when
+any constraints will be checked. This is entirely dependent on
+the particular implementation of an EXPRESS-defined
+_object base_ (which could be a Part 21 ASCII data file or a
+sophisticated shared database).
+
+. EXPRESS is permissive -- anything that is not prohibited is allowed.
+. The rule about rules is very simple: *Don't use global rules*
+(except as a last resort)
+
+. EXPRESS does not define the time (e.g. instance creation,
+instance usage) at which rules are tested.
+
+
+== Kinds of rules
+
+There are two kinds of rule:
+
+Local rules:: _Local_ rules (WHERE) clauses in entities apply to each instance.
+These are defined in entities or types and apply
+to each and every instance.
+
+Global rules:: _Global_ rules (RULEs) apply to (combinations of) (some) entity
+instances.
+These are defined outside of entities and apply to
+specific entity instances, or combinations of entity instances.
+
+Both are used to specify constraints. Other constraint methods
+are available.
+
+Constraints can also be specified by UNIQUE clauses, INVERSE attributes,
+subtyping with attribute redeclaration, importation (USE, REFERENCE,
+subtype and select pruning).
+
+Sometimes DERIVED attributes can be considered as constraints.
+
+
+// begin notes
+
+== The NYM Principle
+
+The NYM principle is a major guiding principle in information modelling,
+particularly as much of the understanding of a model comes from the names used.
+
+* If things are the same, then they should have the same name.
+* If things are not the same, then they are different.
+* Different things should have different names.
+
+In general, '`One name, one meaning, one definition`'. Synonyms and
+homonyms in a model are a fruitful and never-ending source of confusion.
+
+
+== Global rules and the NYM principle
+
+Global rules should not change the meaning or potential for
+interoperability of the entity to which they are applied.
+
+[source]
+----
+SCHEMA main;
+  ENTITY fred;
+    a : LIST OF joe;
+  END_ENTITY;
+...
+END_SCHEMA; -- main
+
+SCHEMA sub;
+  USE FROM main (fred);
+...
+----
+
+The schema names imply something -- `main` and ``sub``(sidiary). But the entity
+names...
+
+And (still within the `sub` schema) there is a constraint
+against `fred`.
+
+We can, but should not, use a RULE to express it. This requires
+an algorithmic approach which is quite possible to get wrong.
+
+There must be at least 5 ``joe``s in the list
+for attribute `a`.
+
+
+[source]
+----
+RULE bad_rule FOR (fred);
+LOCAL
+  good : LOGICAL := TRUE;
+END_LOCAL;
+REPEAT i := 1 TO SIZEOF(fred);
+  IF SIZEOF(fred[i].a) < 5
+  THEN good := FALSE; SKIP;
+  END_IF;
+END_REPEAT;
+WHERE
+ w1: good;
+END_RULE;
+
+END_SCHEMA; -- sub
+----
+
+Here are two better approaches, both involving subtyping. The second
+is the better as it involves less "`checking`" and is clearer
+to the reader.
+
+The constrained version of `fred` is better modeled as:
+
+[source]
+----
+SCHEMA sub;
+  REFERENCE FROM main (fred);
+
+ENTITY sub_fred
+  SUBTYPE OF (fred);
+WHERE
+ w1: SIZEOF(SELF\fred.a) >= 5;
+END_ENTITY;
+----
+
+Or, perhaps even better as:
+
+[source]
+----
+ENTITY sub_fred
+  SUBTYPE OF (fred);
+  SELF\fred.a : LIST [5:?] OF joe;
+END_ENTITY;
+----

@@ -1,0 +1,25 @@
+---
+title: Prof. Bernd Wenzel
+role: Founder, Project Leader
+categories: founders
+---
+
+== Project Leader, ISO 10303-11:1994
+
+Prof. Bernd Wenzel is a founding member of the EXPRESS Language Foundation and served
+as co-project leader of the first edition of the EXPRESS language standard (ISO 10303-11:1994),
+together with Douglas Schenck.
+
+== Contributions
+
+Wenzel guided the EXPRESS language through its initial standardization process at ISO,
+helping establish EXPRESS as the foundational information modelling language for
+industrial data exchange within ISO 10303 (STEP).
+
+== Standardization
+
+* *ISO 10303-11:1994* — Co-project leader (with Douglas Schenck), first edition of the EXPRESS language standard
+
+== At ELF
+
+* Founding member of the EXPRESS Language Foundation

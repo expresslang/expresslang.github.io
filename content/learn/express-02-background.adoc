@@ -1,0 +1,162 @@
+---
+layout: author-docs
+---
+:stem:
+
+= Background on EXPRESS
+
+== Background on EXPRESS
+
+=== EXPRESS development
+
+EXPRESS developed as an information modeling language to meet the needs of
+product data exchange model definition.
+
+It has been used, one way or another, for nearly 40 years!
+
+The original requirement for designing EXPRESS was for use in specifying
+industry and international standards.
+
+Other modeling techniques were reviewed but did not have the power
+that was felt to be needed, in particular constraint specifications.
+Also the languages were basically graphical although there were some
+proprietary lexical adjuncts.
+
+Here's a brief early history of the EXPRESS language:
+
+* The first version, called "`DSL`", was developed under the USAF funded PDDI
+program (early 1980s).
+
+* The NBS PDES program reviewed NIAM and IDEF1X. Neither had the power needed.
+
+* NBS PDES started extending EXPRESS.
+
+* STEP mandated all '`Normative`' models to be in EXPRESS.
+
+* EXPRESS and EXPRESS-G specifications published by NBS in the PDES draft, which
+eventually was standardized and adopted as ISO 10303-11.
+
+* Language still evolving.
+
+
+=== EXPRESS standardization
+
+EXPRESS has been formally approved as an International Standard by ISO, as ISO 10303-11,
+"_Industrial automation systems and integration -- Product data representation and exchange --
+Part 11: Description method: The EXPRESS language reference manual_"
+
+* The first edition was formally approved and published in 1994.
+
+* The second edition was published in 2004.
+
+The language is subject to ongoing review within STEP and by other users.
+
+International public review as part of ISO standardization:
+
+Early 1989:: ISO Draft Proposal ballot
+Mid 1991:: ISO Committee Draft ballot
+Oct 1991:: Ballot successful -- Draft International Standard status.
+Mid 1993:: Approved for registration as an International Standard
+(ISO 10303 Part 11).
+End 1994:: Published as International Standard ISO 10303-11:1994.
+End 2003:: Edition 2 approved as an International Standard.
+2004:: Published as International Standard ISO 10303-11:2004.
+
+
+== Comparing modelling languages
+
+=== EXPRESS is a data modelling language
+
+Most modeling languages are graphical, which is inherently limiting.
+
+For data modeling, most languages are targeted towards Relational Databases.
+Examples include IDEF1X, Shlaer-Mellor, Extended Entity-Relation.
+
+UML is for modeling an object-oriented program. EXPRESS is for modeling
+data and naturally moved to an OO perspective (it was developed by practising
+engineers as user, not by computer scientists).
+
+.Modelling language comparison
+[cols="a,a,a,a",options="header"]
+|===
+| | Characteristic | EXPRESS    | Others
+.9+h| Modeling
+| Form                | Programmatic     | Graphics
+| Flavor              | Object-oriented  | Relational
+| Objects             | ✓                |  ✓
+| Relationships       | ✓                |  ✓
+| Attributes          | ✓                |  ✓
+| Derived Attributes  | ✓                |
+| Domain              | Entity + Type    | Entity
+| Sequencing          | ✓                |
+| Cardinalities       | Any              | Limited
+.3+h| Constraints
+| Domain              | Any              | Limited
+| Roles               | Any              | Limited
+| Categorization      | Broad            | Limited
+.3+h| Miscellaneous
+| Multi-page          | ✓                | Some
+| Algorithms          | ✓                |
+| Scoping             | ✓                |
+
+|===
+
+
+=== Graphical models
+
+Graphic models are excellent for group explanations and work.
+They are easy to follow and develop with the support of multiple
+drawing tools and CAD programs.
+
+There are some downsides, however:
+
+* they bring a lot of space to the board,
++
+NOTE: Very good for group work -- sketch on blackboard, but soon run
+out of space on the board. I have seen complete models that can
+take up a whole wall even with small print.
+
+* the model development may be superficial (even when it looks right),
++
+NOTE: It's difficult to check a model except by eyeballing it. It's been
+a general experience over several decades of going from flowcharts to
+program code that many details get missed.
+
+* and they are not computer processable.
++
+NOTE: It is difficult to formally specify a graphical language.
+
+NIAM and IDEF1X are both graphical languages for modeling relational
+databases.
+
+
+=== Textual models
+
+Text languages (also called "lexical langauges") for modeling can be formally
+defined, both syntax and much of the semantics. This means that they can be made
+computer processable and so can be automatically checked for correctness
+(syntax) and completeness.
+
+They can represent a variety of modeling approaches, from mathematical
+or logical schemes to things more readily understood.
+
+They can include a programming language so constraints can be expressed
+in terms of a process as well as in terms of rules and regulations.
+
+They provide opportunities for models to be manipulated, for example
+automatically developing test cases or checking that data conforms to the
+model.
+
+In short, textual models have the following pros and cons.
+
+Pros:
+
+* Good formal definition or mathematical support.
+* Supports complex constraints and rules.
+* Computer processible.
+* Syntax and semantic checking.
+* Potential for automatic implementation (for model simulation and test).
+
+Cons:
+
+* May be non-intuitive (e.g logic based methods).

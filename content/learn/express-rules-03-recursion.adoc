@@ -1,0 +1,228 @@
+---
+layout: author-docs
+---
+:stem:
+
+= Recursion in EXPRESS
+
+=== General
+
+Recursion is when something (apparently) applies itself to itself.
+
+=== Entity
+
+An ENTITY attribute may refer to the ENTITY (as a type).
+I have called this '`type recursive`' and it is a regular part of
+modeling. (A person may have a child, who is of course a person).
+
+In the first model an instance of a `node` may list itself
+among its `children`. This is almost certainly incorrect.
+
+In the second model an instance of a `node` cannot list
+itself among its children, but could be listed among its
+grandchildren. This is probably incorrect.
+
+
+This `node` entity is '`type recursive`' and may be
+'`instance recursive`'
+
+[source]
+----
+ENTITY node;
+  local_data : data;
+  children : LIST OF UNIQUE node;
+END_ENTITY
+----
+
+This `node` entity is '`type recursive`' and not
+'`self instance recursive`'
+but may be '`globally instance recursive`'.
+
+[source]
+----
+ENTITY node;
+  local_data : data;
+  children : LIST OF UNIQUE node;
+WHERE
+ all_unique : NOT (SELF IN SELF.children);
+END_ENTITY;
+----
+
+=== Function
+
+A function can call itself, but at some point there must be a condition
+that prevents this (in order to prevent an infinite recursion).
+
+The `NodeSet` function generates the SET consisting of the
+input `node` and all its descendents.
+
+The `NodeBag` function generates the BAG consisting of the
+input `node` and all its descendents.
+
+[source]
+----
+FUNCTION NodeSet(input: node): SET OF node;
+LOCAL
+  result : SET OF node := [];
+END_LOCAL;
+REPEAT i := 1 TO SIZEOF(input.children);
+  result := result + NodeSet(input.children[i]);
+END_REPEAT;
+RETURN(result + input);
+END_FUNCTION;
+----
+
+[source]
+----
+FUNCTION NodeBag(input: node): BAG OF node;
+LOCAL
+  result : BAG OF node := [];
+END_LOCAL;
+REPEAT i := 1 TO SIZEOF(input.children);
+  result := result + NodeBag(input.children[i]);
+END_REPEAT;
+RETURN(result + input);
+END_FUNCTION;
+----
+
+
+// begin notes
+
+=== RULE with recursive functions
+
+This RULE checks that any node is not also a descendent of itself.
+(`NodeBag` lists all descendent nodes, including duplicates,
+and `NodeSet`
+does the same but excludes duplicates).
+
+A tree of nodes must be acyclic. That is, a given node instance must only
+appear once in the tree.
+
+[source]
+----
+RULE acyclic_tree FOR (node);
+LOCAL
+  result : LOGICAL;
+END_LOCAL;
+REPEAT i := 1 TO SIZEOF(node);
+  result := SIZEOF(NodeSet(node[i])) =
+            SIZEOF(NodeBag(node[i]));
+  IF (result = FALSE)
+  THEN SKIP;
+  END_IF;
+END_REPEAT;
+WHERE
+  acyclic: result;
+END_RULE;
+----
+
+
+=== QUERY with Or
+
+This does the same, but more concisely and less understandably.
+The QUERY returns a BAG of nodes where the SIZEOF the ``NodeSet``s
+and ``NodeBag``s are not the same.
+
+The SIZEOF is the number of nodes in the QUERY's BAG, which should be zero.
+
+[source]
+----
+RULE acyclic_tree FOR (node);
+WHERE
+  acyclic: SIZEOF(QUERY(t <* node |
+                  SIZEOF(NodeSet(t)) <>
+                  SIZEOF(NodeBag(t)))
+                 ) = 0;
+END_RULE;
+----
+
+
+=== Recursive functions
+
+The next example is taken from the International STEP Standard.
+
+The constraint on `relationship` instances is that the
+`parent` / `child` graph is acyclic. Equivalently
+ancestors and descendants must unique.
+
+This can be used to describe a relationship between two `obj`
+(Part 41, Annex D).
+
+[source]
+----
+ENTITY relationship;
+  description : STRING;
+  parent      : obj;
+  child       : obj;
+END_ENTITY;
+----
+
+In turn, the `obj` that is a child in one of these may be the
+parent in another `relationship`, and so on.
+Often it is required that a string of `relationship` be acyclic.
+More simply, a child cannot be its own ancestor, or equivalently a parent
+cannot be its own descendent.
+
+Use a function in a WHERE rule as:
+
+[source]
+----
+WHERE
+w1: acyclic(SELF,[SELF.parent],'...');
+----
+
+This is a (helper) function that converts an AGGREGATE
+(ARRAY, LIST, BAG or SET) to a SET.
+
+
+Convert an AGGREGATE to a SET.
+
+[source]
+----
+FUNCTION Agg2Set(agg: AGGREGATE OF GENERIC:a):
+                 SET OF GENERIC:a;
+LOCAL
+  result : SET OF GENERIC:a := [];
+END_LOCAL;
+REPEAT i := LOINDEX(agg) TO HIINDEX(agg);
+  result := result + agg[i];
+END_REPEAT;
+RETURN(result);
+END_FUNCTION;
+----
+
+
+This is the `acyclic` function defined in STEP. Does it do
+what it is meant to?
+
+An immediate answer is: Who knows?
+
+Seriously, it takes some time to work out if it works.
+
+Does the following (Part 41 p 156) work?
+
+[source]
+----
+FUNCTION acyclic(rel: relationship;
+                 relatives: SET [1:?] OF obj;
+                 subtyp: STRING): LOGICAL;
+LOCAL
+  x     : SET [1:?] OF relationship;
+  close : SET [1:?] OF obj;
+END_LOCAL;
+REPEAT i := 1 TO HIINDEX(relatives);
+  IF rel.parent :=: relatives[i]
+  THEN RETURN(FALSE); END_IF;
+END_REPEAT;
+x := Agg2Set(USEDIN(rel.parent, subtyp));
+close := relatives + rel.parent;
+REPEAT i := 1 TO SIZEOF(x);
+  IF NOT acyclic(x[i],close,subtyp)
+    THEN RETURN(FALSE); END_IF;
+END_REPEAT;
+RETURN(TRUE);
+END_FUNCTION;
+----
+
+
+== Rem

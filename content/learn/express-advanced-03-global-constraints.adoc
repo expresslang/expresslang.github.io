@@ -1,0 +1,400 @@
+---
+layout: author-docs
+---
+:stem:
+
+= Global Constraints and Schemas
+
+
+=== QUERY Expression
+
+Now we are getting away from structural modeling.
+
+The query expression evaluates a logical expression against each element
+of an aggregation, returning an aggregation of all the elements for which
+the logical expression is TRUE.
+
+The syntax is roughly:
+
+[source]
+----
+QUERY( temp <* agg | lexp)
+----
+
+where `temp` is the name of a temporary variable, `agg` is the
+aggregation, and `lexp` is the logical expression.
+
+.Example of QUERY on person's age
+[example]
+====
+Assuming that a person's attributes included the age of the person,
+
+[source]
+----
+QUERY(t <* persons | t.age >= 21)
+----
+
+would return all the people whose age was 21 or greater.
+====
+
+You can't actually write this function in EXPRESS (if you could the
+QUERY expression would probably not have been invented), as there is
+no LOGICAL_EXPRESSION type in the language.
+
+An example of its use follows.
+
+The effect of QUERY is similar to the pseudo-function below.
+
+[source]
+----
+FUNCTION q(agg  : AGGREGATE OF GENERIC;
+           lexp : LOGICAL_EXPRESSION;)
+          : AGGREGATE OF GENERIC;
+LOCAL
+  result : AGGREGATE OF GENERIC := [];
+END_LOCAL;
+  REPEAT i := 1 TO SIZEOF(agg);
+    IF (lexp = TRUE) THEN
+      result := result + agg[i];
+    END_IF;
+  END_REPEAT;
+RETURN(result);
+END_FUNCTION;
+----
+
+
+=== RULE
+
+Local constraints (WHERE, UNIQUE, INVERSE) are applied to each and every
+instance of the entity.
+
+Global constraints (RULEs) are applied between entities or across a
+subset of entity instances.
+
+A WHERE rule in an ENTITY applies to each and every instance of the ENTITY.
+
+A RULE is a constraint that can be applied to either some instances of
+a particular ENTITY or to combinations of instances of different ENTITY
+(types).
+
+Given a database of instances, each RULE is applied to every applicable
+instance in the database to determine if the instance conforms to the
+constraint.
+
+EXPRESS assumes that every (ENTITY) instance has a unique identifier,
+although it does not specify what that might be. You could have two (or more)
+instances of a `point` with the same coordinate values but they are
+still distinguishable from each other in the storage system.
+
+.Example of local rule
+[example]
+====
+The following rule states that there shall be one and only one point at the
+origin in the objectbase.
+
+[source]
+----
+RULE unique_origin FOR (point);
+LOCAL
+  origin : BAG OF point;
+END_LOCAL;
+  origin := QUERY(temp <* point |
+                  (temp.x = 0.0) AND
+                  (temp.y = 0.0) );
+WHERE
+  r1 : SIZEOF(origin) = 1;
+END_RULE;
+----
+====
+
+Creating a robust EXPRESS model is not necessarily easy.
+
+Going back to the person/male/female model, it does say that wifes are
+females and husbands are males. It doesn't say that if Adam claims his wife
+to be Eve then Eve's husband must be Adam.
+
+In some communities that might not be a problem. But, if it is in the bit
+of the real world that the model represents, then the rather complicated RULE
+fixes that relationship problem.
+
+It looks at every male and checks to see if he is his wife's husband.
+It also has to look at every female to see if she is her husband's
+wife.
+
+The double check is needed for the cases when one of a pair claims
+to be single.
+
+NOTE: EXPRESS does not specify when the RULEs should be checked.
+
+[example]
+====
+This RULE states that husbands and wives must be married to each other.
+
+[source]
+----
+RULE married FOR (male,female);
+  LOCAL
+    ok1, ok2 : BOOLEAN := TRUE;
+  END_LOCAL;
+  IF (EXISTS(male.wife) AND
+      male :<>: male.wife.husband) THEN
+    ok1 := FALSE;
+  END_IF;
+  IF (EXISTS(female.husband) AND
+      female :<>: female.husband.wife) THEN
+    ok2 := FALSE;
+  END_IF;
+WHERE
+  r1 : ok1;
+  r2 : ok2;
+END_RULE;
+----
+====
+
+
+== Working with external schemas
+
+=== SCHEMA importing
+
+An EXPRESS model typically consists of several SCHEMAs, each dealing with a
+distinguishable subtopic.
+
+Definitions within a Schema are potentially available to all Schemas.
+Anything in a SCHEMA can be utilised by any other SCHEMA -- you can't hide
+anything -- but you have to specify what you want.
+
+Definitions have to be '`imported`' from the original Schema into the
+'`current`' Schema.
+The imported definition implicitly imports all the necessary definitions
+to complete the definition.
+
+The contents of a SCHEMA are ENTITY, TYPE, RULE, SUBTYPE_CONSTRAINT,
+FUNCTION, PROCEDURE and CONSTANT declarations, each of which has a name.
+
+Within a SCHEMA all the names must be unique.
+
+When importing something from another SCHEMA it may be necessary
+to rename it if its name is already declared, or it may convey the
+semantics better if it was called by a different name.
+
+EXPRESS syntax is roughly:
+
+[source]
+----
+import FROM schema_ref (def1 AS newname1,
+                        def2 AS newname2);
+----
+
+
+=== USE import
+
+Only ENTITYs and TYPEs can be imported via a USE statement.
+
+``USE``d ``ENTITY``s are '`first class`' items. That means that in the object base
+instances do not need to be referenced by other instances (i.e they can be
+independently instantiated).
+
+Any items needed to complete the definitions of an imported item via USE
+are implicitly REFERENCEd into the schema.
+
+If no list is given, _all_ ENTITYs and TYPEs in the SCHEMA are
+imported.
+
+It is as though the ENTITY had been declared in the using schema. Following
+from this, USEs can be chained.
+
+.Example of referencing a first-class entity
+[example]
+====
+If `fc` is a first-class entity, then the statement
+
+[source]
+----
+SIZEOF(USEROF(fc)) >= 0;
+----
+
+holds.
+====
+
+Here is a demonstration 2-schema model where an entity declared
+in one schema is USEd by the other.
+
+Following this is an equivalent model expanding out the USE.
+
+[source]
+----
+SCHEMA source;
+  ENTITY e1;
+    attr : t1;
+  END_ENTITY;
+
+  TYPE t1 = REAL; END_TYPE;
+END_SCHEMA;
+
+SCHEMA using;
+  USE FROM source (e1);
+
+  ENTITY e2;
+    attr : SET OF e1;
+  END_ENTITY;
+END_SCHEMA;
+----
+
+In the expanded model, SCHEMA `source` is unchanged.
+
+SCHEMA `using` is changed with the USE being replaced by:
+
+* ENTITY `e1` is declared
+* TYPE `t1` is REFERENCED from SCHEMA `source` to provide for the `attr`
+attribute of `e1` (which was originally implicitly referenced).
+
+
+[source]
+----
+SCHEMA source;
+  ENTITY e1;
+    attr : t1;
+  END_ENTITY;
+
+  TYPE t1 = REAL; END_TYPE;
+END_SCHEMA;
+
+SCHEMA using;
+  REFERENCE FROM source (t1);
+
+  ENTITY e1;
+    attr : t1;
+  END_ENTITY;
+
+  ENTITY e2;
+    attr : SET OF e1;
+  END_ENTITY;
+END_SCHEMA;
+----
+
+
+=== REFERENCE import
+
+Effectively, any kind of item can be REFERENCEd -- ENTITY, TYPE, FUNCTION ...
+
+REFERENCEd ENTITYs are second class items (only instances that are used as
+attribute(s) in other ENTITYs are allowed).
+
+Items required to complete declarations are implicitly REFERENCEd, but
+there is no chaining.
+
+A REFERENCE with just the SCHEMA name references everything in the SCHEMA.
+
+If an item is both USEd and REFERENCEd, it is treated as being USEd.
+
+
+* Any kind of item can be imported via a REFERENCE statement.
+* A REFERENCE is necessary to resolve references (links) to declarations
+in other schemas.
+* REFERENCEDd items are '`second class`' items (i.e they can not be
+independently instantiated).
+* The '`stuff`' required to complete the definitions of an imported entity
+are implicitly REFERENCEd into the schema.
+
+.Example of a second-class entity
+[example]
+====
+If `sc` is a second-class entity, then the statement
+
+[source]
+----
+SIZEOF(USEROF(sc)) >= 1;
+----
+
+holds.
+====
+
+
+This model is the same as the earlier one except that USE is
+replaced by REFERENCE.
+
+An expanded version follows.
+
+[source]
+----
+SCHEMA source;
+  ENTITY e1;
+    attr : t1;
+  END_ENTITY;
+
+  TYPE t1 = REAL; END_TYPE;
+END_SCHEMA;
+
+SCHEMA referencing;
+  REFERENCE FROM source (e1);
+
+  ENTITY e2;
+    attr : SET OF e1;
+  END_ENTITY;
+END_SCHEMA;
+----
+
+In the expanded model, SCHEMA `source` is unchanged.
+
+SCHEMA `using` is changed with the REFERENCE list expanded
+to include the TYPE `t1` (which was originally implicitly
+referenced).
+
+
+[source]
+----
+SCHEMA source;
+  ENTITY e1;
+    attr : t1;
+  END_ENTITY;
+
+  TYPE t1 = REAL; END_TYPE;
+END_SCHEMA;
+
+SCHEMA referencing;
+  REFERENCE FROM source (e1, t1);
+
+  ENTITY e2;
+    attr : SET OF e1;
+  END_ENTITY;
+END_SCHEMA;
+----
+
+
+=== Extensions or constraints using external schemas
+
+A SCHEMA can extend and/or constrain a model in another SCHEMA.
+
+In SCHEMA `second`, `bbb` (which is `aaa` under another name) and `constrained`
+are first class entities. Entity `original`, which is now a SUPERTYPE of
+`constrained`, is second class (every instance of `original` must also be an
+instance of `constrained`).
+
+Within SCHEMA `first`, entity `original` does not know it is a SUPERTYPE as
+`first` knows nothing about the `second` SCHEMA.
+
+
+[source]
+----
+SCHEMA first;
+  ENTITY aaa;
+    -- attributes
+  END_ENTITY;
+
+  ENTITY original;
+    attr : NUMBER;
+  END_ENTITY;
+END_SCHEMA; -- first
+
+SCHEMA second;
+  USE FROM first (aaa AS bbb);
+  REFERENCE FROM first (original);
+
+  ENTITY constrained
+    SUBTYPE OF (original);
+    attr : INTEGER(7);
+    WHERE
+      positive : attr > 0;
+    END_ENTITY;
+END_SCHEMA; -- second
+----

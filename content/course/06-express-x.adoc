@@ -1,0 +1,258 @@
+---
+title: The EXPRESS-X Language
+---
+
+= The EXPRESS-X Language
+
+EXPRESS-X is a formal language defined within ISO 10303 for specifying how to map data between different EXPRESS schemas. It was originally developed as two separate proposals — EXPRESS-M (for mapping) and EXPRESS-V (for views) — which were later merged into a single language introduced as ISO 10303-14.
+
+Data mapping is a fundamental operation in STEP-based workflows. When two organizations use different EXPRESS schemas to describe similar information, a mapping specification defines precisely how to convert data from one schema's structure to another's. Without such a specification, each mapping would require custom-written converter software — expensive to develop, hard to maintain, and prone to errors.
+
+EXPRESS-X solves this by providing a declarative language for expressing mappings. Because EXPRESS-X is syntactically similar to EXPRESS, data modellers who already know EXPRESS can learn EXPRESS-X quickly. And because it is a formal language with precise semantics, it can be processed by compilers and interpreters, making the mapping process repeatable and verifiable.
+
+== Core Concepts
+
+=== Mapping
+
+A mapping specifies how to convert a data set described by one EXPRESS schema (the **source schema**) to a data set described by another EXPRESS schema (the **target schema**). The original data is called the **source model**, and the resulting data is the **target model**.
+
+In most cases, there is semantic equivalence between source and target — they represent the same real-world information — but structural differences require a formal mapping to bridge the gap.
+
+=== Architecture
+
+The mapping architecture involves three schemas:
+
+[cols="1,1,1"]
+|===
+| Source Schema (EXPRESS) | Mapping Schema (EXPRESS-X) | Target Schema (EXPRESS)
+| Source Model (Instances) | Data Converter | Target Model (Instances)
+|===
+
+The mapping schema is written in EXPRESS-X and references both the source and target EXPRESS schemas. It declares how instances in the source model are transformed into instances in the target model.
+
+=== Benefits
+
+EXPRESS-X provides several advantages over hand-written converter software:
+
+* **Declarative** — you specify *what* the mapping should do, not *how* to implement it
+* **Express-like syntax** — familiar to anyone who knows EXPRESS, with the same case-insensitive identifiers, data types, and basic constructs
+* **Formally defined** — the language has precise semantics, enabling automated processing
+* **Maintainable** — when schemas evolve, updating the mapping declaration is typically simpler than rewriting custom code
+* **Verifiable** — compilers can check the mapping for consistency and completeness
+
+== Language Overview
+
+EXPRESS-X is a superset of EXPRESS. It shares all of EXPRESS's basic constructs and adds several new declarations and statements specific to data mapping.
+
+=== EXPRESS Compatibility
+
+EXPRESS-X is identical to EXPRESS in the following ways:
+
+* Case-insensitive identifiers
+* Same data types and literals
+* Same basic identifier syntax
+* Equal syntax for CONSTANT, FUNCTION, PROCEDURE, and RULE declarations
+* All EXPRESS statements, operations, and operators are available
+* Same comment syntax
+
+=== Additional Declarations
+
+EXPRESS-X adds the following declarations beyond what EXPRESS provides:
+
+* **SCHEMA_MAP** — defines a mapping schema connecting source and target EXPRESS schemas
+* **QUERY_SCHEMA** — defines query operations and business objects for a schema
+* **RULE_SCHEMA** — defines additional validation rules for a schema
+* **GLOBAL** — declares source/target instances and global variables
+* **MAP** — defines how specific source instances map to target instances
+* **COMPOSE** — handles n:1 cardinality mappings
+
+EXPRESS-X also introduces additional statements, operators, exception handling, scoped identifiers, and extended entity references.
+
+== SCHEMA_MAP Declaration
+
+A SCHEMA_MAP defines the mapping schema and contains all mapping constructs:
+
+[source,express]
+----
+SCHEMA_MAP source2target;
+  (* all mapping constructs here *)
+END_SCHEMA_MAP;
+----
+
+== GLOBAL Declaration
+
+The GLOBAL declaration is mandatory and must appear first in a SCHEMA_MAP. It identifies the source and target schemas and their instances.
+
+=== Single Source Model
+
+[source,express]
+----
+GLOBAL
+  DECLARE src INSTANCE OF SOURCE_SCHEMA IFC_FINAL;
+  DECLARE trg INSTANCE OF TARGET_SCHEMA IFC2xx;
+END_GLOBAL;
+----
+
+=== Multiple Source Models
+
+When data from multiple source models contributes to a single target model:
+
+[source,express]
+----
+GLOBAL
+  DECLARE trg INSTANCE OF TARGET_SCHEMA IFC2xx;
+  DECLARE [src1, src2, src3] INSTANCE OF SOURCE_SCHEMA IFC_FINAL;
+END_GLOBAL;
+----
+
+=== Global Variables and Manual Instantiation
+
+The GLOBAL section can also declare global variables and manually create instances:
+
+[source,express]
+----
+GLOBAL
+  DECLARE src INSTANCE OF SOURCE_SCHEMA IFC_FINAL;
+  DECLARE trg INSTANCE OF TARGET_SCHEMA IFC2xx;
+
+  #madonna = trg::woman('Madonna', FEMALE, #mike);
+  #mike    = trg::man('Mike Tyson', MALE, #madonna);
+
+  anyErrors : BOOLEAN := FALSE;
+  myKey     : STRING := 'abcXYZ';
+  origin    : trg::Point := trg::Point(0.0, 0.0, 0.0);
+END_GLOBAL;
+----
+
+== Scoping
+
+EXPRESS-X uses scoped identifiers to distinguish between the source schema, target schema, and mapping schema when names conflict:
+
+[source,express]
+----
+src::person
+trg::man
+----
+
+The `src::` prefix refers to declarations in the source schema, while `trg::` refers to declarations in the target schema.
+
+== FROM Clause
+
+The FROM clause defines iteration over sets of instances. It is the mechanism by which EXPRESS-X "loops through" source data to produce target instances.
+
+[source,express]
+----
+FROM (a:src::e1, SUBTYPE b:src::e2, c:trg::e3)
+----
+
+This iterates over:
+
+* `a:src::e1` — all instances of type E1 in the source model
+* `SUBTYPE b:src::e2` — all instances of E2 and its subtypes
+* `c:trg::e3` — all instances of type E3 in the target model
+
+=== Sorting
+
+Instances can be processed in sorted order:
+
+[source,express]
+----
+FROM (p:src::Person ORDER_BY ASC Name)
+FROM (p:src::Person ORDER_BY DESC Id)
+----
+
+=== UNION
+
+Multiple source sets can be combined using UNION syntax:
+
+[source,express]
+----
+FROM (p:[src1, SUBTYPE src2, x, y]::Person)
+FROM (s:[src1::e1, SUBTYPE src1::e2, src2::e1, srcx::e1])
+----
+
+=== Performance Consideration
+
+Each extended entity reference in a FROM clause defines an iterator. When multiple references appear, the total number of iterations equals the Cartesian product of all iterators. For large data sets, this can impact performance, so it is important to structure FROM clauses carefully.
+
+== WHEN Clause
+
+The WHEN clause filters which instances from the FROM iteration should be processed. It contains a logical expression that evaluates to TRUE, UNKNOWN, or FALSE:
+
+[source,express]
+----
+WHEN TRUE;
+
+WHEN ((a IS src::Child)
+      AND (a.last_name = b.last_name)
+      AND (a.father.last_name = a.mother.husband.last_name));
+----
+
+Only instances satisfying the WHEN condition are included in the mapping for that MAP declaration.
+
+== MAP Declaration
+
+The MAP declaration defines how specific source instances are transformed into target instances. It supports all cardinalities: 1:1, 1:n, n:1, and n:n.
+
+=== MAP with Name
+
+[source,express]
+----
+MAP Male2Man FOR tm:trg::Man;
+  FROM (sm:src::Male)
+  WHEN (TRUE);
+  BEGIN_MAP
+    (* Map Body here *)
+END_MAP;
+----
+
+=== MAP without Name
+
+[source,express]
+----
+MAP tm:trg::Man;
+  FROM (SUBTYPE sm:src::Male)
+  WHEN ((sm.Married) AND (Exists(sm.Wife)));
+  BEGIN_MAP
+    (* Map Body here *)
+END_MAP;
+----
+
+=== MAP Body
+
+The MAP body contains the actual mapping logic:
+
+* An optional LOCAL declaration for temporary variables
+* Instance creation statements (using functions analogous to EXPRESS's entity construction)
+* Attribute assignment statements that map source attribute values to target attributes
+
+== COMPOSE Declaration
+
+The COMPOSE declaration handles n:1 cardinality mappings, where multiple source instances contribute to a single target instance. This is the complement of the MAP declaration, which typically handles 1:1 and 1:n mappings.
+
+COMPOSE is useful when information about a single target entity is spread across multiple source entities and must be assembled during the mapping process.
+
+== Mapping Process Properties
+
+When a mapping is executed:
+
+* Declarations execute in the order they appear in the mapping schema
+* Source models remain unchanged — the mapping process is non-destructive
+* Target models can be pre-existing (data is added) or created by the mapping process
+* Temporary (volatile) instances may be created during mapping without being persisted
+
+These properties ensure that mappings are repeatable and side-effect-free with respect to source data.
+
+== QUERY_SCHEMA and RULE_SCHEMA
+
+In addition to SCHEMA_MAP, EXPRESS-X includes two other schema-level declarations:
+
+* **QUERY_SCHEMA** — defines business objects (view entities) and query functions for retrieving data from an EXPRESS population. Covered in detail in the module on querying EXPRESS data.
+
+* **RULE_SCHEMA** — defines additional validation rules and constraints for an EXPRESS schema. Covered in detail in the module on business rules in EXPRESS.
+
+Both follow the same structural patterns as SCHEMA_MAP, with GLOBAL declarations, scoping rules, and EXPRESS-based syntax.
+
+== Summary
+
+EXPRESS-X is the definitive language for specifying data mappings between EXPRESS schemas. Its declarative nature, EXPRESS-compatible syntax, and formal semantics make it a powerful tool for data exchange, data migration, and schema transformation in STEP-based environments. Understanding EXPRESS-X is essential for anyone working on interoperability between STEP applications or migrating data between schema versions.

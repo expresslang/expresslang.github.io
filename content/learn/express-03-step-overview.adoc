@@ -1,0 +1,254 @@
+---
+layout: author-docs
+---
+:stem:
+
+= The EXPRESS Language and STEP
+
+== Introduction to EXPRESS
+
+=== Textual with graphical modelling
+
+EXPRESS is a language family for representing an information model.
+
+EXPRESS started as a single lexical language but has since expanded
+into a family of languages, including EXPRESS-G, its graphical language.
+
+EXPRESS has the following attributes:
+
+* Computer processable.
+* Provides a superset of NIAM and IDEF1X representation capabilities.
+* Exhibits an object oriented flavor.
+* Has several aspects (subsets)
+
+It was developed by a small group (about 4 at any given time) for
+modeling the kinds of information used in engineering. CAD models, blueprints,
+mechanisms, engineering sign-off, and so on.
+
+There were releases every quarter to a user group of about 50, who were full
+of their own suggestions and merrily changed the language in between times.
+
+In the first years there were no compilers (the language was changing too
+rapidly) so there were no technical constraints -- every use of the language
+was perfect, no bugs, no complaints!
+
+One of the strengths of EXPRESS is that it much of it was developed by the
+end users.
+
+NOTE: The end user focus is also probably its major weakness as its initial
+coherence sank under the weight.
+
+
+=== Aspects of EXPRESS
+
+* Implementation independent. EXPRESS supports the modeling of things and
+relationships in an implementation independent manner. +
++
+The principal elements of EXPRESS are for representing things
+and the relationships between things (and as far as EXPRESS is concerned,
+a relationship is a thing). Groups of strongly related things can be
+collected together.
+
+* Algorithms for arbitrary constraint specifications. EXPRESS includes a
+Pascal-like programming language for specifying complex constraints.
+
+* Modeling of implementation dependent data structures. EXPRESS is a conceptual
+modeling language, so puts no restrictions on the number of characters in a
+name, and arithmetic is infinitely precise.
+
+* Graphical form. EXPRESS-G is the graphical form of EXPRESS, which is a subset
+of the lexical language.
+
+* Instantiation format. EXPRESS-I is a lexical language for displaying
+data (instances) that correspond to the concepts in EXPRESS.
+
+* Transformation form. EXPRESS-X is a lexical language that allows specification
+of desired changes to an EXPRESS model and then have them performed.
+Transformations principally consist of splitting or merging
+things and their relationships.
+
+
+
+=== Usage
+
+EXPRESS is widely used in the standards community for formal definition
+of data-related concepts.
+
+Some use cases include:
+
+* Definition of the STEP models (hundreds of people from 20+ countries)
+* Reverse engineering of DBMS systems
+* Software Specification Document for CAD geometry processors
+* Electronic standards (VHDL, EDIF, CFI etc)
+* European ESPRIT projects
+* Data Definition Language for OO databases
+* Geological modeling
+* Genome modeling
+
+In fact, EXPRESS can also be used to define the syntax, grammar, and semantics
+of the EXPRESS language.
+
+
+== Introduction to STEP
+
+=== History
+
+The story of STEP starts in the mid 1970's with a small group trying to develop
+an ANSI standard for geometry data.
+
+At the end of the 70's McAuto (part of McDonnell Douglas) got a contract from
+CAM-I (Computer Aided Manufacturing -- International) to develop a standard for
+data exchange between solid modeling systems; the result was not well received.
+
+Just after this, Boeing (Walt Braithwaite), GE (Phil Kennicott) and
+the then National Bureau of Standards (Roger Nagel) produced IGES --
+Initial Graphics Exchange Specification for data exchange between CAD
+(Computer Aided Drawing) systems. This was reluctantly implemented by the
+major CAD vendors and rapidly became the ANSI Y14.6M standard (the last
+section of which was the McAuto work). Then came a proliferation of standards.
+
+As IGES was not written in France, the French published their "SET" standard.
+CAM-I still wanted a solid model data exchange mechanism and came up with
+the XBF ("Experimental Boundary File"), an extension of IGES, which itself
+was going through several
+expansions. The Germans produced VDAFS specifically for sculptured surfaces
+as used for car bodies. The XBF work moved under the IGES umbrella and became
+ESP (Experimental Solids Proposal).
+
+The USAF gave McDonnell Douglas a 2 part contract to:
+
+* (a) for a small amount of money, determine if IGES met USAF (and industry)
+  requirements and if it did not;
+* (b) for a large amount of money, develop something that did.
+
+Unsurprisingly, they determined that IGES was unsuitable and so came up with
+the PDDI standard. There was also yet another effort going on in Europe
+called the CAD*I project funded under the ESPRIT program.
+
+IGES was experiencing growing pains and it seemed sensible to make a fresh
+start. Boeing (Kal Brauner and Dave Briggs) proposed PDES -- Product Data
+Exchange Standard based on the best work from the US. In particular, they
+strongly urged that it should have a formal basis.
+
+Somehow the international community got together and demanded just one
+standard -- STEP, Standard for the Exchange of Product Model Data, to be
+based on the technical work from the PDES group.
+
+After a while some countries got upset as they felt that it had become a US
+standard (even though most participants were non-US). This dilemma was
+eventually resolved by changing the name of PDES to be -- "Product Data Exchange
+using STEP" (which some then called Standard for Exchange using PDES).
+
+
+image::../images/01-pstphist.svg[]
+
+
+=== STEP standards
+
+The STEP standard, ISO 10303, is really a suite of cooperating standards
+each member of which is a _Part_ of ISO 10303.
+
+The Parts are grouped into _series_.
+
+* Parts 11-19 form the _Description Methods_ series,
+which include the EXPRESS family.
+
+* Parts 21-29 form the _Implemantation Methods_ series,
+defining how to exchange data that corresponds to an EXPRESS model.
+
+* Parts 31-39 form the _Conformance and Testing_ series,
+defining how to test STEP implementations.
+
+* Parts 41-99 form the _Resources_ series, which define
+an integrated set of application independent EXPRESS information models
+for product descriptions.
+
+* Parts 201+ form the _Application Protocol_ (AP) series,
+which specify application dependent information models for the purposes
+of data exchange.
+
+
+image::../images/01-pstpover.svg[]
+
+
+=== STEP architecture
+
+==== General
+
+The STEP architecture is centered around the Integrated Resource
+Models (IRs), which are defined using EXPRESS.
+
+An Application Protocol (AP) is a subset of the IRs. It includes an EXPRESS
+model mapped from the EXPRESS models in the IRs.
+
+The implementation methods, called Level 1, Level 2, and so on, are exchange
+mechanisms for data that corresponds to an EXPRESS model. They essentially
+consist of a mapping from EXPRESS to a data representation.
+
+As far as a typical end user is concerned, the IRs are invisible and there
+are APs and exchange levels.
+
+
+.STEP architecture
+image::../images/01-pstparch.svg[]
+
+
+==== Level 1 exchange
+
+Level 1 data exchange is file-based. Get your CAD system to create a
+STEP data file then archive it and/or send it to someone else (to read into
+their CAD system).
+
+.STEP level 1 exchange
+image::../images/01-plevel1.svg[]
+
+
+==== Level 2 exchange
+
+Level 2 data exchange is memory-based. Get your CAD system to create a
+(temporary) STEP database which you can then query and change. The data
+can be written to a file for Level 1 use. At the end of the session
+the STEP database is no longer available.
+
+.STEP level 2 exchange
+image::../images/01-plevel2.svg[]
+
+
+==== Level 3 exchange
+
+Level 3 data exchange is database-based. The STEP data is maintained
+in a (permanent) shared database. STEP level 1 files can be written and read
+by the database.
+
+.STEP level 3 exchange
+image::../images/01-plevel3.svg[]
+
+
+==== Procedural exchange
+
+This allows not only data, but also commands (and their results)
+to be passed into and out of a CAX program in a standardised manner.
+
+For example, instead of inserting the data representing, say, a block with
+a hole in it, tell the system to create a block, put a hole in it, and then
+perhaps move it to another position. The end result in terms of data values
+can be the same but the route is very different.
+
+
+.STEP procedural exchange
+image::../images/01-pfilproc.svg[]
+
+
+==== Level 4 Exchange
+
+This was the vision when STEP started -- intelligent knowledgebases as
+an exchange mechanism.
+
+The vision has faded.
+
+The majority of STEP implementations are Level 1 (file exchange).
+Internally, though, they are implemented using a Level 2 or 3 architecture.
+
+
+.STEP level 4 exchange
+image::../images/01-plevel4.svg[]

@@ -1,0 +1,141 @@
+---
+title: STEP Part 28 XML Format
+---
+
+= STEP Part 28 XML Format
+
+ISO 10303-28 defines an XML representation for EXPRESS data, providing an alternative to the Part 21 clear-text format for applications that work with XML-based toolchains. Part 28 maps EXPRESS schemas to XML Schemas (XSD) and EXPRESS instance data to XML documents that conform to those schemas.
+
+This module covers the concepts, structure, and configuration options of the STEP Part 28 format.
+
+== Why XML?
+
+While Part 21 is the traditional STEP exchange format, XML offers several advantages in modern computing environments:
+
+* **Web compatibility** — XML is natively supported by web browsers, web services, and most enterprise integration platforms
+* **Schema validation** — XML Schema (XSD) provides built-in validation of document structure
+* **Tool ecosystem** — a vast ecosystem of XML parsers, transformers (XSLT), and query tools (XPath, XQuery) is available
+* **Human readability** — like Part 21, XML documents are text-based and can be inspected directly
+
+Part 28 defines a systematic mapping from EXPRESS constructs to XML Schema constructs, ensuring that every valid EXPRESS data set can be represented as a valid XML document.
+
+== Mapping Concepts
+
+A Part 28 configuration defines how an EXPRESS schema maps to an XML Schema:
+
+* **Entities** → XML elements
+* **Attributes** → XML attributes or nested elements
+* **Data types** → XML Schema types
+* **Relationships** → XML references or nested elements
+
+The result is an XML Schema definition and corresponding XML document instances.
+
+== XML Schema Example
+
+A typical Part 28 XML Schema maps an EXPRESS schema to a target namespace:
+
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema targetNamespace="http://www.example.org/ifcXML/IFC2X2_FINAL"
+  xmlns:ifc="http://www.example.org/ifcXML/IFC2X2_FINAL"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:ex="urn:iso10303-28:ex"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  elementFormDefault="qualified" attributeFormDefault="unqualified">
+  <xs:import namespace="urn:iso10303-28:ex" schemaLocation="ex.xsd" />
+  <xs:element name="uos" type="ifc:uos" substitutionGroup="ex:uos" />
+  <xs:complexType name="uos">
+    <xs:complexContent>
+      <xs:restriction base="ex:uos">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="ifc:Ifc2DCompositeCurve" />
+          <xs:element ref="ifc:IfcActionRequest" />
+          ...
+        </xs:choice>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>
+----
+
+The `ex` namespace (`urn:iso10303-28:ex`) contains common definitions shared across all Part 28 documents.
+
+== XML Document Structure
+
+A Part 28 XML document is governed by:
+
+* **Configuration** — defines how the EXPRESS schema maps to XML
+* **governing_schema** — the EXPRESS schema being represented
+* **Schema population** — the actual data instances
+* **governed_sections** — sections of the document controlled by specific schemas
+
+The root element contains UOS (Units Of Structure) instances — the top-level container for all data.
+
+== Configuration Options
+
+Part 28 provides flexible configuration options that control how EXPRESS data is serialized to XML:
+
+[source,xml]
+----
+<configuration id="default">
+  <option
+    naming-convention="preserve-case"
+    exp-type="root"
+    exp-attribute="double-tag"
+    tagless="true"
+    flatten="false"
+    sparse="false">
+  </option>
+  <entity select="product">
+    <attribute select="LongName" name="FullName"></attribute>
+    <inverse select="IsDecomposedBy"></inverse>
+  </entity>
+</configuration>
+----
+
+Key configuration options:
+
+* **naming-convention** — controls case mapping: `preserve-case`, `initial-upper`, or `camel-case`
+* **exp-type** — how EXPRESS types are represented: `root`, `value`, or `unspecified`
+* **exp-attribute** — how attributes are encoded: `double-tag`, `attribute-tag`, `entity-tag`, or `attribute-content`
+* **tagless** — omit entity wrapper tags when possible
+* **flatten** — flatten nested structures
+* **sparse** — omit attributes with unset values
+
+Per-entity overrides allow fine-tuning the mapping for specific entities, such as renaming attributes or excluding inverse attributes.
+
+== Reading and Writing Part 28 Documents
+
+The typical workflow for working with Part 28 involves:
+
+1. **Define a configuration** — specify how the EXPRESS schema maps to XML, or use a default configuration
+2. **Export to XML** — serialize a data population as an XML document conforming to the generated XML Schema
+3. **Import from XML** — parse an XML document and create EXPRESS instances in a data management system
+
+Both full and partial models can be exported and imported. Partial exports are useful for exchanging subsets of a large model, such as all instances matching a particular query.
+
+== Advantages and Limitations
+
+=== Advantages
+
+* **Standards-based** — fully compliant with ISO 10303-28
+* **XML toolchain compatibility** — can be processed with standard XML tools (XSLT, DOM, SAX, etc.)
+* **Web-friendly** — suitable for HTTP-based data exchange and REST APIs
+* **Schema validation** — XML Schema validation catches structural errors before data processing begins
+
+=== Limitations
+
+* **Verbosity** — XML is typically more verbose than Part 21 for the same data, resulting in larger file sizes
+* **Performance** — parsing large XML documents can be slower than parsing Part 21 files
+* **Configuration complexity** — the many configuration options can be daunting; understanding which combination suits a particular use case requires experience
+
+== Choosing Between Part 21 and Part 28
+
+The choice depends on the use case:
+
+* **Part 21** is preferred for traditional STEP data exchange between CAD/CAM/CAE systems, where the format has been established for decades and tool support is mature.
+
+* **Part 28** is preferred when integrating with XML-based systems, web services, or enterprise service buses, or when the data needs to be processed by standard XML tools.
+
+Many organizations use both formats — Part 21 for system-to-system data exchange within the engineering domain, and Part 28 for publishing data to enterprise systems or web-based applications.

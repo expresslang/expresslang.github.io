@@ -1,0 +1,310 @@
+---
+title: STEP Part 21 File Format
+---
+
+= STEP Part 21 File Format
+
+ISO 10303-21 defines the STEP Physical File (SPF) format — the clear-text encoding for instance data described in EXPRESS. It is the most widely used format for exchanging product data in STEP, suitable for both data exchange between organizations and long-term data archiving.
+
+A Part 21 file is human-readable (though not intended to be hand-authored), can be parsed by any STEP-compliant software, and faithfully represents all EXPRESS data types including entities, aggregations, enumerations, and select types.
+
+This module covers the structure, syntax, and data type mapping rules of the STEP Part 21 format.
+
+== File Structure
+
+A STEP Physical File consists of three sections enclosed in special delimiters:
+
+```
+ISO-10303-21;
+HEADER;
+  FILE_DESCRIPTION(...);
+  FILE_NAME(...);
+  FILE_SCHEMA(...);
+ENDSEC;
+DATA;
+  #1=ENTITY_NAME(value1, value2, ...);
+  #2=ANOTHER_ENTITY(value1, value2, ...);
+ENDSEC;
+END-ISO-10303-21;
+```
+
+The file begins with the `ISO-10303-21;` magic string and ends with `END-ISO-10303-21;`. The HEADER section describes the file's contents, and the DATA section contains the actual instance data.
+
+== Header Section
+
+The HEADER section contains exactly three mandatory entities in a fixed order:
+
+* **FILE_DESCRIPTION** — describes the file's contents and the conformance level
+* **FILE_NAME** — identifies the file, its creation time, author, organization, and originating system
+* **FILE_SCHEMA** — lists the EXPRESS schema names that govern the data in the file
+
+An optional PRIVATE entity may follow.
+
+=== Header Schema
+
+The header section entities are defined by the `Header_Section_Schema`:
+
+[source,express]
+----
+SCHEMA Header_Section_Schema;
+  TYPE SCHEMA_NAME = STRING (256); END_TYPE;
+
+  ENTITY file_description;
+    description          : LIST OF STRING (256);
+    implementation_level : STRING (256);
+  END_ENTITY;
+
+  ENTITY file_name;
+    name                 : STRING (256);
+    time_stamp           : STRING (256);
+    author               : LIST OF STRING (256);
+    organization         : LIST OF STRING (256);
+    preprocessor_version : STRING (256);
+    originating_system   : STRING (256);
+    authorisation        : STRING (256);
+  END_ENTITY;
+
+  ENTITY file_schema;
+    schema_identifiers   : LIST OF SCHEMA_NAME;
+  END_ENTITY;
+END_SCHEMA;
+----
+
+=== Header Example
+
+```
+HEADER;
+  FILE_DESCRIPTION(('Example for SPF Education'), '2;1');
+  FILE_NAME('test_for_SPF_class.stp',
+            '1995-01-30T15:51:23',
+            ('Lars Petter Haugland'),
+            ('EPM Technology a.s'),
+            'EXPRESS Data Manager version 961112',
+            'HP-PE/SolidDesigner: 03.00',
+            'Hans Karten Dahl');
+  FILE_SCHEMA(('CONFIG_CONTROL_DESIGN'));
+ENDSEC;
+```
+
+== Data Section
+
+The DATA section contains the actual entity instances, one per line:
+
+```
+DATA;
+  #nnnnnnnnn=AAAAAA(value1, value2, ..., valueN);
+  #xxxxxxxxx=!BBBBBB(value1, value2, ..., valueN);
+  #yyyyyyyyy=CCCCC(value1, value2, ..., valueN);
+ENDSEC;
+```
+
+Each instance has:
+
+* A unique **instance identifier** — a `#` followed by an unsigned integer (up to 9 digits)
+* An **entity name** — matching an entity in the schema declared in FILE_SCHEMA
+* A **parameter list** — the attribute values, in the order defined by the entity declaration
+
+== Attribute Mapping Rules
+
+EXPRESS attributes are mapped to the Part 21 format according to precise rules:
+
+* **Order matters** — attributes appear in the order defined in the ENTITY declaration, with inherited attributes coming before the entity's own attributes
+* **Inherited attributes** are mapped only once, even when an entity inherits from multiple supertypes
+* **Omitted values** — attributes without a value are represented as `$`
+* **Excluded attributes** — INVERSE and DERIVE attributes are not included in the file
+* **Redeclared attributes** — attributes redeclared in a subtype are shown as `*`
+
+== Data Type Mappings
+
+=== INTEGER
+
+Integers are represented as optional sign (+/-) followed by digits, with no limitation on the number of digits.
+
+[source,express]
+----
+ENTITY MyInteger;
+  Attr1 : INTEGER;
+  Attr2 : INTEGER;
+END_ENTITY;
+----
+
+```
+#346 = MYINTEGER(678, 890);
+```
+
+=== REAL
+
+Real numbers use standard decimal or scientific notation. The EXPRESS type NUMBER is always mapped as a REAL.
+
+```
+#347 = MYREAL(7.0000000000E+0, 1.2);
+```
+
+Precision depends on the system creating the file.
+
+=== STRING
+
+Strings are enclosed in single quotes. Characters in the ASCII range 32–126 are mapped directly, except for backslash (`\`) and single quote (`'`), which are doubled: `\\` and `''`. Characters outside this range use special encodings (`\S\`, `\X\`, `\X0\`, `\X2\`, `\X4\`).
+
+```
+#348 = MYSTRING('Normal String', '\S\0\X\09ab\\aa''bc');
+```
+
+=== BOOLEAN and LOGICAL
+
+Three-valued mapping:
+
+* `.T.` — TRUE
+* `.F.` — FALSE
+* `.U.` — UNKNOWN (LOGICAL only)
+
+```
+#349 = MYBOOLLOGICAL(.T., .U.);
+```
+
+=== BINARY
+
+Binary values are represented as hexadecimal strings enclosed in double quotes. The first hex digit indicates the number of leading zero bits to prepend to the value.
+
+```
+#350 = MYBINARY("23B", "092A");
+```
+
+=== Enumeration
+
+Enumeration values are enclosed in dots, in uppercase:
+
+[source,express]
+----
+TYPE MyEnumeration = ENUMERATION OF (red, blue, white);
+END_TYPE;
+
+ENTITY UsingEnumeration;
+  Attr1 : MyEnumeration;
+  Attr2 : MyEnumeration;
+END_ENTITY;
+----
+
+```
+#353 = USINGENUMERATION(.RED., .BLUE.);
+```
+
+=== Entity Instance References
+
+Entity references are represented by the instance identifier (`#nnn`):
+
+[source,express]
+----
+ENTITY AnotherEntity;
+  value : INTEGER;
+END_ENTITY;
+
+ENTITY MyEntityRelation;
+  Attr1 : AnotherEntity;
+END_ENTITY;
+----
+
+```
+#351 = MYENTITYRELATION(#352);
+#352 = ANOTHERENTITY(998);
+```
+
+=== SELECT with Typed Values
+
+When a SELECT type's instantiated value is a primitive type (rather than an entity), the value must be wrapped in a typed expression:
+
+[source,express]
+----
+TYPE CircleSize = SELECT (Radius, Diameter);
+END_TYPE;
+TYPE Radius = REAL; END_TYPE;
+TYPE Diameter = REAL; END_TYPE;
+
+ENTITY Circle;
+  Size : CircleSize;
+END_ENTITY;
+----
+
+```
+#354 = CIRCLE(RADIUS(54.0));
+```
+
+=== Aggregations
+
+All aggregation types (ARRAY, LIST, SET, BAG) are mapped identically — as a parenthesized, comma-separated list:
+
+[source,express]
+----
+ENTITY MyAggr;
+  Attr1 : SET OF INTEGER;
+  Attr2 : LIST OF STRING;
+  Attr3 : BAG OF NUMBER;
+  Attr4 : ARRAY [1:2] OF REAL;
+END_ENTITY;
+----
+
+```
+#360 = MYAGGR((1,2,3), ('abc','cde'), (1.2,2.0), (3.14,2.78));
+```
+
+== Internal and External Mapping
+
+When an entity is a subtype, instances can be represented using either **internal mapping** or **external mapping**, depending on the complexity of the supertype/subtype graph.
+
+=== Internal Mapping
+
+Used when an instance involves only a single entity type (no complex entity combination):
+
+[source,express]
+----
+ENTITY aa SUPERTYPE OF (ONEOF(bb, cc));
+  attr_aa : STRING;
+END_ENTITY;
+
+ENTITY bb SUBTYPE OF (aa);
+  attr_bb : INTEGER;
+END_ENTITY;
+
+ENTITY cc SUBTYPE OF (aa);
+  attr_cc : REAL;
+END_ENTITY;
+----
+
+```
+#361 = AA('aString');
+#362 = BB('bString', 3);
+#363 = CC('cString', 99.5);
+```
+
+Note that `BB` and `CC` instances include the inherited `attr_aa` as their first parameter.
+
+=== External Mapping
+
+Used when an instance combines multiple entity types (a complex entity instance). The combined instance is written as a parenthesized list of partial entity values:
+
+```
+#369 = (AA('aaString'), BB(4), CC(4.0));
+```
+
+The algorithm for choosing between internal and external mapping is:
+
+1. Identify all entity types included in the instance
+2. Find those that are "leaf" types (not a supertype of any other included type, or a supertype whose subtypes are not included)
+3. If exactly one leaf type is found → internal mapping; otherwise → external mapping
+
+== User-Defined Entities
+
+Part 21 allows user-defined entities — instances whose entity name is not defined in the governing EXPRESS schema. These can carry any kind of private information and may reference other entities in the file (but not vice versa). A file containing user-defined entities remains compliant with ISO 10303-21.
+
+== Short Names
+
+Each STEP Application Protocol defines short names (maximum 6 characters) for all its entity types to reduce file size. There is no algorithm for generating short names from the long names — the mapping must be obtained from the AP specification. Short names are optional; both long and short names are valid in a Part 21 file.
+
+== Practical Considerations
+
+When working with Part 21 files:
+
+* **File size** — large models can produce files of hundreds of megabytes. The text format, while verbose, ensures long-term readability.
+* **Character encoding** — Part 21 files use ISO 8859-1 by default, with special escape sequences for other character sets.
+* **Instance ordering** — while instances can appear in any order, forward references (referencing an instance before it appears in the file) are common and must be handled by parsers.
+* **Validation** — importing a Part 21 file should trigger validation against the governing EXPRESS schema to ensure data quality.

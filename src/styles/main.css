@@ -1,0 +1,79 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+@plugin '@tailwindcss/container-queries';
+@custom-variant dark (&:where(.dark, .dark *));
+
+@source '../../src/**/*.vue';
+@source '../../src/**/*.ts';
+
+@theme {
+  --color-elf-salmon: #FFB1A2;
+  --color-elf-blue: #3d7cc9;
+  --color-elf-blue-dark: #2d5fa3;
+  --color-navy: #231f20;
+  --color-navy-light: #2e2a2b;
+  --color-slate-bg: #f8f9fb;
+
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --font-logo: 'Montserrat', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: #3d7cc9;
+  color: white;
+}
+
+:is(.dark ::selection) {
+  background: #3d7cc9;
+  color: white;
+}
+
+/* Focus visible ring */
+:focus-visible {
+  outline: 2px solid #3d7cc9;
+  outline-offset: 2px;
+}
+:is(.dark :focus-visible) {
+  outline-color: #3d7cc9;
+}
+
+/* Subtle horizontal rule */
+hr {
+  border-color: #e5e7eb;
+}
+:is(.dark hr) {
+  border-color: #374151;
+}
+
+/* Transition on route changes */
+.router-view-enter-active,
+.router-view-leave-active {
+  transition: opacity 0.15s ease;
+}
+.router-view-enter-from,
+.router-view-leave-to {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}

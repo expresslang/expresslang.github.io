@@ -1,0 +1,147 @@
+---
+title: EXPRESS Data Management
+---
+
+= EXPRESS Data Management
+
+Managing data described by EXPRESS schemas requires an understanding of how schemas, data populations, and software tools interact. This module introduces the key concepts behind EXPRESS data management — how schemas are compiled, how data is stored and organized, and what operations can be performed on EXPRESS-based data.
+
+== The Data Management Challenge
+
+An EXPRESS schema defines the structure and constraints of a data model, but the schema itself is just a specification. To work with actual data — creating instances, querying populations, validating constraints, exchanging files — you need software infrastructure that understands EXPRESS.
+
+The core challenges of EXPRESS data management are:
+
+* **Schema compilation** — translating an EXPRESS schema into an internal representation that software can work with
+* **Data storage** — organizing populations of entity instances so they can be efficiently created, read, updated, and deleted
+* **Validation** — checking that a population satisfies all constraints defined in the schema (WHERE rules, global rules, uniqueness constraints)
+* **Data exchange** — importing and exporting data in standard formats (Part 21, Part 28)
+* **Query and transformation** — finding specific data within a population and transforming data between schemas
+
+== Key Concepts
+
+=== Schema Compilation
+
+Before any data operations can take place, an EXPRESS schema must be compiled. Compilation checks the schema for syntactic and semantic correctness and produces an internal representation — often called a **dictionary** or **schema definition** — that serves as the blueprint for all subsequent data operations.
+
+The compilation process verifies:
+
+* All identifier references resolve correctly
+* Type declarations are consistent
+* Inheritance hierarchies are well-formed
+* Interface declarations (USE FROM, REFERENCE FROM) are valid
+* All constraints are syntactically correct
+
+Once compiled, the schema definition can be used to create data populations that conform to its structure.
+
+=== Data Populations and Repositories
+
+EXPRESS data management systems typically organize data in a hierarchical structure:
+
+* **Repository** — a named container that holds one or more models and their associated schema definitions
+* **Model** — a collection of entity instances that conform to a specific EXPRESS schema
+* **Instance** — a single entity occurrence with concrete attribute values
+
+A repository may contain models based on different schemas, and a model belongs to exactly one schema. This organization allows multiple related data sets to be managed together while maintaining clear schema boundaries.
+
+=== Transactions
+
+Data modifications in an EXPRESS data management system are typically performed within transactions. A transaction groups a set of operations into an atomic unit — either all operations succeed, or none of them take effect.
+
+Transactions are essential for:
+
+* **Consistency** — ensuring that validation rules are checked against complete, self-consistent data sets
+* **Recovery** — providing the ability to roll back changes if an error occurs
+* **Concurrency** — managing simultaneous access by multiple users or applications
+
+Most systems support nested transactions, allowing complex operations to be composed from simpler ones.
+
+=== Data Access Patterns
+
+Applications interact with EXPRESS data through well-defined access patterns:
+
+1. **Open a session** — establish a connection to the data management system
+2. **Open a repository** — access the container holding the relevant models
+3. **Open or create a model** — access the specific data population
+4. **Manipulate instances** — create, read, update, or delete entity instances
+5. **Validate** — check the population against schema-defined constraints
+6. **Close** — release resources and commit or rollback changes
+
+This pattern is formalized in the ISO 10303-22 Standard Data Access Interface (SDAI), which defines a standard API for EXPRESS data access across multiple programming languages.
+
+== Schema Types
+
+An EXPRESS data management system typically works with several types of schemas:
+
+* **EXPRESS schema** — the base data model, compiled from an EXPRESS source file
+* **Mapping schema** — an EXPRESS-X schema that defines how to transform data from one EXPRESS schema to another
+* **Query schema** — defines business objects and query operations on an EXPRESS schema
+* **Rule schema** — adds validation rules and constraints to an EXPRESS schema
+
+Each of these schema types serves a distinct purpose. The EXPRESS schema defines the data structure, mapping schemas define transformations, query schemas define retrieval operations, and rule schemas define additional validation logic. All are compiled by appropriate compilers and stored alongside the EXPRESS schema definition.
+
+== Instance Management
+
+Entity instances are the core data objects in an EXPRESS data management system. Each instance:
+
+* Belongs to exactly one entity type defined in the schema
+* Has attribute values conforming to the entity's attribute declarations
+* Has a unique identifier within its model
+* May participate in subtype/supertype relationships
+
+Operations on instances include:
+
+* **Creation** — instantiate a new entity with initial attribute values
+* **Reading** — retrieve attribute values from an existing instance
+* **Updating** — modify attribute values of an existing instance
+* **Deletion** — remove an instance from its model
+* **Classification** — determine the entity type, check subtype/supertype relationships
+
+Attribute values can be of any EXPRESS data type: simple types (INTEGER, REAL, STRING, etc.), named types (entity references, defined types), aggregations (ARRAY, LIST, SET, BAG), or select types.
+
+== Data Exchange
+
+EXPRESS data management systems support data exchange through standardized file formats:
+
+* **ISO 10303-21 (STEP Physical File)** — a clear-text encoding of EXPRESS instance data, widely used for data exchange between organizations
+* **ISO 10303-28 (XML representation)** — an XML encoding of EXPRESS data, useful for web-based applications and integration with XML-based systems
+
+These formats are described in detail in the dedicated modules on Part 21 and Part 28. The key point is that any compliant EXPRESS data management system should be able to import and export data in these formats, ensuring interoperability between different implementations.
+
+== Validation
+
+Validation is a critical capability of EXPRESS data management. It involves checking that a population of instances satisfies all constraints defined in the schema:
+
+* **WHERE rules** — local constraints on individual entity instances
+* **Global rules** — constraints that span multiple instances
+* **Uniqueness constraints** — ensuring no two instances share the same values for specified attributes
+* **Inverse attribute consistency** — verifying that bidirectional relationships are correctly maintained
+
+Validation can be triggered at various levels: on individual instances, on all instances of a particular entity type, or across an entire model. The results are typically reported as a list of violations, identifying which instances failed which constraints.
+
+== The Standard Data Access Interface (SDAI)
+
+ISO 10303-22 defines the Standard Data Access Interface (SDAI), a standard API for accessing EXPRESS data. SDAI provides a language-independent model for data access, with bindings defined for several programming languages including C, C++, Java, and others.
+
+SDAI concepts include:
+
+* **Session** — the top-level handle for all SDAI operations
+* **Repository** — a container for models
+* **Model** — a collection of instances conforming to a schema
+* **Schema definition** — the compiled representation of an EXPRESS schema
+
+SDAI is covered in more detail in the modules on data access and programming with SDAI.
+
+== Tool Considerations
+
+When selecting tools for EXPRESS data management, consider the following capabilities:
+
+* **EXPRESS compiler** — validates schemas and produces internal representations
+* **EXPRESS-G visualization** — displays schemas graphically for documentation and analysis
+* **Data browser/editor** — allows interactive viewing and editing of instance populations
+* **File import/export** — supports Part 21 and Part 28 formats
+* **Validation engine** — checks populations against all schema constraints
+* **Query interface** — allows searching and filtering instances based on criteria
+* **API bindings** — provides programmatic access in your preferred programming language
+
+Several commercial and open-source tools provide these capabilities, with varying levels of EXPRESS feature support.

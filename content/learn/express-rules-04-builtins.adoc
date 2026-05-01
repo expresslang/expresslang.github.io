@@ -1,0 +1,611 @@
+---
+layout: author-docs
+---
+:stem:
+
+= Built-in Functions for Rules
+
+From Part 43, pp 10 to 12, a rewrite of `mapped_item`:
+
+[source]
+----
+ENTITY rep;
+  items : SET [1:?] OF ri;
+  ...
+END_ENTITY;
+
+ENTITY rm;
+  map    : rep;
+  origin : ri;
+INVERSE
+  usage : SET [1:?] OF mi FOR source;
+END_ENTITY;
+
+ENTITY ri;
+  name : STRING;
+WHERE
+ ...
+END_ENTITY;
+
+ENTITY mi
+  SUBTYPE OF (ri);
+  source : rm;
+  target : ri;
+WHERE
+  AcyclicMr(UsingReps(SELF), [SELF]);
+END_ENTITY;
+----
+
+Where the function `UsingReps` returns the
+set of `rep` which
+reference a given `ri` (or `mi`).
+
+
+[source]
+----
+FUNCTION AcyclicMr(parents : SET OF rep;
+                   children : SET OF ri):
+         BOOLEAN;
+LOCAL
+  x, y : SET OF ri;
+END_LOCAL;
+-- subset of children that are mi
+x := QUERY(z <* children |
+           'SN.MI' IN TYPEOF(z));
+-- check each element
+REPEAT i := 1 TO SIZEOF(x);
+-- FALSE if element maps a rep in parent set
+  IF x[i]\mi.source.map IN parents
+  THEN RETURN(FALSE); END_IF;
+-- recursive check on the mr elements
+  IF NOT AcyclicMr(
+    parents + x[i]\mi.source.mr,
+    x[i]\mi.source.map.items)
+  THEN RETURN(FALSE); END_IF;
+END_REPEAT;
+-- subset of children that are not mi
+x := children - x;
+-- check each element
+REPEAT i := 1 TO SIZEOF(x);
+-- get set of ri referenced
+  y := QUERY(z <* Agg2Set(USEDIN(x[i], '')) |
+             'SN.RI' IN TYPEOF(z));
+-- recursively check for offending mi
+  IF NOT AcyclicMr(parents, y)
+  THEN RETURN(FALSE); END_IF;
+END_REPEAT;
+-- no cycles
+RETURN(TRUE);
+END_FUNCTION;
+----
+
+
+
+== TYPEOF function
+
+One of the EXPRESS built-in functions, returns the number of items in an
+aggregate.
+Typically used to check if a variable is of a particular type.
+
+In the example, all that it is used for is checking that the
+two lists have the same number of entries -- it has nothing to do with
+whether or not the third, say, item in each list go together.
+
+A better model follows for correlating students and marks.
+
+`TYPEOF(V: GENERIC): SET OF STRING;` returns the set of uppercase
+strings holding the fully qualified names of the types of which the
+value (instance) `V` could be a value of. That is, the result is
+the set of potential uses of `V`, not the actual usage.
+
+[source]
+----
+SCHEMA s;
+
+TYPE mylist = LIST OF REAL; END_TYPE;
+...
+LOCAL lst : mylist; END_LOCAL;
+
+TYPEOF(lst) = ['S.MYLIST', 'LIST']; -- TRUE
+----
+
+Note that given a subtype instance, the returned set will include the
+subtype and all its supertypes, but it excludes subtypes lower in the tree.
+
+
+== SIZEOF function
+
+`SIZEOF(agg)` returns the number of element instances in
+the (aggregate) instance `agg`.
+
+Usually used for controlling an iteration or for comparing the actual
+sizes of two aggregates.
+
+
+[source]
+----
+ENTITY PoorExamMarks;
+  course   : STRING;
+  students : LIST OF UNIQUE person;
+  marks    : LIST OF INTEGER;
+WHERE
+  matched_lists : SIZEOF(students) =
+                  SIZEOF(marks);
+END_ENTITY;
+----
+
+This has been used as an attempt to specify that there is a
+one-to-one correlation between the elements in the two lists.
+
+
+== Correlated aggregates
+
+If a student and a mark go together, then define an ENTITY to
+capture this, as in `BetterExamMarks` and `StudentMark`.
+
+This, of course, solves one problem only to create another.
+
+The new problem is solved by `BestExamMarks`, and the
+function `UniqueStudents`.
+
+
+[source]
+----
+ENTITY BetterExamMarks;
+  course : STRING;
+  results : LIST OF StudentMark;
+END_ENTITY;
+
+ENTITY StudentMark;
+  student : person;
+  mark    : INTEGER;
+END_ENTITY;
+----
+
+But what about student uniqueness in `BetterExamMarks`?
+
+[source]
+----
+ENTITY BestExamMarks;
+  course : STRING;
+  results : LIST OF StudentMark;
+WHERE
+  wr1: UniqueStudents(results);
+END_ENTITY;
+----
+
+
+== UniqueStudents
+
+The function takes a bunch of `StudentMark` and creates a BAG
+of all the students. It also creates a SET of the students and checks
+if the BAG and SET are the same size.
+
+[source]
+----
+FUNCTION UniqueStudents
+         (input: AGGREGATE OF StudentMark):
+         LOGICAL;
+LOCAL
+  aBag : BAG OF person := [];
+END_LOCAL;
+REPEAT i := 1 TO SIZEOF(input);
+  aBag := aBag + input[i].student;
+END_REPEAT;
+RETURN (SIZEOF(aBag) =
+        SIZEOF(Agg2Set(aBag)));
+END_FUNCTION;
+----
+
+
+== QUERY function
+
+One of the EXPRESS built-in functions.
+
+Given an aggregate, it tests every element against a logical condition,
+and puts each element that passes the test into a returned aggregate
+(of the same kind as the input one).
+
+[stem]
+----
+QUERY(v <* InAgg | Lexp(v)): OutAgg
+----
+
+applies the logical expression `Lexp(v)`
+to each element of the aggregate `InAgg`. Each element for which
+`Lexp` is TRUE is added to the returned aggregate `OutAgg`,
+which is of the same type as `InAgg`.
+It is equivalent to the following pseudo-EXPRESS.
+
+[source]
+----
+FUNCTION query(input: AGGREGATE OF GENERIC:GEN;
+               LEXP):
+              AGGREGATE OF GENERIC:GEN;
+LOCAL
+  result : AGGREGATE OF GENERIC:GEN := [];
+END_LOCAL;
+REPEAT i := LOINDEX(input) TO HIINDEX(input);
+  IF Lexp(input[i]) = TRUE
+  THEN  result := result + input[i];
+  END_IF;
+END_REPEAT;
+RETURN(result);
+END_FUNCTION;
+----
+
+
+// begin notes
+
+== Example
+
+This model just uses SIZEOF. The next one uses QUERY.
+
+A school party must have at least one adult for every 10 children
+and shall not be larger than 50 in total.
+
+[source]
+----
+ENTITY SchoolParty;
+  adults, children : SET OF person;
+WHERE
+  w1: 10*SIZEOF(adults) >= SIZEOF(children);
+  w2: SIZEOF(adults) + SIZEOF(children) <= 50;
+END_ENTITY;
+----
+
+This model uses both SIZEOF and QUERY.
+
+The assumption here is that a `person` entity has
+an `age` attribute. The first QUERY grabs all the adults
+and the second grabs all the children.
+
+Or, reformulating the entity and using the QUERY function:
+
+[source]
+----
+ENTITY SchoolParty;
+  group : SET [2:50] OF person;
+WHERE
+w1: 10*SIZEOF(QUERY(p <* group | p.age >= 21))
+    >=
+    SIZEOF(QUERY(p <* group | p.age <= 18));
+END_ENTITY;
+----
+
+
+== QUERY and SIZEOF
+
+These two are often combined. The names of the functions in the
+example are meant to indicate the kind of result the QUERY returns.
+
+* There shall be no bad p's.
+* At most one bad p.
+* At least one ...
+* Between 2 and 5 ...
+* Every one
+
+`QUERY` and `SIZEOF` functions are often combined.
+
+[source]
+----
+SIZEOF(QUERY(p <* e | Bad(p)=TRUE)) = 0;
+
+SIZEOF(QUERY(p <* e | MaxOneBad(p)=TRUE)) <= 1;
+
+SIZEOF(QUERY(p <* e | AtLeastOne(p)=TRUE)) >0;
+
+{2 <=
+  SIZEOF(QUERY(p <* e | Two2Five(p)=TRUE))
+<= 5};
+
+SIZEOF(QUERY(p <* e | AllGood(p)=TRUE))
+= SIZEOF(e);
+----
+
+
+// begin notes
+
+== USEDIN function
+
+One of the EXPRESS built-in functions.
+
+There is an implied directionality in EXPRESS entities. From an entity
+you can '`see`' what its attributes are but you can't '`see`' where it is used
+as an attribute.
+
+The USEDIN function returns entity instances where a particular
+entity instance is used as a particular attribute.
+
+You could get the same information from an INVERSE attribute, if there
+was one, but USEDIN can be used even if there isn't.
+
+`USEDIN(T:GENERIC; R:STRING): BAG OF GENERIC;` returns the BAG of
+entity instances that uses instance `T` in role `R`.
+
+* If `T` plays no roles and/or role `R` is not found,
+the returned BAG is empty.
+
+* If `R` is an empty string, every usage of instance `T`
+is reported.
+
+Note that the `USEDIN` function examines instances in an
+object-base. That is, it looks at actual data rather than the potential
+kinds (types) of data.
+
+It is not all that asy to work out what a USEDIN is trying to
+discover. It's at least doubly difficult if it is part of
+a QUERY (which often is embedded in a SIZEOF).
+
+
+.Example of USEDIN
+[example]
+====
+[source]
+----
+ENTITY PoorEnt;
+  attr : PoorColour;
+END_ENTITY;
+
+ENTITY PoorColour;
+  hue        : fraction;
+  saturation : fraction;
+  intensity  : fraction;
+WHERE
+  wr1: SIZEOF(QUERY(x <*
+              USEDIN(SELF, 'POORENT.ATTR') |
+       (x.attr.intensity > 0.5))) = 0;
+END_ENTITY;
+----
+
+Says that when an instance of `PoorColour` is used as the
+`attr` of the entity `PoorEnt`, then its value for
+`intensity` shall be not more than half.
+====
+
+
+With a little bit or rework, the model is much cleaner and understandable.
+(Why should a constraint by the user be put into the used?)
+
+
+This model is better written as:
+
+[source]
+----
+ENTITY Ent;
+  attr : Colour;
+WHERE
+  wr1: attr.intensity <= 0.5;
+END_ENTITY;
+
+ENTITY Colour;
+  hue        : fraction;
+  saturation : fraction;
+  intensity  : fraction;
+END_ENTITY;
+----
+
+
+An INVERSE could be used instead of the USEDIN, but this again obscures
+the intent.
+
+Or, it could be rewritten using an inverse.
+
+[source]
+----
+ENTITY Ent;
+  attr : Colour;
+END_ENTITY;
+
+ENTITY Colour;
+  hue        : fraction;
+  saturation : fraction;
+  intensity  : fraction;
+INVERSE
+  low : BAG OF Ent FOR attr;
+WHERE
+  w1: (SIZEOF(low) > 0 AND
+       intensity <= 0.5) XOR
+      (SIZEOF(low) = 0);
+END_ENTITY;
+----
+
+== Example
+
+=== Second class
+
+This kind of thing is scattered throughout STEP
+(and encouraged to boot).
+
+The RULE is intended to say that `ent` cannot be
+independently instantiated -- it is a second-class entity.
+
+[example]
+====
+[source]
+----
+RULE SecondClass FOR (ent);
+WHERE
+  wr1: SIZEOF(QUERY(e <* ent |
+              NOT (SIZEOF(USEDIN(e,'')) >= 1 )))
+       = 0;
+END_RULE;
+----
+
+states that `ent` shall not be independently instantiated.
+
+* `USEDIN(e,'')` gives entities that reference instance
+`e` of entity type `ent`
+* `SIZEOF(USEDIN(e,'')) >= 1` gives number of entities
+referencing `e`
+* `NOT (SIZEOF...)` gives an `e` that is not referenced
+* and there should be none of these.
+====
+
+
+There is no need for the RULE as it is exactly the semantics
+of REFERENCE import into a SCHEMA.
+
+
+The semantics of this rule are exactly the same as the EXPRESS REFERENCE
+construct.
+
+[source]
+----
+SCHEMA good;        SCHEMA ap;
+REFERENCE FROM sub    ENTITY ent;
+          (ent);        ...
+  ...                   ...
+END_SCHEMA;           END_ENTITY;
+SCHEMA sub;
+ENTITY ent;           RULE SecondClass FOR
+   ...                                 (ent);
+END_ENTITY;             ...
+...
+END_SCHEMA;           END_SCHEMA;
+----
+
+
+=== ROLESOF function
+
+One of the EXPRESS built-in functions.
+
+Another of the functions that examine the object base. Given
+an entity instance, it returns the names of the
+entities, and the attribute names, where it is used as an attribute.
+
+The model is the basis for an example which follows.
+
+`ROLESOF(V:GENERIC): SET OF STRING;` returns the set of roles that the
+instance `V` plays in the object base.
+
+[source]
+----
+SCHEMA uk;
+ENTITY judge;
+  office_holder : person;
+  court         : STRING;
+END_ENTITY;
+
+ENTITY criminal;
+  prisoner : person;
+  gaol     : address;
+  crime    : ...
+END_ENTITY;
+----
+
+
+Quite sensibly, in the UK a judge must not in jail. (This
+model would be incorrect in (parts of) the United States).
+
+There must be no instance where a `person` simultaneously
+plays the role of `office_holder` in `judge` and
+the role of `prisoner` in `criminal`.
+
+
+In the UK schema, a person who is a judge shall not be a prisoner in gaol.
+
+[source]
+----
+RULE NoCriminalJudge FOR (person);
+WHERE
+wr1: SIZEOF(QUERY(p <* person |
+      'UK.CRIMINAL.PRISONER' IN ROLESOF(p)
+      AND
+      'UK.JUDGE.OFFICE_HOLDER' IN ROLESOF(p))
+     ) = 0;
+END_RULE;
+----
+
+
+== Required Optional Attributes
+
+Now two examples about putting constraints on the presence
+or absence of values for optional attributes.
+
+An example of how to specify that at least one among several optional
+attributes must be present.
+
+At least one of the optional attributes must have a value:
+
+[source]
+----
+ENTITY ent;
+  attr1 : OPTIONAL ...;
+  attr2 : OPTIONAL ...;
+WHERE
+ at_least_one : EXISTS(attr1) OR
+                EXISTS(attr2);
+END_ENTITY;
+----
+
+One and only one of the optional attributes must have a value:
+
+[source]
+----
+ENTITY ent;
+  attr1 : OPTIONAL ...;
+  attr2 : OPTIONAL ...;
+WHERE
+ only_one : EXISTS(attr1) XOR
+            EXISTS(attr2);
+END_ENTITY;
+----
+
+
+== Attribute Redeclaration
+
+A SUBTYPE can specialise inherited attributes (i.e., limit
+the potential kinds and/or numbers of values).
+
+Given an original schema:
+
+[source]
+----
+ENTITY sub
+  SUBTYPE OF (t);
+WHERE
+  w1: 'INTEGER' IN TYPEOF(SELF\t.b);
+  w2: {1 <= SIZEOF(SELF\t.a) <= 4};
+  w3: SIZEOF(SELF\t.a) =
+      SIZEOF(Agg2Set(SELF\t.a));
+--  w4: subtyping of list elements
+END_ENTITY;
+----
+
+To not confuse your readers, you could do this.
+
+[source]
+----
+ENTITY t;
+  a : LIST OF d;
+  b : NUMBER;
+END_ENTITY;
+
+ENTITY sub
+  SUBTYPE OF (t);
+  SELF\t.a : LIST [1:4] OF UNIQUE e;
+  SELF\t.b : INTEGER;
+END_ENTITY;
+
+ENTITY e SUBTYPE OF d;
+...
+END_ENTITY;
+----
+
+
+
+== Conclusion
+
+* An EXPRESS information model is permissive (i.e. what is not explicitly
+prohibited is permissable).
+* Minimise constraints (enhances re-useability).
+* Add all necessary constraints -- a model is as much about the
+limitations of objects as about the objects themselves.
+* Specify constraints by the following ordered preferences:
++
+--
+. Model structure
+. Local constraints
+. Global rules
+--

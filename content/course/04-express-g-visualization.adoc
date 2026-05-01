@@ -1,0 +1,134 @@
+---
+title: EXPRESS-G Visualization
+---
+
+= EXPRESS-G Visualization
+
+EXPRESS-G is the graphical notation companion to the EXPRESS language. While the textual form of EXPRESS is complete and machine-processable, it can be difficult for non-specialists to grasp the overall structure of a large schema by reading code alone. EXPRESS-G addresses this by providing a visual representation of entity-relationship structures, inheritance hierarchies, and attribute connections using standardized symbols and line styles.
+
+EXPRESS-G is defined in ISO 10303-11 as an integral part of the EXPRESS standard. Any EXPRESS schema can be represented in EXPRESS-G, although the graphical notation does not capture all EXPRESS constructs — in particular, algorithmic details such as FUNCTION bodies, RULE logic, and WHERE rule expressions are not shown graphically.
+
+== Purpose
+
+EXPRESS-G serves two primary purposes in the data modelling workflow:
+
+1. **Developing a new EXPRESS data model** — EXPRESS-G diagrams serve as the primary design artifact. Modellers sketch entity types, their attributes, and relationships visually, then refine the design iteratively before producing the textual EXPRESS schema. Most EXPRESS-G tools can generate a lexical (textual) version of the diagram automatically.
+
+2. **Documenting an existing EXPRESS schema** — for large, established schemas such as the STEP integrated resources or application protocols, EXPRESS-G diagrams provide a navigable overview that helps readers understand the schema's structure, locate specific entities, and trace relationships between them.
+
+== Symbol Types
+
+EXPRESS-G uses a concise set of symbols to represent the key EXPRESS concepts:
+
+=== Data Type Symbols
+
+[cols="1,2"]
+|===
+| Symbol | Represents
+
+| Bold rectangle | Entity type
+| Thin rectangle | Defined type (TYPE declaration)
+| Dashed rectangle | SELECT type
+| Enumeration box | ENUMERATION type
+| Simple type box | Simple types (INTEGER, REAL, STRING, etc.)
+| Circle with number | Page cross-reference
+| Bold rounded rectangle | SCHEMA
+|===
+
+=== Relationship Lines
+
+[cols="1,2"]
+|===
+| Line Style | Represents
+
+| Solid line with name | Attribute relationship
+| Dashed line | SELECT membership
+| Thick line | Subtype/supertype (inheritance) relationship
+| Open arrow | USE FROM / REFERENCE FROM (schema interface)
+|===
+
+=== Annotations
+
+Text annotations on relationship lines and symbols provide additional information:
+
+* **(INV)** — INVERSE attribute
+* **(DER)** — DERIVE attribute
+* `*` — Global or local RULE
+* `1` — ONEOF supertype constraint
+* `&` — AND supertype constraint
+
+== Color Conventions
+
+Color is not formally part of the EXPRESS-G specification, but many tools use color to enhance readability. Common conventions include:
+
+* **Entity types** — bold outlines, often in dark blue or black
+* **Defined types** — lighter outlines
+* **SELECT types** — dashed outlines in a distinct color
+* **Simple types** — small boxes with minimal styling
+
+Consistent use of color within an organization helps readers quickly distinguish between different kinds of schema elements.
+
+== Reading an EXPRESS-G Diagram
+
+To read an EXPRESS-G diagram effectively:
+
+1. **Identify the entities** — the bold rectangles are the main data types. Each entity has a name and a list of attributes.
+2. **Follow the attribute lines** — solid lines connect entities to their attribute types. The line label shows the attribute name, and the cardinality (e.g., `S[1:?]` for a SET) is often shown near the endpoint.
+3. **Trace inheritance** — thick lines indicate subtype/supertype relationships. The subtype end typically has a distinctive marker.
+4. **Check schema interfaces** — open arrows pointing to other schemas indicate USE FROM or REFERENCE FROM declarations, showing dependencies between schemas.
+5. **Navigate cross-page references** — in large schemas, circles with page/position numbers allow you to follow relationships across multiple diagram pages.
+
+== Entity Symbols in Detail
+
+An entity symbol in EXPRESS-G shows:
+
+* The entity name at the top
+* Attribute names and their types below
+* Cardinality indicators for aggregation-valued attributes
+* Markers for inverse, derived, and optional attributes
+
+For example, the entity:
+
+[source,express]
+----
+ENTITY Person;
+  name     : STRING;
+  lives_in : Address;
+  owns     : SET OF Telephone;
+END_ENTITY;
+----
+
+Would appear as a bold rectangle labeled `Person` with three attribute lines: `name` pointing to a `STRING` box, `lives_in` pointing to an `Address` entity box, and `owns` (with `S[1:?]` cardinality) pointing to a `Telephone` entity box.
+
+== Expressiveness Limitations
+
+EXPRESS-G does not capture every detail of an EXPRESS schema. The following constructs have no graphical representation:
+
+* FUNCTION and PROCEDURE bodies
+* WHERE rule expressions (though their presence is marked)
+* RULE logic
+* CONSTANT values
+* Algorithmic details of DERIVE attributes
+
+For these, the textual EXPRESS representation is authoritative. EXPRESS-G is best understood as a complementary notation — ideal for understanding structure and relationships, but not a replacement for the full textual schema.
+
+== Multi-Page Diagrams
+
+Real-world EXPRESS schemas typically contain dozens or hundreds of entities, making it impossible to fit the entire diagram on a single page. EXPRESS-G handles this through page cross-references:
+
+* Each entity has a page number and position identifier
+* Lines that cross page boundaries terminate in circles containing the target page/position
+* Readers navigate by following these cross-references
+
+For example, a PDM Schema might span 40 pages, with the `product` entity on page 1 and the `document` entity on page 5. A relationship line from `product` to `document` would end in a circle marked `5,12` (page 5, position 12).
+
+== Using EXPRESS-G in Practice
+
+When working with EXPRESS-G:
+
+* **Start with the big picture** — identify the core entities and their primary relationships before diving into details
+* **Use tools that support navigation** — interactive EXPRESS-G viewers allow clicking on cross-references to jump to related entities
+* **Export for documentation** — most tools can export EXPRESS-G diagrams to formats suitable for inclusion in technical documentation (HTML, RTF, SVG, PNG)
+* **Keep diagrams focused** — for large schemas, create focused views that show only the entities relevant to a particular concern
+
+EXPRESS-G visualization tools typically support both the creation of new schemas and the generation of diagrams from existing textual EXPRESS schemas.

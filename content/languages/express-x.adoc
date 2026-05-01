@@ -1,0 +1,92 @@
+---
+title: EXPRESS-X
+---
+
+== Overview
+
+EXPRESS-X is a schema mapping language for defining transformations between different EXPRESS schemas.
+It enables the specification of mappings from one or more source schemas to one or more target schemas, supporting 1:1, 1:n, n:1, and n:n cardinalities.
+
+EXPRESS-X is essential for interoperability in environments where multiple EXPRESS schemas exist — for example, mapping between different Application Protocols (APs) within ISO 10303, or between versions of a schema.
+
+[[key-features]]
+== Key features
+
+* *SCHEMA_MAP declarations* — top-level mapping definitions between schemas
+* *MAP and COMPOSE constructs* — entity-level mapping rules
+* *FROM and WHEN clauses* — source selection and conditional mapping
+* *GLOBAL declarations* — shared mapping context and variables
+* *Source-to-target mapping* — support for all cardinality types (1:1, 1:n, n:1, n:n)
+* *Attribute mapping* — fine-grained mapping of individual attributes between entities
+
+[[syntax]]
+== Syntax
+
+EXPRESS-X extends the EXPRESS syntax with mapping-specific constructs:
+
+.Example EXPRESS-X mapping
+[source]
+----
+SCHEMA_MAP automotive_to_aerospace;
+
+  MAP bolt_fastener
+    FROM automotive.fastener
+    WHERE  (kind = bolt);
+    TO aerospace.riveted_joint
+      .joint_type := rigid;
+      .fastener_diameter := source.diameter;
+  END_MAP;
+
+END_SCHEMA_MAP;
+----
+
+[[history]]
+== History
+
+EXPRESS-X was designed by Peter Wilson as a language for defining schema-to-schema transformations, addressing the growing need for interoperability between different STEP Application Protocols and EXPRESS schemas.
+
+=== Timeline
+
+[cols="1,4"]
+|===
+| *Late 1990s* | EXPRESS-X developed by Peter Wilson as part of the EXPRESS language family evolution
+| *2001* | Published as ISO 10303-14:2001 — EXPRESS-X mapping language
+| *Present* | Used in commercial and open-source tools for automated schema transformation
+|===
+
+=== Key people
+
+Peter Wilson:: Designer of EXPRESS-X. Also designed EXPRESS-G and co-authored the authoritative EXPRESS reference with Douglas Schenck.
+
+[[standardization]]
+== Standardization
+
+EXPRESS-X is defined by ISO 10303-14:
+
+* *ISO 10303-14* — EXPRESS-X: EXPRESS Schema Mapping Language
+
+The standard also includes EXPRESS-Q (query language) definitions, reflecting the close relationship between mapping and querying EXPRESS data.
+
+[[tools]]
+== Tools
+
+EXPRESS-X is supported by several tools in the EXPRESS ecosystem:
+
+* *Jotne EDMsdk* — comprehensive toolchain for EXPRESS data management and mapping execution
+* *EXPRESS-G visual editors* — visual editing of EXPRESS-X mapping definitions
+* *EXPRESS-X compilers* — dedicated EXPRESS-X processing engines
+
+[[applications]]
+== Applications
+
+* *AP-to-AP mapping* — transforming data between STEP Application Protocols
+* *Schema versioning* — mapping between different versions of the same schema
+* *Data integration* — combining data from multiple EXPRESS-defined sources
+* *Supply chain interoperability* — enabling data exchange between organizations using different schemas
+
+[[resources]]
+== Learn more
+
+* link:/learn/jotne-express/06-express-x[EXPRESS Course: The EXPRESS-X Language] — practical EXPRESS-X training
+* link:/standards[Standards & BNF] — download the EXPRESS-X grammar
+* link:/learn[Learn EXPRESS] — foundation tutorial covering prerequisite concepts

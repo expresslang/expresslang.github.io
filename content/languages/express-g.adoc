@@ -1,0 +1,81 @@
+---
+title: EXPRESS-G
+---
+
+== Overview
+
+EXPRESS-G is the graphical notation for the EXPRESS information modelling language.
+It provides an entity-relationship style diagram syntax for visual representation, communication, and documentation of EXPRESS data models.
+
+EXPRESS-G mirrors a subset of the EXPRESS lexical syntax, offering a visual alternative that is particularly useful for:
+presenting model overviews to stakeholders, documenting schema structures, and facilitating collaborative design sessions.
+
+[[key-features]]
+== Key features
+
+* *Entity type symbols* — rectangular boxes representing entities with their attributes
+* *Relationship lines* — directed arcs showing attribute references and associations
+* *Subtype/supertype diagrams* — visualization of inheritance hierarchies
+* *Attribute annotations* — optional/mandatory indicators, cardinality
+* *Schema diagrams* — page-level organization showing schema boundaries
+* *Defined type representations* — visual encodings for ENUMERATION, SELECT, and user-defined types
+
+[[notation]]
+== Notation
+
+EXPRESS-G uses a simple but powerful visual vocabulary:
+
+* **Rectangles** — entity types and defined types
+* **Rounded rectangles** — schema symbols
+* **Lines with arrows** — relationships (attributes, references)
+* **Thick lines** — subtype/supertype relationships
+* **Dashed lines** — optional attributes
+* **Circle markers** — cardinality indicators
+
+The notation supports two levels of detail:
+compact notation (entities with attribute names only) and
+full notation (entities with complete attribute type information).
+
+[[history]]
+== History
+
+EXPRESS-G was designed by Peter Wilson as a companion graphical notation to the EXPRESS language.
+It was developed alongside EXPRESS during the standardization process at ISO, becoming part of the same standard (ISO 10303-11).
+
+=== Timeline
+
+[cols="1,4"]
+|===
+| *1980s* | EXPRESS-G developed by Peter Wilson as a visual companion to EXPRESS
+| *1994* | Published as part of ISO 10303-11:1994 (EXPRESS language standard, Annex A)
+| *2004* | Updated in ISO 10303-11:2004 (Edition 2)
+|===
+
+=== Key people
+
+Peter Wilson:: Designer of EXPRESS-G and co-designer of the EXPRESS language. Author of the authoritative EXPRESS reference manual with Douglas Schenck.
+
+[[standardization]]
+== Standardization
+
+EXPRESS-G is defined in Annex A of ISO 10303-11 (same standard as EXPRESS), ensuring perfect alignment between the graphical and lexical forms.
+
+* *ISO 10303-11:1994, Annex A* — First formal definition of EXPRESS-G notation
+* *ISO 10303-11:2004, Annex A* — Updated notation in Edition 2
+
+[[tools]]
+== Tools
+
+Several tools support EXPRESS-G diagram creation and editing:
+
+* *EDMvisualExpress* — visual EXPRESS-G diagram editor from Jotne EPM Technology
+* *STEPmod* — ISO tool for generating EXPRESS-G diagrams from EXPRESS schemas
+* *Graphical EXPRESS* — various open-source and commercial editors
+
+[[resources]]
+== Learn more
+
+* link:/learn/tutorial/express-g[Tutorial: EXPRESS-G] — introductory module on EXPRESS-G notation
+* link:/learn/jotne-express/04-express-g-visualization[EXPRESS Course: EXPRESS-G Visualization] — visual data modelling with EXPRESS-G
+* link:/learn/jotne-express/05-express-g-practice[EXPRESS Course: EXPRESS-G in Practice] — real-world EXPRESS-G diagram walkthrough
+* link:/standards[Standards & BNF] — download the formal EXPRESS grammar

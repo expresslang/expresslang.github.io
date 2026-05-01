@@ -12,15 +12,17 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - uses: ruby/setup-ruby@v1
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
       with:
-        ruby-version: '3.3'
-        bundler-cache: true
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
 
     - name: Build site
-      env:
-        JEKYLL_ENV: production
-      run: bundle exec jekyll build
+      run: npm run build
 
     - name: Restore lychee cache
       uses: actions/cache@v4
@@ -32,12 +34,5 @@ jobs:
     - name: Run lychee
       uses: lycheeverse/lychee-action@v2
       with:
-        args: --verbose --no-progress --base '_site' --cache --max-cache-age 1d --root-dir / '_site/**/*.html'
+        args: --verbose --no-progress --base 'dist' --cache --max-cache-age 1d --root-dir / 'dist/**/*.html'
         fail: true
-
-      # - name: Create Issue From File
-      #   uses: peter-evans/create-issue-from-file@v2
-      #   with:
-      #     title: Link Checker Report
-      #     content-filepath: ./lychee/out.md
-      #     labels: report, automated issue

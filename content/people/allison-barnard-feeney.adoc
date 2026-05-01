@@ -1,0 +1,24 @@
+---
+title: Allison Barnard Feeney
+role: Founder
+categories: founders
+---
+
+== Key Contributor to EXPRESS Standardization
+
+Allison Barnard Feeney is a founding member of the EXPRESS Language Foundation and a
+key contributor to the standardization of EXPRESS within ISO 10303 at NIST
+(National Institute of Standards and Technology).
+
+== Contributions
+
+Feeney played a central role in the development and standardization of the EXPRESS
+language and STEP (Standard for the Exchange of Product model data) at NIST,
+helping bridge the gap between research and industrial adoption of the standards.
+
+Her work at NIST was instrumental in the transition of EXPRESS from a research
+project (PDDI) to an international standard (ISO 10303).
+
+== At ELF
+
+* Founding member of the EXPRESS Language Foundation

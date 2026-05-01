@@ -1,0 +1,20 @@
+---
+title: Phil Spiby
+role: Founder
+categories: founders
+---
+
+== EXPRESS Standards Contributor
+
+Phil Spiby is a founding member of the EXPRESS Language Foundation and a contributor
+to the development and application of EXPRESS language standards.
+
+== Contributions
+
+Spiby has been involved in the STEP and EXPRESS community, contributing to the
+practical application of EXPRESS in industrial settings and helping bridge the
+gap between the language specification and real-world implementations.
+
+== At ELF
+
+* Founding member of the EXPRESS Language Foundation
