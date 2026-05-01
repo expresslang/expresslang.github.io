@@ -24,6 +24,9 @@ jobs:
     - name: Build site
       run: npm run build
 
+    - name: Serve site
+      run: npx serve dist -p 3000 &
+
     - name: Restore lychee cache
       uses: actions/cache@v4
       with:
@@ -34,5 +37,5 @@ jobs:
     - name: Run lychee
       uses: lycheeverse/lychee-action@v2
       with:
-        args: --verbose --no-progress --cache --max-cache-age 1d --root-dir dist/ 'dist/**/*.html'
+        args: --verbose --no-progress --cache --max-cache-age 1d --base http://localhost:3000 'dist/**/*.html'
         fail: true
