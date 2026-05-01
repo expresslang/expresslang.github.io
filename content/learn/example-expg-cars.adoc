@@ -1,6 +1,3 @@
----
-layout: author-docs
----
 :stem:
 
 = EXPRESS-G example model Car Registration Authority

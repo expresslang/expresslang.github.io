@@ -1,5 +1,4 @@
 ---
-layout: post
 title: Thoughts on EXPRESS
 date: 2023-08-17
 categories: announcements

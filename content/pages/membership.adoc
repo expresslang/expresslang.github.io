@@ -1,6 +1,4 @@
 ---
-layout: docs-base
-html-class: docs-page
 title: Membership
 ---
 

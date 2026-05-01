@@ -1,9 +1,6 @@
 ---
-layout: docs-base
-html-class: docs-page
 title: Introducing the EXPRESS language family
 ---
-:page-liquid:
 
 == Purpose
 
