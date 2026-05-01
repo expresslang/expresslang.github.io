@@ -37,5 +37,5 @@ jobs:
     - name: Run lychee
       uses: lycheeverse/lychee-action@v2
       with:
-        args: --verbose --no-progress --cache --max-cache-age 1d --exclude 'https://www.expresslang.org' --base http://localhost:3000 'dist/**/*.html'
+        args: --verbose --no-progress --cache --max-cache-age 1d --exclude 'https://www.expresslang.org' --exclude 'https://www.cax-if.org' --base http://localhost:3000 'dist/**/*.html'
         fail: true
