@@ -21,6 +21,153 @@ Unlike general-purpose programming languages, EXPRESS is purpose-built for defin
 * *ENUMERATION and SELECT types* — extensible type definitions
 * *Schema partitioning* — modular organization of large information models
 
+[[building-blocks]]
+== Building blocks
+
+An EXPRESS schema is composed of several fundamental building blocks that work together to define an information model.
+
+[[datatypes]]
+=== Datatypes
+
+EXPRESS provides a layered type system built on a set of simple (atomic) datatypes:
+
+* *NUMBER* — abstract numeric type (INTEGER or REAL)
+* *INTEGER* — whole numbers
+* *REAL* — floating-point numbers
+* *STRING* — character sequences
+* *BOOLEAN* — TRUE or FALSE
+* *LOGICAL* — TRUE, FALSE, or UNKNOWN
+* *BINARY* — bit sequences
+
+On top of these, EXPRESS provides aggregation types:
+
+* *ARRAY* — fixed-size, ordered collection with optional uniqueness constraint
+* *LIST* — variable-size, ordered collection
+* *SET* — variable-size, unordered collection with uniqueness constraint
+* *BAG* — variable-size, unordered collection (duplicates allowed)
+
+.User-defined types
+[source,express]
+----
+TYPE mass = REAL;
+END_TYPE;
+
+TYPE colour = ENUMERATION OF (red, green, blue);
+END_TYPE;
+
+TYPE shape = SELECT (box, cylinder, sphere);
+END_TYPE;
+----
+
+[[entity-attributes]]
+=== Entity attributes
+
+Entities are the core modelling construct in EXPRESS. Each entity declares a set of attributes that define the properties of the object being modelled.
+
+[source,express]
+----
+ENTITY person;
+  name : STRING;
+  birth_date : date;
+  height : OPTIONAL REAL;
+DERIVE
+  age : INTEGER := years_since(birth_date);
+INVERSE
+  employer : SET[0:?] OF employment FOR employee;
+END_ENTITY;
+----
+
+Attributes can be:
+
+* *Explicit* — mandatory or OPTIONAL values provided directly
+* *Derived* (DERIVE) — computed from other attributes using expressions
+* *Inverse* (INVERSE) — bidirectional relationships maintained automatically
+
+[[supertypes-and-subtypes]]
+=== Supertypes and subtypes
+
+EXPRESS supports single and multiple inheritance through supertype/subtype relationships. Subtypes inherit all attributes of their supertypes and may add new attributes and constraints.
+
+[source,express]
+----
+ENTITY vehicle;
+  registration : STRING;
+END_ENTITY;
+
+ENTITY car
+  SUBTYPE OF (vehicle);
+  no_of_doors : INTEGER;
+END_ENTITY;
+
+ENTITY truck
+  SUBTYPE OF (vehicle);
+  payload : mass;
+END_ENTITY;
+----
+
+Complex supertype constraints control which combinations of subtypes are valid:
+
+* *ONEOF* — exactly one subtype must be instantiated
+* *ANDOR* — any combination of subtypes may coexist
+* *AND* — all listed subtypes must coexist
+
+[[constraints-and-rules]]
+=== Constraints and rules
+
+EXPRESS provides three levels of constraint specification:
+
+.WHERE rules (local constraints)
+[source,express]
+----
+ENTITY positive_integer;
+  value : INTEGER;
+WHERE
+  is_positive : value > 0;
+END_ENTITY;
+----
+
+.GLOBAL rules (schema-level constraints)
+[source,express]
+----
+RULE unique_registration FOR (vehicle);
+  LOCAL
+    regs : SET OF STRING := [];
+  END_LOCAL;
+  WHERE
+    no_duplicates : SIZEOF(regs - QUERY(v <* vehicle | v.registration IN regs)) = 0;
+END_RULE;
+----
+
+.UNIQUE constraints
+[source,express]
+----
+ENTITY employee;
+  employee_id : STRING;
+  social_security : STRING;
+UNIQUE
+  id_unique : employee_id;
+  ss_unique : social_security;
+END_ENTITY;
+----
+
+[[functions-and-procedures]]
+=== Functions and procedures
+
+EXPRESS includes algorithmic constructs for constraint evaluation and data manipulation:
+
+[source,express]
+----
+FUNCTION distance(p1 : point; p2 : point) : REAL;
+  LOCAL
+    dx, dy, dz : REAL;
+  END_LOCAL;
+  dx := p1.x - p2.x;
+  dy := p1.y - p2.y;
+  dz := p1.z - p2.z;
+  RETURN (SQRT(dx*dx + dy*dy + dz*dz));
+END_FUNCTION;
+----
+
 [[syntax]]
 == Syntax
 
@@ -32,16 +179,40 @@ EXPRESS uses a Pascal-like lexical syntax. A schema definition typically include
 * `FUNCTION` and `PROCEDURE` for reusable algorithmic logic
 * `RULE` declarations for global constraints
 
-.Example entity declaration
+.Complete schema example
 [source,express]
 ----
-ENTITY point
+SCHEMA Geometry;
+
+TYPE point_list = LIST[2:?] OF point;
+END_TYPE;
+
+ENTITY point;
   x : REAL;
   y : REAL;
   z : REAL;
 WHERE
   not_at_origin : (x <> 0.0) OR (y <> 0.0) OR (z <> 0.0);
 END_ENTITY;
+
+ENTITY line;
+  start : point;
+  end : point;
+WHERE
+  not_zero_length : distance(start, end) > 0.0;
+END_ENTITY;
+
+FUNCTION distance(p1 : point; p2 : point) : REAL;
+  LOCAL
+    dx, dy, dz : REAL;
+  END_LOCAL;
+  dx := p1.x - p2.x;
+  dy := p1.y - p2.y;
+  dz := p1.z - p2.z;
+  RETURN (SQRT(dx*dx + dy*dy + dz*dz));
+END_FUNCTION;
+
+END_SCHEMA;
 ----
 
 [[history]]

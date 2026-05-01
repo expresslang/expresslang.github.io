@@ -14,9 +14,9 @@
   --color-navy-light: #2e2a2b;
   --color-slate-bg: #f8f9fb;
 
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
-  --font-logo: 'Montserrat', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Fira Sans', system-ui, -apple-system, sans-serif;
+  --font-serif: 'Montserrat', 'Fira Sans', system-ui, -apple-system, sans-serif;
+  --font-logo: 'Montserrat', 'Fira Sans', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
 }
 

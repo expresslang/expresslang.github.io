@@ -132,9 +132,12 @@ const milestones = [
       <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-20 lg:pt-28 lg:pb-28">
         <div class="flex flex-col lg:flex-row items-start gap-12 lg:gap-16">
           <div class="max-w-xl flex-1 min-w-0">
-            <p class="font-mono text-xs tracking-[0.2em] uppercase text-elf-blue dark:text-elf-blue mb-5">
-              International Standards for Information Modelling
-            </p>
+            <div class="flex items-center gap-3 mb-5">
+              <p class="font-mono text-xs tracking-[0.2em] uppercase text-elf-blue dark:text-elf-blue">
+                International Standards for Information Modelling
+              </p>
+              <span class="text-[0.6rem] font-mono font-semibold tracking-wider uppercase px-2 py-0.5 rounded-full border border-elf-blue/30 dark:border-elf-blue/40 text-elf-blue dark:text-elf-blue bg-elf-blue/5 dark:bg-elf-blue/10">501(c)(3)</span>
+            </div>
             <h1 class="text-4xl sm:text-5xl lg:text-[3.5rem] font-serif font-bold text-gray-900 dark:text-white leading-[1.15] tracking-tight">
               The language family<br />
               behind
@@ -266,6 +269,29 @@ const milestones = [
       </div>
     </section>
 
+    <!-- Supporting Organizations -->
+    <section class="py-16 bg-white dark:bg-navy">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <AnimatedSection>
+          <div class="text-center mb-12">
+            <p class="font-mono text-xs tracking-[0.2em] uppercase text-elf-blue dark:text-elf-blue mb-3">Heritage</p>
+            <h2 class="text-2xl font-serif font-bold text-gray-900 dark:text-white">Born from industry leaders</h2>
+            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400 max-w-lg mx-auto">
+              The EXPRESS language originated from collaboration between major aerospace, manufacturing, and standards organizations.
+            </p>
+          </div>
+        </AnimatedSection>
+        <AnimatedSection>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-items-center">
+            <img src="/images/supporters/supporter-boeing.png" alt="Boeing" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
+            <img src="/images/supporters/supporter-md.png" alt="McDonnell Douglas" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
+            <img src="/images/supporters/supporter-ge.png" alt="General Electric" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
+            <img src="/images/supporters/supporter-nist.png" alt="NIST" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
+          </div>
+        </AnimatedSection>
+      </div>
+    </section>
+
     <!-- Latest News -->
     <section class="py-24 bg-white dark:bg-navy">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -367,8 +393,11 @@ const milestones = [
             We facilitate education, standardization, research, and promotion of the EXPRESS language family.
             Membership is open to organizations and individuals worldwide.
           </p>
-          <p class="text-sm text-blue-200/70 dark:text-gray-400 mb-8">
+          <p class="text-sm text-blue-200/70 dark:text-gray-400 mb-2">
             Founded by the original inventors of EXPRESS, including Douglas Schenck, Peter Wilson, and Allison Barnard Feeney.
+          </p>
+          <p class="text-sm text-blue-200/70 dark:text-gray-400 mb-8">
+            ELF is a US-registered 501(c)(3) public charity — your contributions are tax-deductible.
           </p>
           <div class="flex flex-wrap justify-center gap-3">
             <BaseButton to="/membership" size="lg">

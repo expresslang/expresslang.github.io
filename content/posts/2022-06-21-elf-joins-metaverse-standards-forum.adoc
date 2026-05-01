@@ -1,5 +1,4 @@
 ---
-layout: post
 title: EXPRESS Language Foundation joins the Metaverse Standards Forum as Principal
 date: 2022-06-21
 categories: announcements

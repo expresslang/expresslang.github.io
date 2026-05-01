@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "Introducing the EXPRESS Language Foundation"
 date: 2022-03-18
 categories: announcements

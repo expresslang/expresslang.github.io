@@ -1,9 +1,6 @@
 ---
-layout: docs-base
-html-class: docs-page
 title: EXPRESS language references
 ---
-:page-liquid:
 
 == EXPRESS grammar in BNF form
 

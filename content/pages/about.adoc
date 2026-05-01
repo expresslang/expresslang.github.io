@@ -1,9 +1,6 @@
 ---
-layout: docs-base
-html-class: docs-page
 title: About the EXPRESS Language Foundation
 ---
-:page-liquid:
 
 == Our mission
 
