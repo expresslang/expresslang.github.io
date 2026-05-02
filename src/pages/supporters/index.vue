@@ -11,27 +11,33 @@ interface Supporter {
 const supporters: Supporter[] = [
   {
     name: 'Boeing',
-    logo: '/images/supporters/supporter-boeing.png',
+    logo: '/images/supporters/supporter-boeing.svg',
     url: 'https://www.boeing.com',
     desc: 'Associate Technical Fellows contributing to ISO TC 184/SC 4 working groups on visualization and data exchange standards.',
   },
   {
     name: 'McDonnell Douglas',
-    logo: '/images/supporters/supporter-md.png',
+    logo: '/images/supporters/supporter-md.svg',
     url: 'https://www.boeing.com',
     desc: 'Birthplace of EXPRESS — conceived during the PDDI program in 1982 by Douglas Schenck at McDonnell Aircraft (later McDonnell Douglas).',
   },
   {
     name: 'General Electric',
-    logo: '/images/supporters/supporter-ge.png',
+    logo: '/images/supporters/supporter-ge.svg',
     url: 'https://www.ge.com',
     desc: 'Early contributor to STEP standardization and industrial data exchange standards development.',
   },
   {
     name: 'NIST',
-    logo: '/images/supporters/supporter-nist.png',
+    logo: '/images/supporters/supporter-nist.svg',
     url: 'https://www.nist.gov',
     desc: 'National Institute of Standards and Technology — proposed EXPRESS as an International Standard at ISO and led STEP development since inception.',
+  },
+  {
+    name: 'PDES Inc.',
+    logo: '/images/supporters/supporter-pdes.png',
+    url: 'https://pdesinc.org',
+    desc: 'PDES, Inc. is an industry/government consortium that accelerates the development and implementation of STEP standards. Led by Allison Barnard Feeney.',
   },
   {
     name: 'STEP Tools',
@@ -42,8 +48,14 @@ const supporters: Supporter[] = [
   {
     name: 'Jotne EPM Technology',
     logo: '/images/supporters/supporter-jotneconnect.jpeg',
-    url: 'https://www.jotne.com/epm',
+    url: 'https://www.jotne.com',
     desc: 'Developer of the EDMvisualExpress tool and EXPRESS Data Manager. Contributed the EDMsdk course materials to ELF.',
+  },
+  {
+    name: 'AFNeT Services',
+    logo: '/images/supporters/supporter-afnet.png',
+    url: 'https://www.afnet.fr',
+    desc: 'Led by Jean Brangé. French organization focused on digital interoperability standards for industry, including EasySTEP and STEP Next initiatives.',
   },
   {
     name: 'Ribose',
