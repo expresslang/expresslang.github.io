@@ -143,11 +143,11 @@ REFPATH: {
 [[standardization]]
 == Standardization
 
-EXPRESS-Q is defined within ISO 10303:
+EXPRESS-Q is an EXPRESS Language Foundation specification, developed alongside EXPRESS-X:
 
-* *ISO 10303-14* — Description methods: The EXPRESS-X language reference manual, including EXPRESS-Q definitions
-* *ISO 10303-11:2004* — The EXPRESS language reference manual (normative reference)
-* *ISO 10303-1:2024* — Overview and fundamental principles
+* *EXPRESS-Q Language Specification* — Published by the EXPRESS Language Foundation
+* *ISO 10303-11:2004* — The EXPRESS language reference manual (reference)
+* *ISO 10303-1:2024* — Overview and fundamental principles (reference)
 
 [[validation]]
 == Validation rules
@@ -218,14 +218,14 @@ The YAML fields correspond to the EBNF constructs:
 [[history]]
 == History
 
-EXPRESS-Q was developed alongside EXPRESS-X as part of ISO 10303-14, recognizing that schema mapping and querying are complementary operations in the EXPRESS data management lifecycle.
+EXPRESS-Q was developed alongside EXPRESS-X, recognizing that schema mapping and querying are complementary operations in the EXPRESS data management lifecycle.
 
 === Timeline
 
 [cols="1,4"]
 |===
-| *2001* | EXPRESS-Q published as part of ISO 10303-14 alongside EXPRESS-X
-| *Present* | Supported by commercial and open-source EXPRESS tooling; YAML serialization defined
+| *2001* | EXPRESS-Q developed alongside EXPRESS-X for ARM-to-MIM schema mapping
+| *Present* | Published as an ELF specification; YAML serialization defined; supported by commercial and open-source EXPRESS tooling
 |===
 
 [[resources]]

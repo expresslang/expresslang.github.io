@@ -115,7 +115,7 @@ const languages = [
     color: 'text-[#7c5cbf]',
     bg: 'bg-[#7c5cbf]/8',
     desc: 'Query language for defining mappings between ARM and MIM schemas with reference path syntax.',
-    iso: 'ISO 10303-14',
+    iso: 'ELF Specification',
     invented: '2001',
   },
 ]

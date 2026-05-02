@@ -58,7 +58,7 @@ const languages = [
     bg: 'bg-[#7c5cbf]/8',
     border: 'border-[#7c5cbf]/20',
     desc: 'Query language for defining mappings between Application Reference Model (ARM) and Model Implementation Model (MIM) schemas, with reference path syntax for precise schema navigation.',
-    iso: 'ISO 10303-14',
+    iso: 'ELF Specification',
     features: ['ENTITY_MAPPING declarations', 'ATTRIBUTE_MAPPING definitions', 'Reference path syntax', 'EXPRESS links', 'YAML serialization'],
     history: 'Developed alongside EXPRESS-X for ARM-to-MIM schema mapping.',
   },
