@@ -16,6 +16,7 @@ export const mainNavigation: NavItem[] = [
     children: [
       { title: 'About ELF', path: '/about' },
       { title: 'Leadership', path: '/leadership' },
+      { title: 'Supporters', path: '/supporters' },
       { title: 'Membership', path: '/membership' },
     ],
   },

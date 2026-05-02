@@ -109,6 +109,15 @@ const languages = [
     iso: 'ISO 10303-14',
     invented: '2001',
   },
+  {
+    name: 'EXPRESS-Q',
+    slug: 'express-q',
+    color: 'text-[#7c5cbf]',
+    bg: 'bg-[#7c5cbf]/8',
+    desc: 'Query language for defining mappings between ARM and MIM schemas with reference path syntax.',
+    iso: 'ISO 10303-14',
+    invented: '2001',
+  },
 ]
 
 const milestones = [
@@ -173,7 +182,7 @@ const milestones = [
             <!-- Quick stats -->
             <div class="mt-10 flex gap-8 text-sm">
               <div>
-                <p class="font-mono text-2xl font-bold text-elf-blue dark:text-elf-blue">4</p>
+                <p class="font-mono text-2xl font-bold text-elf-blue dark:text-elf-blue">5</p>
                 <p class="text-gray-500 dark:text-gray-400 mt-0.5">Languages</p>
               </div>
               <div>
@@ -213,7 +222,7 @@ const milestones = [
         <AnimatedSection>
           <div class="text-center mb-16">
             <p class="font-mono text-xs tracking-[0.2em] uppercase text-elf-blue dark:text-elf-blue mb-3">Language Family</p>
-            <h2 class="text-3xl font-serif font-bold text-gray-900 dark:text-white">Four languages, one standard</h2>
+            <h2 class="text-3xl font-serif font-bold text-gray-900 dark:text-white">Five languages, one standard</h2>
             <p class="mt-3 text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
               Each language serves a distinct purpose in the information modelling lifecycle.
             </p>
@@ -282,12 +291,21 @@ const milestones = [
           </div>
         </AnimatedSection>
         <AnimatedSection>
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-items-center">
+          <div class="flex flex-wrap gap-8 items-center justify-center">
             <img src="/images/supporters/supporter-boeing.png" alt="Boeing" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
             <img src="/images/supporters/supporter-md.png" alt="McDonnell Douglas" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
             <img src="/images/supporters/supporter-ge.png" alt="General Electric" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
             <img src="/images/supporters/supporter-nist.png" alt="NIST" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
+            <img src="/images/supporters/supporter-steptools.svg" alt="STEP Tools" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
+            <img src="/images/supporters/supporter-jotneconnect.jpeg" alt="Jotne EPM Technology" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
+            <img src="/images/supporters/supporter-ribose.svg" alt="Ribose" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
           </div>
+          <p class="text-center mt-8">
+            <RouterLink to="/supporters" class="text-sm font-medium text-elf-blue dark:text-elf-blue hover:underline">
+              View all supporters
+              <svg class="w-4 h-4 inline ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </RouterLink>
+          </p>
         </AnimatedSection>
       </div>
     </section>
