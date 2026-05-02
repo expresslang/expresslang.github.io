@@ -65,6 +65,7 @@ const founders: Person[] = [
     role: 'VP Product Development, STEP Tools Inc.',
     highlight: 'Convener, ISO TC 184/SC 4/WG 11',
     desc: 'Co-founder of STEP Tools Inc. Editor of ISO 10303-238 (STEP-NC) and Part 21. Led 20+ major software releases used in over a million CAD seats.',
+    photo: '/images/people/david-loffredo.jpg',
   },
   {
     name: 'Prof. Bernd Wenzel',
