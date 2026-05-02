@@ -76,8 +76,8 @@ const languages = [
   {
     name: 'EXPRESS',
     slug: 'express',
-    color: 'text-[#e99262]',
-    bg: 'bg-[#e99262]/8',
+    color: '#e99262',
+    icon: '/logos/logo-lang-icon-express.svg',
     desc: 'The core data modelling language — entities, types, constraints, and rules for defining information schemas.',
     iso: 'ISO 10303-11',
     invented: '1982',
@@ -85,8 +85,8 @@ const languages = [
   {
     name: 'EXPRESS-G',
     slug: 'express-g',
-    color: 'text-[#4ec0aa]',
-    bg: 'bg-[#4ec0aa]/8',
+    color: '#4ec0aa',
+    icon: '/logos/logo-lang-icon-expressg.svg',
     desc: 'Graphical notation for EXPRESS — entity-relationship diagrams for visual data modelling.',
     iso: 'ISO 10303-11',
     invented: '1980s',
@@ -94,8 +94,8 @@ const languages = [
   {
     name: 'EXPRESS-I',
     slug: 'express-i',
-    color: 'text-[#d85577]',
-    bg: 'bg-[#d85577]/8',
+    color: '#d85577',
+    icon: '/logos/logo-lang-icon-expressi.svg',
     desc: 'Instance definition language for populated data models and conformance testing.',
     iso: 'ISO 10303-12',
     invented: '1994',
@@ -103,8 +103,8 @@ const languages = [
   {
     name: 'EXPRESS-X',
     slug: 'express-x',
-    color: 'text-[#077783]',
-    bg: 'bg-[#077783]/8',
+    color: '#077783',
+    icon: '/logos/logo-lang-icon-expressx.svg',
     desc: 'Schema mapping language for defining transformations between different EXPRESS data models.',
     iso: 'ISO 10303-14',
     invented: '2001',
@@ -112,8 +112,8 @@ const languages = [
   {
     name: 'EXPRESS-Q',
     slug: 'express-q',
-    color: 'text-[#7c5cbf]',
-    bg: 'bg-[#7c5cbf]/8',
+    color: '#7c5cbf',
+    icon: '/logos/logo-lang-icon-expressq.svg',
     desc: 'Query language for defining mappings between ARM and MIM schemas with reference path syntax.',
     iso: 'ELF Specification',
     invented: '2001',
@@ -231,14 +231,14 @@ const milestones = [
 
         <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-5">
           <AnimatedSection v-for="(lang, i) in languages" :key="lang.name" :style="{ transitionDelay: `${i * 60}ms` }">
-            <RouterLink :to="`/languages/${lang.slug}`" class="block rounded-xl border border-gray-200/80 dark:border-gray-700/60 bg-white dark:bg-navy-light p-6 transition-all duration-200 hover:border-elf-blue/30 dark:hover:border-elf-blue/30 hover:shadow-lg hover:shadow-elf-blue/5 dark:hover:shadow-elf-blue/5 hover:-translate-y-0.5">
-              <span :class="['font-logo font-bold text-lg mb-3 block', lang.color]">{{ lang.name }}</span>
-              <h3 :class="['font-mono text-sm font-bold mb-1.5', lang.color]">{{ lang.name }}</h3>
+            <RouterLink :to="`/languages/${lang.slug}`" class="block rounded-xl border bg-white dark:bg-navy-light p-6 transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5" :style="{ borderColor: `${lang.color}33` }">
+              <img :src="lang.icon" :alt="lang.name" class="h-8 w-auto mb-3" />
+              <h3 class="font-[Montserrat,sans-serif] font-bold text-sm mb-1.5" :style="{ color: lang.color }">{{ lang.name }}</h3>
               <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{{ lang.desc }}</p>
               <div class="mt-3 flex items-center justify-between">
                 <p class="text-[0.65rem] font-mono text-gray-400 dark:text-gray-500 tracking-wide">{{ lang.iso }}</p>
               </div>
-              <span class="mt-3 inline-flex items-center text-xs font-medium text-elf-blue dark:text-elf-blue">
+              <span class="mt-3 inline-flex items-center text-xs font-medium" :style="{ color: lang.color }">
                 Explore
                 <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
               </span>
@@ -292,12 +292,14 @@ const milestones = [
         </AnimatedSection>
         <AnimatedSection>
           <div class="flex flex-wrap gap-8 items-center justify-center">
-            <img src="/images/supporters/supporter-boeing.png" alt="Boeing" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
-            <img src="/images/supporters/supporter-md.png" alt="McDonnell Douglas" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
-            <img src="/images/supporters/supporter-ge.png" alt="General Electric" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
-            <img src="/images/supporters/supporter-nist.png" alt="NIST" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
+            <img src="/images/supporters/supporter-boeing.svg" alt="Boeing" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
+            <img src="/images/supporters/supporter-md.svg" alt="McDonnell Douglas" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
+            <img src="/images/supporters/supporter-ge.svg" alt="General Electric" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
+            <img src="/images/supporters/supporter-nist.svg" alt="NIST" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
+            <img src="/images/supporters/supporter-pdes.png" alt="PDES Inc." class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
             <img src="/images/supporters/supporter-steptools.svg" alt="STEP Tools" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
             <img src="/images/supporters/supporter-jotneconnect.jpeg" alt="Jotne EPM Technology" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
+            <img src="/images/supporters/supporter-afnet.png" alt="AFNeT Services" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
             <img src="/images/supporters/supporter-ribose.svg" alt="Ribose" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
           </div>
           <p class="text-center mt-8">
