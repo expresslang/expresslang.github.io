@@ -84,8 +84,8 @@ const supporters: Supporter[] = [
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <AnimatedSection v-for="(supporter, i) in supporters" :key="supporter.name" :style="{ transitionDelay: `${i * 60}ms` }">
           <div class="rounded-xl border border-gray-200/80 dark:border-gray-700/60 bg-white dark:bg-navy-light p-6 h-full flex flex-col">
-            <div class="mb-4 h-14 flex items-center">
-              <img :src="supporter.logo" :alt="supporter.name" class="max-h-12 w-auto opacity-70 dark:opacity-80" />
+            <div class="mb-4 h-14 flex items-center rounded-lg bg-white p-2">
+              <img :src="supporter.logo" :alt="supporter.name" class="max-h-10 w-auto mx-auto object-contain" />
             </div>
             <h3 class="font-serif font-bold text-lg text-gray-900 dark:text-white">{{ supporter.name }}</h3>
             <p class="mt-2 text-sm text-gray-500 dark:text-gray-400 leading-relaxed flex-1">{{ supporter.desc }}</p>
