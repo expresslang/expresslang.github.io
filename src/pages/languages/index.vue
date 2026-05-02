@@ -50,6 +50,18 @@ const languages = [
     features: ['SCHEMA_MAP declarations', 'MAP / COMPOSE', 'FROM / WHEN clauses', 'GLOBAL declarations', 'Source-to-target mapping'],
     history: 'Designed by Peter Wilson for schema interoperability.',
   },
+  {
+    name: 'EXPRESS-Q',
+    id: 'express-q',
+    slug: 'express-q',
+    color: 'text-[#7c5cbf]',
+    bg: 'bg-[#7c5cbf]/8',
+    border: 'border-[#7c5cbf]/20',
+    desc: 'Query language for defining mappings between Application Reference Model (ARM) and Model Implementation Model (MIM) schemas, with reference path syntax for precise schema navigation.',
+    iso: 'ISO 10303-14',
+    features: ['ENTITY_MAPPING declarations', 'ATTRIBUTE_MAPPING definitions', 'Reference path syntax', 'EXPRESS links', 'YAML serialization'],
+    history: 'Developed alongside EXPRESS-X for ARM-to-MIM schema mapping.',
+  },
 ]
 </script>
 
@@ -61,7 +73,7 @@ const languages = [
         <p class="font-mono text-xs tracking-[0.2em] uppercase text-elf-blue dark:text-elf-blue mb-3">Language Family</p>
         <h1 class="text-3xl sm:text-4xl font-serif font-bold text-gray-900 dark:text-white leading-tight">The EXPRESS Language Family</h1>
         <p class="mt-4 text-lg text-gray-500 dark:text-gray-400 max-w-2xl">
-          A family of four complementary information modelling languages for industrial data exchange, smart manufacturing, and interoperability — standardized under ISO 10303.
+          A family of five complementary information modelling languages for industrial data exchange, smart manufacturing, and interoperability — standardized under ISO 10303.
         </p>
       </div>
     </div>

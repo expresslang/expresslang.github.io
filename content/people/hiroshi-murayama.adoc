@@ -2,7 +2,7 @@
 title: Hiroshi Murayama
 photo: /images/people/hiroshi-murayama.jpg
 role: Vice-President
-categories: leadership
+categories: founders
 ---
 
 == Vice-President, EXPRESS Language Foundation

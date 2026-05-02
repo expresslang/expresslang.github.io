@@ -56,16 +56,8 @@ onMounted(() => {
       <div class="flex items-center justify-between h-16">
         <!-- Logo -->
         <RouterLink to="/" class="flex items-center gap-2.5 shrink-0 group" @click="closeMobile">
-          <svg viewBox="55 70 440 200" class="h-8 shrink-0 text-elf-blue dark:text-white" fill="currentColor" aria-hidden="true">
-            <path d="M204.85 225.43h-60.72c-17.43 0-31.61-14.18-31.61-31.61v-11.86h64.53v-31.79h-64.53v-.3c0-17.43 14.18-31.61 31.61-31.61h82.73l31.48 36.03 23.23-21.73-26.3-30.11c-11.32-13.02-24.3-15.58-30.78-15.99h-80.36c-34.96 0-63.4 28.44-63.4 63.4v43.95c0 34.96 28.44 63.4 63.4 63.4h32.94l27.77-31.79z"/>
-            <path d="M454.93 86.44h-73.72l-25.49-.01c-.77 0-1.58.13-2.34.23-6.7.85-17.54 3.98-27.35 14.61l-29.66 33.88 21.1 24.15 29.26-33.39c5.47-4.64 10.52-7.36 15.3-7.66l65.48-.02 27.42-31.79z"/>
-            <path d="M413.54 257.56l27.41-31.78-77.98-.03-39.85-45.61-.04.04-68.9-78.87c-11.05-11.98-23.42-14.44-29.69-14.84h-25.49l67.64 77.42.04-.04 68.9 78.87c11.06 11.98 23.42 14.44 29.69 14.84h25.49l-.02-.02 22.8.02z"/>
-            <path d="M257.12 180.18l-.04-.04-67.64 77.42h25.49c5.39 0 18.64-2.86 29.69-14.84l39.94-45-21.08-24.13-6.35 6.59z"/>
-          </svg>
-          <div class="flex flex-col leading-none">
-            <span class="font-logo font-bold text-[0.9rem] tracking-[0.06em] text-elf-blue dark:text-white">EXPRESS</span>
-            <span class="font-logo font-medium text-[0.58rem] tracking-[0.1em] text-elf-blue/70 dark:text-gray-400 mt-[3px]">Language Foundation</span>
-          </div>
+          <img src="/logos/logo-icon-blue.svg" alt="ELF" class="h-8 shrink-0 dark:hidden" />
+          <img src="/logos/logo-icon-white.svg" alt="ELF" class="h-8 shrink-0 hidden dark:block" />
         </RouterLink>
 
         <!-- Desktop nav -->

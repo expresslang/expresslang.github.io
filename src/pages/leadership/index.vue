@@ -103,6 +103,20 @@ const founders: Person[] = [
     desc: 'Associate Technical Fellow at Boeing with 25+ years in visualization and data exchange standards. Convenor of WG 12 at ISO/TC 184/SC 4, project lead of ISO/CD 14739-1 (PRC), and former Chair of OASIS WebCGM 2.1.',
     photo: '/images/people/stuart-galt.jpg',
   },
+  {
+    name: 'Hiroshi Murayama',
+    slug: 'hiroshi-murayama',
+    role: 'Vice-President',
+    desc: 'Former Toshiba Research Fellow. Convenor of ISO TC 184/SC 4/JWG 24 and CEO of SATS Inc. Specializes in product data dictionaries, ontology, and data modelling.',
+    photo: '/images/people/hiroshi-murayama.jpg',
+  },
+  {
+    name: 'Ronald Tse',
+    slug: 'ronald-tse',
+    role: 'Secretary',
+    desc: 'Manages organizational operations and administrative functions of the foundation.',
+    photo: '/images/people/ronald-tse.jpg',
+  },
 ]
 </script>
 

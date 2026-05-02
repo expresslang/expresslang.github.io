@@ -4,37 +4,216 @@ title: EXPRESS-Q
 
 == Overview
 
-EXPRESS-Q is a query language for interrogating and retrieving data from EXPRESS-defined datasets.
-It provides a declarative syntax for defining views, queries, and business objects over EXPRESS schema data, enabling efficient data retrieval and reporting.
+EXPRESS-Q is a query language designed to work with EXPRESS schemas, particularly in the context of STEP (Standard for the Exchange of Product model data) application protocols.
+It provides a formal mechanism for defining mappings between Application Reference Model (ARM) and Model Implementation Model (MIM) schemas, as well as specifying constraints on datasets that comply with these schemas.
 
-EXPRESS-Q complements the other EXPRESS languages by providing a way to extract and present information from EXPRESS datasets without modifying the underlying schemas.
+The primary purpose of EXPRESS-Q is to bridge the gap between conceptual models (ARM) and their implementations (MIM), ensuring that data exchange between different systems maintains semantic consistency.
 
 [[key-features]]
 == Key features
 
-* *VIEW_ENTITY declarations* — define virtual entities as projections over source data
-* *QUERY_FUNCTION definitions* — reusable parameterized queries
-* *Business objects* — define domain-specific views over technical EXPRESS data
-* *Data retrieval* — efficient extraction of subsets from large EXPRESS datasets
-* *Report generation* — structured output of queried data
+* *ENTITY_MAPPING declarations* — define how ARM entities correspond to MIM entities
+* *ATTRIBUTE_MAPPING definitions* — map individual ARM attributes to MIM elements
+* *Reference paths* — precise navigation through schema relationships using operators like `->`, `<=`, `=>`
+* *EXPRESS links* — cross-schema references with automatic resolution
+* *Alternative mappings* — support for multiple valid representations
+* *Constraint expressions* — conditional constraints within reference paths
+* *YAML serialization* — machine-readable format for automated processing
 
 [[syntax]]
 == Syntax
 
-EXPRESS-Q uses declarative query constructs integrated with EXPRESS type definitions:
+EXPRESS-Q uses a structured syntax built around entity and attribute mappings:
 
-.Example EXPRESS-Q view entity
 [source]
 ----
-VIEW_ENTITY fastener_summary
-  FROM fastener;
-  .identifier := source.part_number;
-  .diameter := source.diameter;
-  .material := source.material.name;
-WHERE
-  source.diameter > 5.0;
-END_VIEW_ENTITY;
+ENTITY_MAPPING <Activity_schema.Activity>;
+EXTENSIBLE: FALSE;
+AIM_ELEMENT: "<action_schema.executed_action>";
+EXPRESS_REF: ["action_schema"];
+REFPATH: {
+  executed_action <= action
+};
+ATTRIBUTE_MAPPING name;
+ASSERTION_TO: "name";
+AIM_ELEMENT: "action.name";
+REFPATH: {
+  executed_action
+  executed_action <= action
+  action.name
+};
+END_ATTRIBUTE_MAPPING;
+END_ENTITY_MAPPING;
 ----
+
+=== Reference path symbols
+
+[cols="1,4"]
+|===
+| `->` | The attribute references the entity or select type that follows
+| `<-` | The entity is referenced by the attribute that follows
+| `=>` | The entity is a supertype of the entity that follows
+| `<=` | The entity is a subtype of the entity that follows
+| `*>` | The select or enumeration type is extended into the type that follows
+| `<*` | The select or enumeration type is an extension of the type that follows
+| `[i]` | The attribute is an aggregate; any element is referred to
+| `[n]` | The attribute is an ordered aggregate; member *n* is referred to
+| `[]` | Enclosed section constrains multiple MIM elements
+| `()` | Enclosed section identifies alternatives within the mapping
+| `{}` | Enclosed section constrains the reference path
+| `!{}` | Negative constraint on the mapping
+| `--` | Comment or clause reference
+|===
+
+=== EBNF grammar
+
+The following EBNF defines the syntax of EXPRESS-Q:
+
+[source]
+----
+express_q_file = { entity_mapping } ;
+
+entity_mapping = "ENTITY_MAPPING" entity_ref ";" newline
+  [ extensible_decl ]
+  [ aim_element_decl ]
+  [ express_ref_decl ]
+  [ refpath_decl ]
+  [ alt_map_decl ]
+  { attribute_mapping }
+  "END_ENTITY_MAPPING" ";" ;
+
+extensible_decl = "EXTENSIBLE" ":" boolean ";" newline ;
+aim_element_decl = "AIM_ELEMENT" ":" ( express_link | string ) ";" newline ;
+express_ref_decl = "EXPRESS_REF" ":" "[" [ string { "," string } ] "]" ";" newline ;
+refpath_decl = "REFPATH" ":" "{" newline refpath_content "}" ";" newline ;
+alt_map_decl = "ALT_MAP" ":" "[" [ string { "," string } ] "]" ";" newline ;
+
+attribute_mapping = "ATTRIBUTE_MAPPING" attribute_name ";" newline
+  "ASSERTION_TO" ":" ( express_link | string ) ";" newline
+  [ aim_element_decl ]
+  [ express_ref_decl ]
+  [ refpath_decl ]
+  "END_ATTRIBUTE_MAPPING" ";" newline ;
+
+entity_ref = express_link | entity_name ;
+express_link = "<" schema_name "." element_name ">" ;
+----
+
+=== Reference path examples
+
+.Simple attribute mapping
+[source]
+----
+REFPATH: {
+  product.id -> id
+}
+----
+
+.Subtype relationship
+[source]
+----
+REFPATH: {
+  mechanical_context <= product_context
+}
+----
+
+.Complex mapping with alternatives and constraints
+[source]
+----
+REFPATH: {
+  shape_representation <= representation
+  {representation.items[i] -> representation_item
+   representation_item =>
+   (geometric_representation_item
+    [geometric_representation_item.dim = 3] |
+    mapped_item)
+  }
+}
+----
+
+.Negative constraint
+[source]
+----
+REFPATH: {
+  product_definition_formation
+  !{product_definition_formation.make_or_buy = bought_item}
+}
+----
+
+[[standardization]]
+== Standardization
+
+EXPRESS-Q is defined within ISO 10303:
+
+* *ISO 10303-14* — Description methods: The EXPRESS-X language reference manual, including EXPRESS-Q definitions
+* *ISO 10303-11:2004* — The EXPRESS language reference manual (normative reference)
+* *ISO 10303-1:2024* — Overview and fundamental principles
+
+[[validation]]
+== Validation rules
+
+Validation of EXPRESS-Q files ensures correctness and consistency of ARM-to-MIM mappings:
+
+* Each ENTITY_MAPPING shall correspond to an entity or type defined in the ARM schema
+* The AIM_ELEMENT specified shall exist in the MIM schema or be a recognized keyword (PATH, IDENTICAL MAPPING, NO MAPPING EXTENSION PROVIDED)
+* All referenced entities and attributes shall exist in the corresponding ARM or MIM schema
+* Relationships between entities (supertype, subtype, attribute reference) shall be consistent with schema definitions
+* Constraints shall use valid attributes or functions for the constrained entity
+* Select type extensions shall be consistent with schema definitions
+* Aggregate references (using `[i]` or `[n]`) shall be applied only to attributes defined as aggregates
+
+[[applications]]
+== Applications
+
+* *ARM-to-MIM mapping* — defining how application reference models map to implementation models
+* *Data validation* — querying datasets for compliance with schema constraints
+* *Supply chain integration* — ensuring semantic consistency across data exchange
+* *Documentation generation* — automated cross-referencing in published standards
+* *Schema transformation* — converting between different EXPRESS schema representations
+
+[[yaml-serialization]]
+== YAML serialization
+
+EXPRESS-Q mappings can be serialized as YAML for machine processing.
+Each module's mapping specification is stored as `mapping.yaml`:
+
+[source,yaml]
+----
+ae:
+- entity: <Activity_schema.Activity>
+  aimelt: <action_schema.executed_action>
+  aa:
+  - attribute: name
+    aimelt: action.name
+    refpath:
+      content: |-
+        executed_action
+        executed_action <= action
+        action.name
+  - attribute: chosen_method
+    assertion_to: <Activity_method_schema.Activity_method>
+    aimelt: PATH
+    refpath:
+      content: |-
+        executed_action
+        executed_action <= action
+        action.chosen_method -> action_method
+        action_method
+----
+
+The YAML fields correspond to the EBNF constructs:
+
+[cols="1,2,3"]
+|===
+| EBNF construct | YAML key | Notes
+
+| `ENTITY_MAPPING entity_ref` | `ae[].entity` | EXPRESS link or plain name
+| `aim_element_decl` | `ae[].aimelt` | EXPRESS link or string
+| `ASSERTION_TO` | `ae[].aa[].assertion_to` | EXPRESS link or plain string
+| `extensible_decl` | `ae[].extensible` | Boolean
+| `alt_map_decl` | `ae[].alt_map` | List of strings
+| `refpath_decl` | `ae[].aa[].refpath.content` | Multi-line string
+|===
 
 [[history]]
 == History
@@ -46,31 +225,12 @@ EXPRESS-Q was developed alongside EXPRESS-X as part of ISO 10303-14, recognizing
 [cols="1,4"]
 |===
 | *2001* | EXPRESS-Q published as part of ISO 10303-14 alongside EXPRESS-X
-| *Present* | Supported by commercial and open-source EXPRESS tooling
+| *Present* | Supported by commercial and open-source EXPRESS tooling; YAML serialization defined
 |===
-
-=== Key people
-
-EXPRESS-Q was developed by the ISO TC 184/SC 4 community, building on the EXPRESS and EXPRESS-X foundation established by Peter Wilson and Douglas Schenck.
-
-[[standardization]]
-== Standardization
-
-EXPRESS-Q is defined within ISO 10303-14:
-
-* *ISO 10303-14* — EXPRESS-X: Includes EXPRESS-Q query language definitions
-
-[[applications]]
-== Applications
-
-* *Data reporting* — generating summary views from EXPRESS datasets
-* *Business intelligence* — defining domain-specific views over technical data
-* *Data validation* — querying datasets for compliance checking
-* *Supply chain visibility* — extracting status information from product data
 
 [[resources]]
 == Learn more
 
-* link:/learn/jotne-express/10-querying-express[EXPRESS Course: Querying EXPRESS Data] — querying concepts and techniques
+* link:/learn[EXPRESS Tutorials] — learn about EXPRESS and the language family
 * link:/languages/express-x[EXPRESS-X] — the companion schema mapping language
 * link:/standards[Standards & BNF] — ISO standards references
