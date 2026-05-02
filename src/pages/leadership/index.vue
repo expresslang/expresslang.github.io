@@ -15,7 +15,7 @@ const officers: Person[] = [
     name: 'Thomas Thurman',
     slug: 'thomas-thurman',
     role: 'President',
-    desc: 'Provides strategic leadership for the foundation\'s mission in education, standardization, and promotion of the EXPRESS language family.',
+    desc: 'Owner of TRThurman Consulting. Technical lead for all four editions of ISO 10303-210 (AP 210). ISO Excellence Award and PDES Bryan K. Martin Award recipient.',
     photo: '/images/people/thomas-thurman.jpg',
   },
   {

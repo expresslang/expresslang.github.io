@@ -12,20 +12,23 @@ Consultant at Eurostep Limited, where he has worked since 1995. He specializes
 in PLM, secured collaboration, STEP standards, and the management of large
 integration projects.
 
-== Contributions
+== Current Work
 
-Phil has been deeply involved in the STEP and EXPRESS community for over three
-decades. At Eurostep, he currently works closely with clients to implement full-scope
-PLCSlib implementations, from database table structures to client-specific PLCS
+At Eurostep, Phil works closely with clients to implement full-scope PLCSlib
+implementations, from database table structures to client-specific PLCS
 templates flowing over an Enterprise Service Bus (ESB).
 
-He was a key contributor to the OASIS Product Life Cycle Support (PLCS) standard
-(Version 1.0, 2013), which establishes structured data exchange and sharing
-capabilities for complex engineered assets throughout their total life cycle,
-based upon ISO 10303 (STEP) Application Protocol 239.
+== Previous Roles
 
-Phil has contributed to major European collaborative projects, including:
+* *Senior Consultant*, CADDETC (1988–1995)
 
+== Contributions to Standards
+
+Phil has been deeply involved in the STEP and EXPRESS community for over three
+decades:
+
+* Key contributor to the OASIS Product Life Cycle Support (PLCS) standard
+  (Version 1.0, 2013), based on ISO 10303 AP 239
 * *CONGA (Configuration Optimisation of Next Generation Aircraft)* — ongoing
 * *CRESCENDO* (2011–2013) — led Eurostep's contribution to the Behavioural
   Digital Aircraft collaboration hub
