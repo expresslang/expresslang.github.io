@@ -47,13 +47,13 @@ const supporters: Supporter[] = [
   },
   {
     name: 'Jotne EPM Technology',
-    logo: '/images/supporters/supporter-jotneconnect.jpeg',
+    logo: '/images/supporters/supporter-jotneconnect.svg',
     url: 'https://www.jotne.com',
     desc: 'Developer of the EDMvisualExpress tool and EXPRESS Data Manager. Contributed the EDMsdk course materials to ELF.',
   },
   {
     name: 'AFNeT Services',
-    logo: '/images/supporters/supporter-afnet.png',
+    logo: '/images/supporters/supporter-afnet.svg',
     url: 'https://www.afnet.fr',
     desc: 'Led by Jean Brangé. French organization focused on digital interoperability standards for industry, including EasySTEP and STEP Next initiatives.',
   },
