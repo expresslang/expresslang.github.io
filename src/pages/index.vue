@@ -298,8 +298,8 @@ const milestones = [
             <img src="/images/supporters/supporter-nist.svg" alt="NIST" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
             <img src="/images/supporters/supporter-pdes.png" alt="PDES Inc." class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
             <img src="/images/supporters/supporter-steptools.svg" alt="STEP Tools" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
-            <img src="/images/supporters/supporter-jotneconnect.jpeg" alt="Jotne EPM Technology" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
-            <img src="/images/supporters/supporter-afnet.png" alt="AFNeT Services" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
+            <img src="/images/supporters/supporter-jotneconnect.svg" alt="Jotne EPM Technology" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
+            <img src="/images/supporters/supporter-afnet.svg" alt="AFNeT Services" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
             <img src="/images/supporters/supporter-ribose.svg" alt="Ribose" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
           </div>
           <p class="text-center mt-8">
