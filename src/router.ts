@@ -51,6 +51,11 @@ export const routes: RouteRecordRaw[] = [
     meta: { title: 'Leadership', description: 'The leadership and founders of the EXPRESS Language Foundation.' },
   },
   {
+    path: '/supporters',
+    component: () => import('@/pages/supporters/index.vue'),
+    meta: { title: 'Supporters', description: 'Organizations whose employees have contributed to the EXPRESS language family and the EXPRESS Language Foundation.' },
+  },
+  {
     path: '/people/:slug',
     component: () => import('@/pages/people/[slug].vue'),
     meta: { title: 'People' },

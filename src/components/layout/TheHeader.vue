@@ -56,8 +56,8 @@ onMounted(() => {
       <div class="flex items-center justify-between h-16">
         <!-- Logo -->
         <RouterLink to="/" class="flex items-center gap-2.5 shrink-0 group" @click="closeMobile">
-          <img src="/logos/logo-icon-blue.svg" alt="" class="h-8 shrink-0 dark:hidden" />
-          <img src="/logos/logo-icon-white.svg" alt="" class="h-8 shrink-0 hidden dark:block" />
+          <img src="/logos/logo-icon-white.svg" alt="" class="h-8 shrink-0 dark:hidden" />
+          <img src="/logos/logo-icon-blue.svg" alt="" class="h-8 shrink-0 hidden dark:block" />
           <div class="flex flex-col leading-none">
             <span class="font-[Montserrat,sans-serif] font-bold text-[0.9rem] tracking-[0.06em] text-elf-blue dark:text-white">EXPRESS</span>
             <span class="font-[Montserrat,sans-serif] font-medium text-[0.58rem] tracking-[0.1em] text-elf-blue/70 dark:text-gray-400 mt-[3px]">Language Foundation</span>

@@ -5,7 +5,8 @@ import BaseCard from '@/components/ui/BaseCard.vue'
 const standards = [
   { iso: 'ISO 10303-11', title: 'EXPRESS Language', desc: 'The core information modelling language for defining data schemas, entities, types, and constraints. Edition 2 published 2004.' },
   { iso: 'ISO 10303-12', title: 'EXPRESS-I', desc: 'Instance definition language for populated data models and conformance test cases.' },
-  { iso: 'ISO 10303-14', title: 'EXPRESS-X / EXPRESS-Q', desc: 'Schema mapping and query languages for transforming and interrogating EXPRESS data.' },
+  { iso: 'ISO 10303-14', title: 'EXPRESS-X', desc: 'Schema mapping language for defining transformations between different EXPRESS schemas.' },
+  { iso: 'ELF Spec', title: 'EXPRESS-Q', desc: 'Query language for defining mappings between ARM and MIM schemas with reference path syntax. Published by the EXPRESS Language Foundation.' },
   { iso: 'ISO 10303-21', title: 'STEP Physical File', desc: 'Clear-text encoding of product data (Part 21 file format). The most widely deployed STEP exchange format.' },
   { iso: 'ISO 10303-28', title: 'STEP XML Binding', desc: 'XML representation of EXPRESS-driven data for web-based exchange.' },
 ]

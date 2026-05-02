@@ -9,8 +9,8 @@ import { siteData } from '@/data/site'
         <!-- Organization -->
         <div class="sm:col-span-2 lg:col-span-1">
           <RouterLink to="/" class="flex items-center gap-2 mb-4 group">
-            <img src="/logos/logo-icon-blue.svg" alt="ELF" class="h-7 shrink-0 dark:hidden" />
-            <img src="/logos/logo-icon-white.svg" alt="ELF" class="h-7 shrink-0 hidden dark:block" />
+            <img src="/logos/logo-icon-white.svg" alt="ELF" class="h-7 shrink-0 dark:hidden" />
+            <img src="/logos/logo-icon-blue.svg" alt="ELF" class="h-7 shrink-0 hidden dark:block" />
             <div class="flex flex-col leading-none">
               <span class="font-logo font-bold text-[0.8rem] tracking-[0.06em] text-elf-blue dark:text-white">EXPRESS</span>
               <span class="font-logo font-medium text-[0.5rem] tracking-[0.1em] text-elf-blue/70 dark:text-gray-400 mt-[2px]">Language Foundation</span>
