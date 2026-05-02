@@ -137,7 +137,7 @@ eventually resolved by changing the name of PDES to be -- "Product Data Exchange
 using STEP" (which some then called Standard for Exchange using PDES).
 
 
-image::../images/01-pstphist.svg[]
+image::01-pstphist.svg[]
 
 
 === STEP standards
@@ -165,7 +165,7 @@ which specify application dependent information models for the purposes
 of data exchange.
 
 
-image::../images/01-pstpover.svg[]
+image::01-pstpover.svg[]
 
 
 === STEP architecture
@@ -187,7 +187,7 @@ are APs and exchange levels.
 
 
 .STEP architecture
-image::../images/01-pstparch.svg[]
+image::01-pstparch.svg[]
 
 
 ==== Level 1 exchange
@@ -197,7 +197,7 @@ STEP data file then archive it and/or send it to someone else (to read into
 their CAD system).
 
 .STEP level 1 exchange
-image::../images/01-plevel1.svg[]
+image::01-plevel1.svg[]
 
 
 ==== Level 2 exchange
@@ -208,7 +208,7 @@ can be written to a file for Level 1 use. At the end of the session
 the STEP database is no longer available.
 
 .STEP level 2 exchange
-image::../images/01-plevel2.svg[]
+image::01-plevel2.svg[]
 
 
 ==== Level 3 exchange
@@ -218,7 +218,7 @@ in a (permanent) shared database. STEP level 1 files can be written and read
 by the database.
 
 .STEP level 3 exchange
-image::../images/01-plevel3.svg[]
+image::01-plevel3.svg[]
 
 
 ==== Procedural exchange
@@ -233,7 +233,7 @@ can be the same but the route is very different.
 
 
 .STEP procedural exchange
-image::../images/01-pfilproc.svg[]
+image::01-pfilproc.svg[]
 
 
 ==== Level 4 Exchange
@@ -248,4 +248,4 @@ Internally, though, they are implemented using a Level 2 or 3 architecture.
 
 
 .STEP level 4 exchange
-image::../images/01-plevel4.svg[]
+image::01-plevel4.svg[]
