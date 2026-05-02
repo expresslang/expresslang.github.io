@@ -112,11 +112,11 @@ See the link:/leadership[Leadership & Founders] page for detailed profiles.
 * link:/people/douglas-schenck[Douglas Schenck] — Inventor of EXPRESS; Project Leader, ISO 10303-11:1994
 * link:/people/bernd-wenzel[Prof. Bernd Wenzel] — Project Leader, ISO 10303-11:1994
 * link:/people/peter-wilson[Peter Wilson] — Designer of EXPRESS-G & EXPRESS-X; Project Leader, ISO 10303-11:2004
+* link:/people/thomas-thurman[Thomas Thurman] — President
 * link:/people/allison-barnard-feeney[Allison Barnard Feeney] — General Manager, PDES Inc.
 * link:/people/david-loffredo[David Loffredo] — Project Leader, ISO 10303-11:2004
 * link:/people/jean-brange[Jean Brange]
 * link:/people/phil-spiby[Phil Spiby]
-* link:/people/thomas-thurman[Thomas Thurman] — President
 * link:/people/hiroshi-murayama[Hiroshi Murayama] — Vice-President
 * link:/people/ronald-tse[Ronald Tse] — Secretary
 * link:/people/stuart-galt[Stuart Galt] — Associate Technical Fellow, Boeing; Convenor, ISO/TC 184/SC 4/WG 12
