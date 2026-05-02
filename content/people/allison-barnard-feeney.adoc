@@ -1,24 +1,55 @@
 ---
 title: Allison Barnard Feeney
 photo: /images/people/allison-barnard-feeney.jpg
-role: Founder
+role: Standards Pioneer, NIST
 categories: founders
 ---
 
-== Key Contributor to EXPRESS Standardization
+== Mechanical Engineer, Smart Connected Systems Division — NIST
 
-Allison Barnard Feeney is a founding member of the EXPRESS Language Foundation and a
-key contributor to the standardization of EXPRESS within ISO 10303 at NIST
-(National Institute of Standards and Technology).
+Allison Barnard Feeney is a mechanical engineer in the Smart Connected Systems
+Division of the National Institute of Standards and Technology's (NIST)
+Communications Technology Laboratory. She addresses national problems related to
+the digitalization of manufacturing, including system interoperability, formal
+language development, building trust in digital data, and building knowledge
+from disparate data sources.
 
-== Contributions
+== Contributions to Standards
 
-Feeney played a central role in the development and standardization of the EXPRESS
-language and STEP (Standard for the Exchange of Product model data) at NIST,
-helping bridge the gap between research and industrial adoption of the standards.
+Allison has worked in manufacturing standards development, implementation,
+conformance testing, product data standards, and systems integration throughout
+her NIST career. She has been a key participant in the development of the STEP
+product data standard (ISO 10303) since its inception.
 
-Her work at NIST was instrumental in the transition of EXPRESS from a research
-project (PDDI) to an international standard (ISO 10303).
+She is the Chair of the US Technical Advisory Group to ISO TC 184/SC 4, and
+the US representative to SC 4's Policy and Planning Committee.
+
+Prior to her current role, Allison led the Smart Manufacturing Operations
+Planning and Control Program in NIST's Engineering Lab, including its Digital
+Thread for Smart Manufacturing Project and the Product Definition for Smart
+Manufacturing Project in the Model-Based Enterprise program.
+
+== Awards
+
+* *2019 Department of Commerce Gold Medal* — for developing the NIST Smart
+  Manufacturing Systems Test Bed, enabling transformative innovation in
+  manufacturing through digital technologies
+* *2019 Department of Commerce Bronze Medal* — for leading advances to
+  standard-based data exchange between engineering, manufacturing, and
+  inspection
+* *2018 ANSI Finegan Standards Medal* — honoring extraordinary leadership in
+  the development and application of voluntary standards
+* *2019 NIST George Uriano Award* — for leading advances to standards-based
+  communication between engineering, manufacturing, and metrology
+* *2016 NIST Edward Bennet Rosa Award*
+* *2015 PDES, Inc. Brad Ridgon Technical Management Award*
+* *2006 PDES, Inc. Bryan K. Martin Technical Excellence Award*
+* *2005 Department of Commerce Silver Medal*
+
+== Patents
+
+* *Smart System for Organizing and Verifying Engineering Certificates* —
+  NIST patent (with Sylvere Krima)
 
 == At ELF
 

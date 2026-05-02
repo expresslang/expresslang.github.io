@@ -1,20 +1,39 @@
 ---
 title: Phil Spiby
 photo: /images/people/phil-spiby.jpg
-role: Founder
+role: Senior Consultant, Eurostep Limited
 categories: founders
 ---
 
-== EXPRESS Standards Contributor
+== Senior Consultant, Eurostep Limited
 
-Phil Spiby is a founding member of the EXPRESS Language Foundation and a contributor
-to the development and application of EXPRESS language standards.
+Phil Spiby is a founding member of the EXPRESS Language Foundation and Senior
+Consultant at Eurostep Limited, where he has worked since 1995. He specializes
+in PLM, secured collaboration, STEP standards, and the management of large
+integration projects.
 
 == Contributions
 
-Spiby has been involved in the STEP and EXPRESS community, contributing to the
-practical application of EXPRESS in industrial settings and helping bridge the
-gap between the language specification and real-world implementations.
+Phil has been deeply involved in the STEP and EXPRESS community for over three
+decades. At Eurostep, he currently works closely with clients to implement full-scope
+PLCSlib implementations, from database table structures to client-specific PLCS
+templates flowing over an Enterprise Service Bus (ESB).
+
+He was a key contributor to the OASIS Product Life Cycle Support (PLCS) standard
+(Version 1.0, 2013), which establishes structured data exchange and sharing
+capabilities for complex engineered assets throughout their total life cycle,
+based upon ISO 10303 (STEP) Application Protocol 239.
+
+Phil has contributed to major European collaborative projects, including:
+
+* *CONGA (Configuration Optimisation of Next Generation Aircraft)* — ongoing
+* *CRESCENDO* (2011–2013) — led Eurostep's contribution to the Behavioural
+  Digital Aircraft collaboration hub
+
+== Education
+
+* PhD, Physics — University of Leeds
+* BSc, Physics — University of Warwick
 
 == At ELF
 

@@ -1,28 +1,41 @@
 ---
 title: David Loffredo
-role: Founder, Project Leader
+role: VP Product Development, STEP Tools Inc.
 categories: founders
 ---
 
-== Project Leader, ISO 10303-11:2004
+== Vice President of Product Development, STEP Tools, Inc.
 
-David Loffredo is a founding member of the EXPRESS Language Foundation and served
-as co-project leader of the second edition of the EXPRESS language standard
-(ISO 10303-11:2004), together with Peter Wilson.
+Dr. David Loffredo is a co-founder of STEP Tools, Inc. and Vice President of
+Product Development. He has led over twenty major releases of the STEP Tools
+software, now deployed in over a million CAD seats and used in manufacturing
+over a million aerospace parts per year since 2019.
 
-== Contributions
+== Contributions to Standards
 
-Loffredo has been a long-time contributor to EXPRESS standardization and STEP
-implementations, bringing deep expertise in both the language specification and
-its practical application in industrial data exchange.
+David is the Editor of ISO 10303-238 (STEP-NC) and the Part 21 STEP file
+exchange format. He serves as Convener of ISO TC 184/SC 4 Working Group 11,
+overseeing STEP file formats, the EXPRESS modeling language, and programming
+language bindings.
 
-He co-led the effort to update the EXPRESS language standard to its second edition,
-incorporating lessons learned from a decade of industrial use and clarifying
-ambiguities in the original specification.
+He co-led the second edition of the EXPRESS language standard (ISO 10303-11:2004)
+together with Peter Wilson, incorporating lessons learned from a decade of
+industrial use and clarifying ambiguities in the original specification.
 
-== Standardization
+== Technical Work
 
-* *ISO 10303-11:2004* — Co-project leader (with Peter Wilson), second edition of the EXPRESS language standard
+David has developed core engineering software for managing and meshing ISO 10303
+STEP CAD geometry and IFC BIM models, driving CNCs for machining with STEP-NC,
+and Digital Twin manufacturing. He is experienced with C, C++, building native
+extensions for .NET and Python, Perl, and Ansible.
+
+He is the author of numerous technical papers, articles, training courses, and
+web content on CAD geometry and data exchange.
+
+== Education
+
+* PhD, Computer Science — Rensselaer Polytechnic Institute (RPI)
+* BS, Physics and Computer Science — Buffalo State University
 
 == At ELF
 
