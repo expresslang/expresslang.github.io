@@ -54,9 +54,9 @@ const founders: Person[] = [
   {
     name: 'Allison Barnard Feeney',
     slug: 'allison-barnard-feeney',
-    role: 'Mechanical Engineer, NIST',
+    role: 'General Manager, PDES Inc.',
     highlight: '2018 ANSI Finegan Standards Medal',
-    desc: 'Key participant in STEP development since its inception. Chair of the US TAG to ISO TC 184/SC 4. Dept. of Commerce Gold Medal recipient.',
+    desc: 'General Manager of PDES, Inc. Key participant in STEP development since its inception. Dept. of Commerce Gold Medal recipient.',
     photo: '/images/people/allison-barnard-feeney.jpg',
   },
   {

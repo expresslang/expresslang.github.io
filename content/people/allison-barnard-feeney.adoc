@@ -1,39 +1,44 @@
 ---
 title: Allison Barnard Feeney
 photo: /images/people/allison-barnard-feeney.jpg
-role: Standards Pioneer, NIST
+role: General Manager, PDES Inc.
 categories: founders
 ---
 
-== Mechanical Engineer, Smart Connected Systems Division — NIST
+== General Manager, PDES, Inc.
 
-Allison Barnard Feeney is a mechanical engineer in the Smart Connected Systems
-Division of the National Institute of Standards and Technology's (NIST)
-Communications Technology Laboratory. She addresses national problems related to
-the digitalization of manufacturing, including system interoperability, formal
-language development, building trust in digital data, and building knowledge
-from disparate data sources.
+Allison Barnard Feeney is the General Manager of PDES, Inc., an international
+industry, government, and university consortium committed to accelerating the
+development and implementation of standards for product data exchange in the
+Digital Enterprise.
+
+== Career at NIST
+
+Allison served as a mechanical engineer in the Smart Connected Systems Division
+of the National Institute of Standards and Technology (NIST). She addressed
+national problems related to the digitalization of manufacturing, including
+system interoperability, formal language development, building trust in digital
+data, and building knowledge from disparate data sources.
+
+She previously led the Smart Manufacturing Operations Planning and Control
+Program in NIST's Engineering Lab, including its Digital Thread for Smart
+Manufacturing Project and the Product Definition for Smart Manufacturing
+Project in the Model-Based Enterprise program.
 
 == Contributions to Standards
 
 Allison has worked in manufacturing standards development, implementation,
 conformance testing, product data standards, and systems integration throughout
-her NIST career. She has been a key participant in the development of the STEP
+her career. She has been a key participant in the development of the STEP
 product data standard (ISO 10303) since its inception.
 
-She is the Chair of the US Technical Advisory Group to ISO TC 184/SC 4, and
-the US representative to SC 4's Policy and Planning Committee.
-
-Prior to her current role, Allison led the Smart Manufacturing Operations
-Planning and Control Program in NIST's Engineering Lab, including its Digital
-Thread for Smart Manufacturing Project and the Product Definition for Smart
-Manufacturing Project in the Model-Based Enterprise program.
+She served as Chair of the US Technical Advisory Group to ISO TC 184/SC 4
+and as the US representative to SC 4's Policy and Planning Committee.
 
 == Awards
 
 * *2019 Department of Commerce Gold Medal* — for developing the NIST Smart
-  Manufacturing Systems Test Bed, enabling transformative innovation in
-  manufacturing through digital technologies
+  Manufacturing Systems Test Bed
 * *2019 Department of Commerce Bronze Medal* — for leading advances to
   standard-based data exchange between engineering, manufacturing, and
   inspection
