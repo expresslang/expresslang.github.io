@@ -1,12 +1,22 @@
 <script setup lang="ts">
 import AnimatedSection from '@/components/ui/AnimatedSection.vue'
 
-const officers = [
+interface Person {
+  name: string
+  slug: string
+  role: string
+  desc: string
+  highlight?: string
+  photo?: string
+}
+
+const officers: Person[] = [
   {
     name: 'Thomas Thurman',
     slug: 'thomas-thurman',
     role: 'President',
     desc: 'Provides strategic leadership for the foundation\'s mission in education, standardization, and promotion of the EXPRESS language family.',
+    photo: '/images/people/thomas-thurman.jpg',
   },
   {
     name: 'Hiroshi Murayama',
@@ -19,16 +29,18 @@ const officers = [
     slug: 'ronald-tse',
     role: 'Secretary',
     desc: 'Manages organizational operations and administrative functions of the foundation.',
+    photo: '/images/people/ronald-tse.jpg',
   },
 ]
 
-const founders = [
+const founders: Person[] = [
   {
     name: 'Douglas Schenck',
     slug: 'douglas-schenck',
     role: 'Inventor of EXPRESS',
     highlight: 'Project Leader, ISO 10303-11:1994 (with Bernd Wenzel)',
     desc: 'Original inventor of the EXPRESS language at McDonnell Aircraft (1982). Co-author of the authoritative reference "Information Modelling: The EXPRESS Way".',
+    photo: '/images/people/douglas-schenck.jpg',
   },
   {
     name: 'Peter Wilson',
@@ -36,6 +48,7 @@ const founders = [
     role: 'Designer of EXPRESS-G & EXPRESS-X',
     highlight: 'Project Leader, ISO 10303-11:2004 (with David Loffredo)',
     desc: 'Designer of EXPRESS-G (graphical notation) and EXPRESS-X (schema mapping). Co-author of "Information Modelling: The EXPRESS Way". Author of the EXPRESS Tutorial.',
+    photo: '/images/people/peter-wilson.jpg',
   },
   {
     name: 'Allison Barnard Feeney',
@@ -102,7 +115,10 @@ const founders = [
         <div class="grid md:grid-cols-3 gap-6">
           <AnimatedSection v-for="(person, i) in officers" :key="person.slug" :style="{ transitionDelay: `${i * 80}ms` }">
             <RouterLink :to="`/people/${person.slug}`" class="block rounded-xl border border-gray-200/80 dark:border-gray-700/60 bg-white dark:bg-navy-light p-6 transition-all duration-200 hover:border-elf-blue/30 dark:hover:border-elf-blue/30 hover:shadow-lg hover:-translate-y-0.5">
-              <div class="w-14 h-14 rounded-full bg-elf-blue/8 dark:bg-elf-blue/8 flex items-center justify-center mb-4">
+              <div v-if="person.photo" class="w-14 h-14 rounded-full overflow-hidden mb-4">
+                <img :src="person.photo" :alt="person.name" class="w-full h-full object-cover" />
+              </div>
+              <div v-else class="w-14 h-14 rounded-full bg-elf-blue/8 dark:bg-elf-blue/8 flex items-center justify-center mb-4">
                 <span class="text-xl font-serif font-bold text-elf-blue dark:text-elf-blue">{{ person.name.charAt(0) }}</span>
               </div>
               <h3 class="font-serif font-bold text-lg text-gray-900 dark:text-white">{{ person.name }}</h3>
@@ -122,7 +138,10 @@ const founders = [
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
           <AnimatedSection v-for="(person, i) in founders" :key="person.slug" :style="{ transitionDelay: `${i * 60}ms` }">
             <RouterLink :to="`/people/${person.slug}`" class="block rounded-xl border border-gray-200/80 dark:border-gray-700/60 bg-white dark:bg-navy-light p-5 transition-all duration-200 hover:border-elf-blue/30 dark:hover:border-elf-blue/30 hover:shadow-md hover:-translate-y-0.5 h-full">
-              <div class="w-10 h-10 rounded-full bg-elf-blue/8 dark:bg-elf-blue/8 flex items-center justify-center mb-3">
+              <div v-if="person.photo" class="w-10 h-10 rounded-full overflow-hidden mb-3">
+                <img :src="person.photo" :alt="person.name" class="w-full h-full object-cover" />
+              </div>
+              <div v-else class="w-10 h-10 rounded-full bg-elf-blue/8 dark:bg-elf-blue/8 flex items-center justify-center mb-3">
                 <span class="text-base font-serif font-bold text-elf-blue dark:text-elf-blue">{{ person.name.charAt(0) }}</span>
               </div>
               <h3 class="font-serif font-bold text-gray-900 dark:text-white">{{ person.name }}</h3>

@@ -1,5 +1,6 @@
 ---
 title: Ronald Tse
+photo: /images/people/ronald-tse.jpg
 role: Secretary
 categories: leadership
 ---

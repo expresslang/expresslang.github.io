@@ -1,5 +1,6 @@
 ---
 title: Thomas Thurman
+photo: /images/people/thomas-thurman.jpg
 role: President
 categories: leadership
 ---

@@ -22,7 +22,10 @@ const content: ContentData | null = await useContent('people', slug)
             <span class="text-gray-700 dark:text-gray-300">{{ content.title }}</span>
           </nav>
           <div class="flex items-center gap-5">
-            <div class="w-16 h-16 rounded-full bg-elf-blue/10 dark:bg-elf-blue/10 flex items-center justify-center shrink-0">
+            <div v-if="content.frontmatter.photo" class="w-16 h-16 rounded-full overflow-hidden shrink-0">
+              <img :src="content.frontmatter.photo" :alt="content.title" class="w-full h-full object-cover" />
+            </div>
+            <div v-else class="w-16 h-16 rounded-full bg-elf-blue/10 dark:bg-elf-blue/10 flex items-center justify-center shrink-0">
               <span class="text-2xl font-serif font-bold text-elf-blue dark:text-elf-blue">{{ content.title.charAt(0) }}</span>
             </div>
             <div>
