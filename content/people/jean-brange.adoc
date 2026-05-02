@@ -1,19 +1,51 @@
 ---
-title: Jean Brange
+title: Jean Brangé
 photo: /images/people/jean-brange.jpg
-role: Founder
+role: Président, AFNeT Services
 categories: founders
 ---
 
-== EXPRESS Standards Contributor
+== Président, AFNeT Services
 
-Jean Brange is a founding member of the EXPRESS Language Foundation and a contributor
-to the development and promotion of EXPRESS language standards.
+Jean Brangé is a founding member of the EXPRESS Language Foundation and
+Président of AFNeT Services, a French organization focused on digital
+interoperability standards for industry. With a background in architecture, he
+brings a unique perspective bridging building design and industrial data
+exchange.
 
-== Contributions
+== Career
 
-Brange has been active in the STEP and EXPRESS community, contributing expertise
-in the application of EXPRESS standards for industrial data exchange.
+Jean studied architecture and mathematics at the École nationale supérieure
+d'architecture de Paris-Belleville and Université Paris 7. He began his career
+at RFR (Rice Francis Ritchie), the celebrated structural engineering firm, where
+he worked on computer simulations from 1992 to 1995.
+
+Since 2000, he has led major digital integration programs in industry, serving
+as Director of AFNeT from 2000 to 2011. He also taught at the École Spéciale
+d'Architecture from 1999 to 2007.
+
+He is currently Associé at AFNeT Services, focusing on SaaS solutions for
+standards-based interoperability, and was previously Associé at Boost SAS
+(2004–2021).
+
+== Contributions to Standards
+
+Jean is a leading figure in the STEP community in Europe, particularly around
+STEP AP242 and long-term digital archiving (LOTAR). He leads the EasySTEP and
+STEP Next initiatives, which aim to:
+
+* Democratize the exchange of complex industrial data through the STEP standard
+  (ISO 10303)
+* Provide a universal, free, and open-source STEP viewer (Apache 2.0 license)
+  supporting AP242, AP209, AP210, PLCS, and more
+* Build a community-driven vision with no vendor lock-in
+
+He is actively involved in the TDP (Technical Data Package) message
+standardization project for the European Aerospace and Defence domain, and
+leads platform projects for standards interoperability and PLM.
+
+His specialties include PLM, secured collaboration, management of large
+projects, simulations, STEP, and ISO 8000.
 
 == At ELF
 

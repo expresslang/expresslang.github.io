@@ -8,14 +8,45 @@ categories: leadership
 == Vice-President, EXPRESS Language Foundation
 
 Hiroshi Murayama is a founding member and current Vice-President of the EXPRESS
-Language Foundation, contributing to the organization's international outreach and
-technical coordination.
+Language Foundation. He is CEO of SATS Inc. (Standard Applied Technologies and
+Services), based in Ibusuki, Kagoshima, Japan.
 
-== Contributions
+== Career
 
-Murayama has been involved in the EXPRESS and STEP standardization community,
-contributing to the development and promotion of ISO 10303 standards. His work
-spans both the technical and organizational aspects of the EXPRESS ecosystem.
+Hiroshi began his career as a nuclear engineer at NAIG (Nippon Atomic Industry
+Group), which was absorbed into Toshiba Corporation in 1990. He worked on
+nuclear reactor design, including geometric designs for anti-seismicity and
+automated analytical model extraction.
+
+From late 1989 to early 1991, he studied computational geometry at École des
+Mines de Saint-Étienne in France, under Prof. B. Peroche with academic advisory
+from Dr. Dominique Michelucci (now Professor at the University of Bourgogne and
+INRIA).
+
+After returning to Japan, he served as Chief Research Scientist and then Research
+Fellow at Toshiba's R&D center until his retirement from the company in 2019.
+He subsequently founded SATS Inc. in 2020 to support international
+standardization efforts.
+
+== Contributions to Standards
+
+Hiroshi has been active in ISO and IEC standardization since the mid-1990s:
+
+* *ISO TC 184/SC 4* — expert since 1996, initially in WG2 for geometric shape
+  and product property information exchange, working closely with Prof. Guy
+  Pierra
+* *Convenor of ISO TC 184/SC 4/JWG 24* (since 2018)
+* *Deputy Convenor of ISO TC 184/SC 4/WG 25* (since 2022)
+* *Chair of IEC SC 3D* (2008–2017), during which he authored IEC 61360-2,
+  IEC 62656-1, and IEC 62656-5
+
+His technical specialties span nuclear engineering, shape design, anti-seismic
+design of civil infrastructure, product data dictionaries and ontology, and data
+modelling in general.
+
+== Education
+
+* Nuclear Engineering — Nagoya University
 
 == At ELF
 
