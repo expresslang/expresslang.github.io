@@ -1,5 +1,6 @@
 ---
 title: Stuart Galt
+photo: /images/people/stuart-galt.jpg
 role: Founding Member
 categories: founders
 ---

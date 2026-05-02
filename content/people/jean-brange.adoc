@@ -1,5 +1,6 @@
 ---
 title: Jean Brange
+photo: /images/people/jean-brange.jpg
 role: Founder
 categories: founders
 ---
