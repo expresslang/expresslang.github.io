@@ -120,3 +120,5 @@ See the link:/leadership[Leadership & Founders] page for detailed profiles.
 * link:/people/hiroshi-murayama[Hiroshi Murayama] — Vice-President
 * link:/people/ronald-tse[Ronald Tse] — Secretary
 * link:/people/stuart-galt[Stuart Galt] — Associate Technical Fellow, Boeing; Convenor, ISO/TC 184/SC 4/WG 12
+* link:/people/hiroshi-murayama[Hiroshi Murayama] — Vice-President
+* link:/people/ronald-tse[Ronald Tse] — Secretary
