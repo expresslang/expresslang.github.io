@@ -1,5 +1,6 @@
 ---
 title: Douglas Schenck
+photo: /images/people/douglas-schenck.jpg
 role: Founder, Project Leader
 categories: founders
 ---

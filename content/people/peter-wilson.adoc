@@ -1,5 +1,6 @@
 ---
 title: Peter Wilson
+photo: /images/people/peter-wilson.jpg
 role: Founder, Project Leader
 categories: founders
 ---
