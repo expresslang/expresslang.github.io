@@ -24,7 +24,7 @@ export default defineConfig({
       return [
         '/',
         '/about', '/membership', '/references', '/privacy', '/tos',
-        '/blog', '/learn', '/standards', '/languages', '/leadership',
+        '/blog', '/learn', '/standards', '/languages', '/leadership', '/supporters',
         ...posts.map((p) => `/blog/${basename(p, '.json')}`),
         ...learn.map((p) => `/learn/tutorial/${basename(p, '.json')}`),
         ...course.map((p) => `/learn/jotne-express/${basename(p, '.json')}`),

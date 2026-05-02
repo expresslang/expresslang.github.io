@@ -157,7 +157,7 @@ console.log('Building content...')
 const imagesDirs: Record<string, string> = {
   pages: '/images',
   posts: '/images/blog',
-  learn: '/learn/images',
+  learn: '/images/learn',
   course: '/course/images',
   languages: '/images/languages',
   people: '/images/people',
