@@ -143,8 +143,8 @@ END_FUNCTION;
 
 .Example model in EXPRESS-G
 ====
-image::../images/02-models-1.svg[]
-image::../images/02-models-2.svg[]
+image::02-models-1.svg[]
+image::02-models-2.svg[]
 ====
 
 
@@ -159,22 +159,22 @@ SUBTYPE_CONSTRAINT is a late addition.
 
 .EXPRESS-G base types
 ====
-image::../images/02-symbols-1.svg[]
-image::../images/02-symbols-4.svg[]
+image::02-symbols-1.svg[]
+image::02-symbols-4.svg[]
 ====
 
 
 .EXPRESS-G defined types
-image::../images/02-symbols-8.svg[]
+image::02-symbols-8.svg[]
 
 .EXPRESS-G ENTITY
-image::../images/02-symbols-9.svg[]
+image::02-symbols-9.svg[]
 
 .EXPRESS-G SUBTYPE_CONSTRAINT
-image::../images/02-symbols-17.svg[]
+image::02-symbols-17.svg[]
 
 .EXPRESS-G SCHEMA
-image::../images/02-symbols-13.svg[]
+image::02-symbols-13.svg[]
 
 
 === Relationship symbols
@@ -189,7 +189,7 @@ of the relationship.
 // end notes
 
 .EXPRESS-G line styles
-image::../images/02-symbols-14.svg[]
+image::02-symbols-14.svg[]
 
 
 === Composition symbols
@@ -203,10 +203,10 @@ another page.
 schema than the current one.
 
 .EXPRESS-G page references
-image::../images/02-symbols-15.svg[]
+image::02-symbols-15.svg[]
 
 .EXPRESS-G inter-schema references
-image::../images/02-symbols-16.svg[]
+image::02-symbols-16.svg[]
 
 
 == Usage examples
@@ -240,7 +240,7 @@ END_SCHEMA; -- simple_tree
 ----
 
 .Example EXPRESS-G supertype tree
-image::../images/02-models-5.svg[]
+image::02-models-5.svg[]
 
 
 === Expressing retyped attributes
@@ -267,7 +267,7 @@ END_ENTITY;
 ----
 
 .EXPRESS-G of the
-image::../images/02-models-6.svg[]
+image::02-models-6.svg[]
 
 
 === Expressing partial and complete ENTITY models
@@ -308,10 +308,10 @@ TYPE strings  LIST [1:?] OF STRING; END_TYPE;
 
 
 .EXPRESS-G PARTIAL ENTITY LEVEL MODEL
-image::../images/02-models-3.svg[]
+image::02-models-3.svg[]
 
 .EXPRESS-G COMPLETE ENTITY LEVEL MODEL
-image::../images/02-models-4.svg[]
+image::02-models-4.svg[]
 
 
 === Expressing schema and entity models
@@ -366,10 +366,10 @@ END_SCHEMA; -- geom
 ----
 
 .EXPRESS-G schema level model
-image::../images/02-models-8.svg[]
+image::02-models-8.svg[]
 
 .EXPRESS-G entity level model
-image::../images/02-models-7.svg[]
+image::02-models-7.svg[]
 
 
 === Expressing subtype constraints
@@ -402,4 +402,4 @@ ENTITY i SUBTYPE OF (a); END_ENTITY; -- illegal
 ----
 
 .EXPRESS-G with SUBTYPE_CONSTRAINTs
-image::../images/02-models-10.svg[]
+image::02-models-10.svg[]

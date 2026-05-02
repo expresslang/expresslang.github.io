@@ -35,7 +35,7 @@ EXPRESS takes precedence.
 
 [[fig_cargschema]]
 .Complete schema-level model for Registration Authority example
-image::../images/ex-cargschema.svg[]
+image::ex-cargschema.svg[]
 
 The model consists of three schemas, as shown in
 Figure&nbsp;<<fig_cargschema>>.
@@ -89,7 +89,7 @@ ownership records may be destroyed.
 
 [[fig_cargreg]]
 .Complete entity-level model of the Authority schema.
-image::../images/ex-cargreg.svg[]
+image::ex-cargreg.svg[]
 
 *EXPRESS specification:*
 
@@ -448,7 +448,7 @@ END_TYPE;
 
 [[fig_cargaux1]]
 .Complete entity-level model of the Support schema.
-image::../images/ex-cargaux1.svg[]
+image::ex-cargaux1.svg[]
 
 
 ==== fuel_consumption
@@ -475,7 +475,7 @@ range&#58;:: The value is limited to lie in the range 4 to 25 inclusive.
 
 [[fig_cargaux2]]
 .Complete entity-level model of the Support schema.
-image::../images/ex-cargaux2.svg[]
+image::ex-cargaux2.svg[]
 
 
 === Entity definitions
@@ -949,7 +949,7 @@ This schema contains definitions related to dates and other calendrical items.
 
 [[fig_cargcal]]
 .Complete entity-level model of Calendar schema.
-image::../images/ex-cargcal.svg[]
+image::ex-cargcal.svg[]
 
 
 Figure&nbsp;<<fig_cargcal>> is an EXPRESS-G
