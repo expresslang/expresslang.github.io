@@ -44,12 +44,26 @@ const founders: Person[] = [
     photo: '/images/people/douglas-schenck.jpg',
   },
   {
+    name: 'Prof. Bernd Wenzel',
+    slug: 'bernd-wenzel',
+    role: 'Project Leader',
+    highlight: 'Project Leader, ISO 10303-11:1994 (with Douglas Schenck)',
+    desc: 'Co-project leader of the first edition of the EXPRESS language standard, guiding it through international standardization at ISO.',
+  },
+  {
     name: 'Peter Wilson',
     slug: 'peter-wilson',
     role: 'Designer of EXPRESS-G & EXPRESS-X',
     highlight: 'Project Leader, ISO 10303-11:2004 (with David Loffredo)',
     desc: 'Designer of EXPRESS-G (graphical notation) and EXPRESS-X (schema mapping). Co-author of "Information Modelling: The EXPRESS Way". Author of the EXPRESS Tutorial.',
     photo: '/images/people/peter-wilson.jpg',
+  },
+  {
+    name: 'Thomas Thurman',
+    slug: 'thomas-thurman',
+    role: 'President',
+    desc: 'Owner of TRThurman Consulting. Technical lead for all four editions of ISO 10303-210 (AP 210). ISO Excellence Award and PDES Bryan K. Martin Award recipient.',
+    photo: '/images/people/thomas-thurman.jpg',
   },
   {
     name: 'Allison Barnard Feeney',
@@ -66,13 +80,6 @@ const founders: Person[] = [
     highlight: 'Convener, ISO TC 184/SC 4/WG 11',
     desc: 'Co-founder of STEP Tools Inc. Editor of ISO 10303-238 (STEP-NC) and Part 21. Led 20+ major software releases used in over a million CAD seats.',
     photo: '/images/people/david-loffredo.jpg',
-  },
-  {
-    name: 'Prof. Bernd Wenzel',
-    slug: 'bernd-wenzel',
-    role: 'Project Leader',
-    highlight: 'Project Leader, ISO 10303-11:1994 (with Douglas Schenck)',
-    desc: 'Co-project leader of the first edition of the EXPRESS language standard, guiding it through international standardization at ISO.',
   },
   {
     name: 'Jean Brangé',
