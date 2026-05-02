@@ -45,6 +45,7 @@ jobs:
           --accept 200,202,206,403,429
           --exclude https://www.expresslang.org
           --exclude https://www.mbx-if.org
+          --exclude https://www.jotne.com
           --base http://localhost:3000
           'dist/**/*.html'
         fail: true
