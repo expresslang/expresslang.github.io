@@ -23,6 +23,7 @@ const officers: Person[] = [
     slug: 'hiroshi-murayama',
     role: 'Vice-President',
     desc: 'Contributes to international outreach and technical coordination across the EXPRESS community.',
+    photo: '/images/people/hiroshi-murayama.jpg',
   },
   {
     name: 'Ronald Tse',
@@ -55,6 +56,7 @@ const founders: Person[] = [
     slug: 'allison-barnard-feeney',
     role: 'Standards Pioneer',
     desc: 'Key contributor to EXPRESS standardization at NIST, instrumental in transitioning EXPRESS from research to international standard.',
+    photo: '/images/people/allison-barnard-feeney.jpg',
   },
   {
     name: 'David Loffredo',
@@ -75,12 +77,14 @@ const founders: Person[] = [
     slug: 'jean-brange',
     role: 'Standards Contributor',
     desc: 'Contributor to the development and application of EXPRESS language standards for industrial data exchange.',
+    photo: '/images/people/jean-brange.jpg',
   },
   {
     name: 'Phil Spiby',
     slug: 'phil-spiby',
     role: 'Standards Contributor',
     desc: 'Contributor to the practical application of EXPRESS in industrial settings and real-world implementations.',
+    photo: '/images/people/phil-spiby.jpg',
   },
   {
     name: 'Stuart Galt',
@@ -88,6 +92,7 @@ const founders: Person[] = [
     role: 'Associate Technical Fellow, Boeing',
     highlight: 'Convenor, ISO/TC 184/SC 4/WG 12',
     desc: 'Associate Technical Fellow at Boeing with 25+ years in visualization and data exchange standards. Convenor of WG 12 at ISO/TC 184/SC 4, project lead of ISO/CD 14739-1 (PRC), and former Chair of OASIS WebCGM 2.1.',
+    photo: '/images/people/stuart-galt.jpg',
   },
 ]
 </script>

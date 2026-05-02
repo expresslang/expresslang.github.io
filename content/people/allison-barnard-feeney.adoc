@@ -1,5 +1,6 @@
 ---
 title: Allison Barnard Feeney
+photo: /images/people/allison-barnard-feeney.jpg
 role: Founder
 categories: founders
 ---
