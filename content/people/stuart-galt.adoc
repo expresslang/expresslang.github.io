@@ -1,0 +1,36 @@
+---
+title: Stuart Galt
+role: Founding Member
+categories: founders
+---
+
+== Associate Technical Fellow, Boeing
+
+Stuart Galt is an Associate Technical Fellow at Boeing, specializing in Enterprise
+Systems and Business Architecture. He brings more than 25 years of experience working
+with visualization and data exchange standards and formats.
+
+== Contributions to Standards
+
+Stuart is an active contributor across multiple ISO technical committees and
+industry standards bodies:
+
+* *Convenor of WG 12* at ISO/TC 184/SC 4 — the working group responsible for STEP
+  modeling and the STEP Module and Application Protocol (SMRL) validation
+* *Project Lead* of ISO/CD 14739-1, _Document management — 3D use of Product
+  Representation Compact (PRC) format — Part 1: PRC 10001_, in ISO/TC 171/SC 2
+* *Chair* of OASIS Standard WebCGM 2.1
+* *Member* of WG 16 (Visualization) and WG 21 (SMRL validation) in ISO/TC 184/SC 4
+* *Convener* of TC 171/SC 2 WG 7 (Engineering)
+* *Co-chair* of the LOTAR 3D mechanical CAD and PMI group
+
+== Impact
+
+Stuart's work bridges the worlds of 3D visualization, product data exchange,
+and document management. His contributions to STEP (ISO 10303), PRC (ISO 14739),
+and WebCGM standards have helped enable interoperability across the aerospace
+and manufacturing industries.
+
+== At ELF
+
+* Founding member of the EXPRESS Language Foundation

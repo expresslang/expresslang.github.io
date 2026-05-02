@@ -69,6 +69,13 @@ const founders = [
     role: 'Standards Contributor',
     desc: 'Contributor to the practical application of EXPRESS in industrial settings and real-world implementations.',
   },
+  {
+    name: 'Stuart Galt',
+    slug: 'stuart-galt',
+    role: 'Associate Technical Fellow, Boeing',
+    highlight: 'Convenor, ISO/TC 184/SC 4/WG 12',
+    desc: 'Associate Technical Fellow at Boeing with 25+ years in visualization and data exchange standards. Convenor of WG 12 at ISO/TC 184/SC 4, project lead of ISO/CD 14739-1 (PRC), and former Chair of OASIS WebCGM 2.1.',
+  },
 ]
 </script>
 
