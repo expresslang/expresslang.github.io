@@ -11,16 +11,17 @@ Product Development. He has led over twenty major releases of the STEP Tools
 software, now deployed in over a million CAD seats and used in manufacturing
 over a million aerospace parts per year since 2019.
 
-== Contributions to Standards
+== Current Standardization Roles
 
-David is the Editor of ISO 10303-238 (STEP-NC) and the Part 21 STEP file
-exchange format. He serves as Convener of ISO TC 184/SC 4 Working Group 11,
-overseeing STEP file formats, the EXPRESS modeling language, and programming
-language bindings.
+* *Convener*, ISO TC 184/SC 4 Working Group 11 — overseeing STEP file formats,
+  the EXPRESS modeling language, and programming language bindings
+* *Editor*, ISO 10303-238 (STEP-NC) and Part 21 STEP file exchange format
 
-He co-led the second edition of the EXPRESS language standard (ISO 10303-11:2004)
-together with Peter Wilson, incorporating lessons learned from a decade of
-industrial use and clarifying ambiguities in the original specification.
+== Previous Standardization
+
+* *Co-project Leader*, ISO 10303-11:2004 (with Peter Wilson) — second edition
+  of the EXPRESS language standard, incorporating lessons from a decade of
+  industrial use
 
 == Technical Work
 

@@ -7,19 +7,51 @@ categories: leadership
 
 == President, EXPRESS Language Foundation
 
-Thomas Thurman is a founding member and current President of the EXPRESS Language
-Foundation, providing strategic leadership for the organization's mission to maintain
-and promote the EXPRESS language family.
+Thomas (Tom) Thurman is President of the EXPRESS Language Foundation and owner
+of TRThurman Consulting, specializing in engineering data integration using
+STEP Application Protocols.
 
-== Contributions
+== Current Roles
 
-As President, Thurman oversees the foundation's activities in education,
-standardization, research, and promotion of the EXPRESS languages. He was instrumental
-in establishing ELF as a registered 501(c)(3) public charity in the United States in
-January 2022.
+* *President*, EXPRESS Language Foundation (since 2023)
+* *Owner*, TRThurman Consulting (since 2008) — consulting focused on
+  development and implementation of Electronic/Electrical applications of
+  ISO 10303
+* *Consultant*, The University of Iowa (since 2008) — providing technical
+  direction to research programs for modeling and simulating electromechanical
+  systems
 
-Thurman has been active in the EXPRESS and STEP communities, contributing to
-the development and adoption of ISO 10303 standards across industries.
+== Awards
+
+* *ISO Excellence Award* — in recognition of technical leadership, continued
+  innovation and personal dedication to the development of ISO 10303
+* *PDES, Inc. Bryan K. Martin Technical Excellence Award* — for technical
+  contributions and leadership
+
+== Career at Rockwell Collins
+
+Tom spent 40 years at Rockwell Collins (1968–2008) as Principal Electrical
+Engineer in the Advanced Manufacturing Technology department. He was
+responsible for requirements analysis, activity and information model
+development of ISO 10303 standards.
+
+He was the technical lead in the development of all four editions of
+ISO 10303-210 (AP 210), the electromechanical application protocol. He
+designed system architecture for a Printed Wiring Assembly design analysis
+system using AP 210 as the integration basis model, which evaluated several
+thousand designs in production use at Rockwell Collins.
+
+== Contributions to Standards
+
+* Technical lead for ISO 10303-210 (AP 210), all four editions
+* Co-author: "Research Results and Recommendations for Universally Unique
+  Identifiers in Product Data Standards" (NIST AMS 300-12, 2024)
+* Led the PREVIEW project for AP 210 design engineering data integration
+
+== Education
+
+* BSEE, Engineering — Saint Louis University
+* Graduate studies — Iowa State University
 
 == At ELF
 

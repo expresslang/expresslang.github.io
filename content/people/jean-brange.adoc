@@ -9,43 +9,40 @@ categories: founders
 
 Jean Brangé is a founding member of the EXPRESS Language Foundation and
 Président of AFNeT Services, a French organization focused on digital
-interoperability standards for industry. With a background in architecture, he
-brings a unique perspective bridging building design and industrial data
-exchange.
+interoperability standards for industry.
 
-== Career
+== Current Roles
 
-Jean studied architecture and mathematics at the École nationale supérieure
-d'architecture de Paris-Belleville and Université Paris 7. He began his career
-at RFR (Rice Francis Ritchie), the celebrated structural engineering firm, where
-he worked on computer simulations from 1992 to 1995.
+* *Président*, AFNeT Services (since 2021) — SaaS solutions for
+  standards-based interoperability
+* Leads the *EasySTEP* and *STEP Next* initiatives:
+** A universal, free, and open-source STEP viewer (Apache 2.0)
+** Full support for STEP formats (AP242, AP209, AP210, PLCS)
+** Community-driven vision with no vendor lock-in
+* Leads the *TDP Message standardization project* for European Aerospace and
+  Defence
 
-Since 2000, he has led major digital integration programs in industry, serving
-as Director of AFNeT from 2000 to 2011. He also taught at the École Spéciale
-d'Architecture from 1999 to 2007.
+== Previous Roles
 
-He is currently Associé at AFNeT Services, focusing on SaaS solutions for
-standards-based interoperability, and was previously Associé at Boost SAS
-(2004–2021).
+* *Associé*, Boost SAS (2004–2021)
+* *Directeur*, AFNeT (2000–2011)
+* *Enseignant*, École Spéciale d'Architecture (1999–2007)
+* *Computer Simulations*, RFR (1992–1995)
 
-== Contributions to Standards
+== Background
 
-Jean is a leading figure in the STEP community in Europe, particularly around
-STEP AP242 and long-term digital archiving (LOTAR). He leads the EasySTEP and
-STEP Next initiatives, which aim to:
-
-* Democratize the exchange of complex industrial data through the STEP standard
-  (ISO 10303)
-* Provide a universal, free, and open-source STEP viewer (Apache 2.0 license)
-  supporting AP242, AP209, AP210, PLCS, and more
-* Build a community-driven vision with no vendor lock-in
-
-He is actively involved in the TDP (Technical Data Package) message
-standardization project for the European Aerospace and Defence domain, and
-leads platform projects for standards interoperability and PLM.
+With a background in architecture and mathematics, Jean brings a unique
+perspective bridging building design and industrial data exchange. He is a
+leading figure in the STEP community in Europe, particularly around STEP
+AP242 and long-term digital archiving (LOTAR).
 
 His specialties include PLM, secured collaboration, management of large
 projects, simulations, STEP, and ISO 8000.
+
+== Education
+
+* Architecture — École nationale supérieure d'architecture de Paris-Belleville
+* Mathematics — Université Paris 7
 
 == At ELF
 

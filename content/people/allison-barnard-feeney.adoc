@@ -12,28 +12,23 @@ industry, government, and university consortium committed to accelerating the
 development and implementation of standards for product data exchange in the
 Digital Enterprise.
 
-== Career at NIST
+== Previous Roles
 
-Allison served as a mechanical engineer in the Smart Connected Systems Division
-of the National Institute of Standards and Technology (NIST). She addressed
-national problems related to the digitalization of manufacturing, including
-system interoperability, formal language development, building trust in digital
-data, and building knowledge from disparate data sources.
-
-She previously led the Smart Manufacturing Operations Planning and Control
-Program in NIST's Engineering Lab, including its Digital Thread for Smart
-Manufacturing Project and the Product Definition for Smart Manufacturing
-Project in the Model-Based Enterprise program.
+* *Mechanical Engineer*, Smart Connected Systems Division, NIST Communications
+  Technology Laboratory — addressed national problems in manufacturing
+  digitalization, system interoperability, and formal language development
+* *Lead*, Smart Manufacturing Operations Planning and Control Program, NIST
+  Engineering Lab — including the Digital Thread and Product Definition for
+  Smart Manufacturing projects
+* *Chair*, US Technical Advisory Group to ISO TC 184/SC 4
+* *US Representative*, SC 4 Policy and Planning Committee
 
 == Contributions to Standards
 
-Allison has worked in manufacturing standards development, implementation,
-conformance testing, product data standards, and systems integration throughout
-her career. She has been a key participant in the development of the STEP
-product data standard (ISO 10303) since its inception.
-
-She served as Chair of the US Technical Advisory Group to ISO TC 184/SC 4
-and as the US representative to SC 4's Policy and Planning Committee.
+Allison has been a key participant in the development of the STEP product data
+standard (ISO 10303) since its inception. She worked throughout her NIST career
+in manufacturing standards development, implementation, conformance testing,
+product data standards, and systems integration.
 
 == Awards
 
@@ -42,10 +37,9 @@ and as the US representative to SC 4's Policy and Planning Committee.
 * *2019 Department of Commerce Bronze Medal* — for leading advances to
   standard-based data exchange between engineering, manufacturing, and
   inspection
-* *2018 ANSI Finegan Standards Medal* — honoring extraordinary leadership in
-  the development and application of voluntary standards
-* *2019 NIST George Uriano Award* — for leading advances to standards-based
-  communication between engineering, manufacturing, and metrology
+* *2018 ANSI Finegan Standards Medal* — extraordinary leadership in voluntary
+  standards
+* *2019 NIST George Uriano Award*
 * *2016 NIST Edward Bennet Rosa Award*
 * *2015 PDES, Inc. Brad Ridgon Technical Management Award*
 * *2006 PDES, Inc. Bryan K. Martin Technical Excellence Award*
