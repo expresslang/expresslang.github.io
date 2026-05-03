@@ -292,9 +292,9 @@ const milestones = [
         </AnimatedSection>
         <AnimatedSection>
           <div class="flex flex-wrap gap-6 items-center justify-center">
-            <div v-for="logo in ['supporter-boeing.svg','supporter-md.svg','supporter-ge.svg','supporter-nist.svg','supporter-pdes.png','supporter-steptools.svg','supporter-jotneconnect.svg','supporter-afnet.svg','supporter-ribose.svg']" :key="logo" class="h-14 flex items-center rounded-lg bg-white p-2">
+            <RouterLink v-for="logo in ['supporter-boeing.svg','supporter-md.svg','supporter-ge.svg','supporter-nist.svg','supporter-pdes.png','supporter-steptools.svg','supporter-jotneconnect.svg','supporter-afnet.svg','supporter-ribose.svg']" :key="logo" to="/supporters" class="h-14 flex items-center rounded-lg bg-white p-2 hover:shadow-md transition-shadow">
               <img :src="`/images/supporters/${logo}`" :alt="logo.replace('supporter-','').replace(/\.\w+$/,'')" class="max-h-10 w-auto mx-auto object-contain" />
-            </div>
+            </RouterLink>
           </div>
           <p class="text-center mt-8">
             <RouterLink to="/supporters" class="text-sm font-medium text-elf-blue dark:text-elf-blue hover:underline">

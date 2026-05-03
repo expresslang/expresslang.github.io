@@ -13,7 +13,7 @@ const content: ContentData | null = await useContent('people', slug)
     <template v-if="content">
       <!-- Hero -->
       <div class="bg-gradient-to-b from-slate-50 to-white dark:from-navy dark:to-navy-light/30 pt-12 pb-12">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <nav class="text-sm text-gray-400 dark:text-gray-500 mb-6 flex items-center gap-1.5">
             <RouterLink to="/" class="hover:text-elf-blue dark:hover:text-elf-blue transition-colors">Home</RouterLink>
             <span>/</span>
@@ -36,12 +36,12 @@ const content: ContentData | null = await useContent('people', slug)
         </div>
       </div>
 
-      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
         <AsciiDocContent :html="content.body" />
       </div>
     </template>
 
-    <div v-else class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
+    <div v-else class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
       <p class="text-2xl font-serif font-bold text-gray-900 dark:text-white">Person not found</p>
       <RouterLink to="/leadership" class="mt-4 inline-block text-elf-blue dark:text-elf-blue hover:underline">&larr; Back to Leadership</RouterLink>
     </div>

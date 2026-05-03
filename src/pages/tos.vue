@@ -14,6 +14,7 @@ const content: ContentData | null = await useContent('pages', 'tos')
           <span>/</span>
           <span class="text-gray-700 dark:text-gray-300">{{ content?.title || 'Terms of Service' }}</span>
         </nav>
+        <p class="font-mono text-xs tracking-[0.2em] uppercase text-elf-blue dark:text-elf-blue mb-3">Legal</p>
         <h1 class="text-3xl sm:text-4xl font-serif font-bold text-gray-900 dark:text-white">{{ content?.title || 'Terms of Service' }}</h1>
       </div>
     </div>

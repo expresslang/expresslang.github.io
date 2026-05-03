@@ -82,7 +82,7 @@ const languages = [
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
       <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
         <AnimatedSection v-for="(lang, i) in languages" :key="lang.id" :style="{ transitionDelay: `${i * 80}ms` }">
-          <div :class="['rounded-xl border p-6 bg-white dark:bg-navy-light hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5']" :style="{ borderColor: `${lang.color}33` }">
+          <RouterLink :to="`/languages/${lang.slug}`" class="block rounded-xl border p-6 bg-white dark:bg-navy-light hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5" :style="{ borderColor: `${lang.color}33` }">
             <div class="flex items-center gap-3 mb-4">
               <img :src="lang.icon" :alt="lang.name" class="h-10 w-auto" />
               <div>
@@ -98,11 +98,11 @@ const languages = [
                 {{ feat }}
               </li>
             </ul>
-            <RouterLink :to="`/languages/${lang.slug}`" class="inline-flex items-center text-sm font-medium transition-colors hover:underline" :style="{ color: lang.color }">
+            <span class="inline-flex items-center text-sm font-medium transition-colors" :style="{ color: lang.color }">
               Learn more
               <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            </RouterLink>
-          </div>
+            </span>
+          </RouterLink>
         </AnimatedSection>
       </div>
 
