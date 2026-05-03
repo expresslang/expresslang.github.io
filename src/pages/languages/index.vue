@@ -50,7 +50,7 @@ const languages = [
     name: 'EXPRESS-Q',
     id: 'express-q',
     slug: 'express-q',
-    color: '#7c5cbf',
+    color: '#ed1c24',
     icon: '/logos/logo-lang-icon-expressq.svg',
     desc: 'Query language for defining mappings between Application Reference Model (ARM) and Model Implementation Model (MIM) schemas, with reference path syntax for precise schema navigation.',
     iso: 'ELF Specification',

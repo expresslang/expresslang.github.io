@@ -18,7 +18,7 @@ const languageMeta: Record<string, LanguageInfo> = {
   'express-g': { iso: 'ISO 10303-11:2004', color: '#4ec0aa', icon: '/logos/logo-lang-icon-expressg.svg' },
   'express-i': { iso: 'ISO 10303-12', color: '#d85577', icon: '/logos/logo-lang-icon-expressi.svg' },
   'express-x': { iso: 'ISO 10303-14', color: '#077783', icon: '/logos/logo-lang-icon-expressx.svg' },
-  'express-q': { iso: 'ELF Specification', color: '#7c5cbf', icon: '/logos/logo-lang-icon-expressq.svg' },
+  'express-q': { iso: 'ELF Specification', color: '#ed1c24', icon: '/logos/logo-lang-icon-expressq.svg' },
 }
 
 const siblings = [
