@@ -30,7 +30,11 @@ import BaseCard from '@/components/ui/BaseCard.vue'
               The authoritative course on the EXPRESS language — from the co-inventor of EXPRESS-G and EXPRESS-X. Covers syntax, semantics, modelling patterns, rules, and practical exercises.
             </p>
             <p class="text-xs text-gray-400 dark:text-gray-500 italic mb-4">By Peter Wilson, co-author of <em class="italic">Information Modelling: The EXPRESS Way</em></p>
-            <p class="text-xs font-mono text-gray-400 dark:text-gray-500">{{ learnNavigation.length }} modules</p>
+            <p class="text-xs font-mono text-gray-400 dark:text-gray-500 mb-3">{{ learnNavigation.length }} modules</p>
+            <div class="flex items-center gap-2">
+              <img src="/logos/logo-lang-icon-express.svg" alt="EXPRESS" title="EXPRESS" class="h-6 w-auto" />
+              <img src="/logos/logo-lang-icon-expressg.svg" alt="EXPRESS-G" title="EXPRESS-G" class="h-6 w-auto" />
+            </div>
           </BaseCard>
         </AnimatedSection>
 
@@ -44,7 +48,12 @@ import BaseCard from '@/components/ui/BaseCard.vue'
               The applied course on the ISO 10303 ecosystem — STEP file formats, data validation, schema querying, business rules, SDAI programming, and PLCS. Assumes basic EXPRESS knowledge.
             </p>
             <p class="text-xs text-gray-400 dark:text-gray-500 italic mb-4">Contributed by Jotne EPM Technology</p>
-            <p class="text-xs font-mono text-gray-400 dark:text-gray-500">{{ courseNavigation.length }} modules</p>
+            <p class="text-xs font-mono text-gray-400 dark:text-gray-500 mb-3">{{ courseNavigation.length }} modules</p>
+            <div class="flex items-center gap-2">
+              <img src="/logos/logo-lang-icon-express.svg" alt="EXPRESS" title="EXPRESS" class="h-6 w-auto" />
+              <img src="/logos/logo-lang-icon-expressg.svg" alt="EXPRESS-G" title="EXPRESS-G" class="h-6 w-auto" />
+              <img src="/logos/logo-lang-icon-expressx.svg" alt="EXPRESS-X" title="EXPRESS-X" class="h-6 w-auto" />
+            </div>
           </BaseCard>
         </AnimatedSection>
       </div>
