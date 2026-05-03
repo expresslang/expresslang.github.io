@@ -15,6 +15,11 @@ function formatDate(date: string) {
     <!-- Hero -->
     <div class="bg-gradient-to-b from-slate-50 to-white dark:from-navy dark:to-navy-light/30 pt-12 pb-12">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <nav class="text-sm text-gray-400 dark:text-gray-500 mb-6 flex items-center gap-1.5">
+          <RouterLink to="/" class="hover:text-elf-blue dark:hover:text-elf-blue transition-colors">Home</RouterLink>
+          <span>/</span>
+          <span class="text-gray-700 dark:text-gray-300">Blog</span>
+        </nav>
         <p class="font-mono text-xs tracking-[0.2em] uppercase text-elf-blue dark:text-elf-blue mb-3">News</p>
         <h1 class="text-3xl sm:text-4xl font-serif font-bold text-gray-900 dark:text-white">Blog</h1>
         <p class="mt-3 text-gray-500 dark:text-gray-400">News and updates from the EXPRESS Language Foundation</p>

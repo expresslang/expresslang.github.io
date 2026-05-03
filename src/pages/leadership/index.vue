@@ -29,7 +29,7 @@ const officers: Person[] = [
     name: 'Ronald Tse',
     slug: 'ronald-tse',
     role: 'Secretary',
-    desc: 'Manages organizational operations and administrative functions of the foundation.',
+    desc: 'Project Leader for Annotated EXPRESS and designer of the SUMA framework (STEP Unified Model Architecture) used to publish the ISO 10303 STEP Resource Library and Application Protocols. Founder and CEO of Ribose.',
     photo: '/images/people/ronald-tse.jpg',
   },
 ]
@@ -114,7 +114,7 @@ const founders: Person[] = [
     name: 'Ronald Tse',
     slug: 'ronald-tse',
     role: 'Secretary',
-    desc: 'Manages organizational operations and administrative functions of the foundation.',
+    desc: 'Project Leader for Annotated EXPRESS and designer of the SUMA framework (STEP Unified Model Architecture) used to publish the ISO 10303 STEP Resource Library and Application Protocols. Founder and CEO of Ribose.',
     photo: '/images/people/ronald-tse.jpg',
   },
 ]
@@ -125,6 +125,11 @@ const founders: Person[] = [
     <!-- Hero -->
     <div class="bg-gradient-to-b from-slate-50 to-white dark:from-navy dark:to-navy-light/30 pt-12 pb-16">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <nav class="text-sm text-gray-400 dark:text-gray-500 mb-6 flex items-center gap-1.5">
+          <RouterLink to="/" class="hover:text-elf-blue dark:hover:text-elf-blue transition-colors">Home</RouterLink>
+          <span>/</span>
+          <span class="text-gray-700 dark:text-gray-300">Leadership</span>
+        </nav>
         <p class="font-mono text-xs tracking-[0.2em] uppercase text-elf-blue dark:text-elf-blue mb-3">Organization</p>
         <h1 class="text-3xl sm:text-4xl font-serif font-bold text-gray-900 dark:text-white">Leadership &amp; Founders</h1>
         <p class="mt-4 text-gray-500 dark:text-gray-400 max-w-2xl leading-relaxed">
