@@ -166,13 +166,13 @@ onMounted(() => {
           <div class="fixed inset-0 bg-black/20 dark:bg-black/40 backdrop-blur-sm" @click="closeMobile" />
           <Transition
             enter-active-class="transition duration-300"
-            enter-from-class="translate-x-full"
+            enter-from-class="-translate-x-full"
             enter-to-class="translate-x-0"
             leave-active-class="transition duration-200"
             leave-from-class="translate-x-0"
-            leave-to-class="translate-x-full"
+            leave-to-class="-translate-x-full"
           >
-            <div id="mobile-nav" class="fixed top-0 right-0 bottom-0 w-80 max-w-[85vw] bg-white dark:bg-navy shadow-2xl">
+            <div id="mobile-nav" class="fixed top-0 left-0 bottom-0 w-80 max-w-[85vw] bg-white dark:bg-navy shadow-2xl">
               <div class="flex items-center justify-between p-6 border-b border-gray-100 dark:border-gray-800">
                 <span class="font-serif font-bold text-gray-900 dark:text-white">Navigation</span>
                 <button @click="closeMobile" class="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 rounded-md min-h-[44px] min-w-[44px] flex items-center justify-center" aria-label="Close menu">

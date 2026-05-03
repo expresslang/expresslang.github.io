@@ -7,14 +7,14 @@ categories: founders
 
 == Secretary, EXPRESS Language Foundation
 
-Ronald Tse is a founding member and Secretary of the EXPRESS Language Foundation,
-managing organizational operations and administrative functions.
+Ronald Tse is a founding member and Secretary of the EXPRESS Language Foundation.
+He is the Founder and CEO of Ribose.
 
 == Contributions
 
-Tse has been actively involved in open source and open standards communities,
-bringing experience in governance, community building, and technical standards
-development to the foundation.
+* Project Leader for Annotated EXPRESS
+* Designer of the SUMA framework (STEP Unified Model Architecture), used to publish the ISO 10303 STEP Resource Library and Application Protocols
+* Convener of ISO/TC 154/WG 5, expert in ISO/TC 184/SC 4/WG 13 and multiple other ISO committees
 
 == At ELF
 

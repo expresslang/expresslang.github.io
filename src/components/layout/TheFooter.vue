@@ -59,7 +59,6 @@ import { siteData } from '@/data/site'
             <li><RouterLink to="/leadership" class="text-gray-600 dark:text-gray-400 hover:text-elf-blue dark:hover:text-elf-blue transition-colors">Leadership</RouterLink></li>
             <li><RouterLink to="/supporters" class="text-gray-600 dark:text-gray-400 hover:text-elf-blue dark:hover:text-elf-blue transition-colors">Supporters</RouterLink></li>
             <li><RouterLink to="/membership" class="text-gray-600 dark:text-gray-400 hover:text-elf-blue dark:hover:text-elf-blue transition-colors">Membership</RouterLink></li>
-            <li><RouterLink to="/blog" class="text-gray-600 dark:text-gray-400 hover:text-elf-blue dark:hover:text-elf-blue transition-colors">Blog</RouterLink></li>
             <li><RouterLink to="/privacy" class="text-gray-600 dark:text-gray-400 hover:text-elf-blue dark:hover:text-elf-blue transition-colors">Privacy</RouterLink></li>
             <li><RouterLink to="/tos" class="text-gray-600 dark:text-gray-400 hover:text-elf-blue dark:hover:text-elf-blue transition-colors">Terms of Service</RouterLink></li>
           </ul>

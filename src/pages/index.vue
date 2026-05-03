@@ -197,7 +197,7 @@ const milestones = [
           </div>
 
           <!-- EXPRESS code card with typewriter -->
-          <div class="hidden lg:flex items-start justify-center w-[420px] shrink-0 mt-10">
+          <div class="flex items-start justify-center w-full lg:w-[420px] shrink-0 mt-8 lg:mt-10">
             <div class="w-full rounded-2xl border border-gray-200/60 dark:border-gray-700/40 bg-white dark:bg-navy-light shadow-2xl shadow-elf-blue/5 dark:shadow-black/20 overflow-hidden">
               <div class="flex items-center gap-2 px-4 py-2.5 border-b border-gray-100 dark:border-gray-700/40 bg-gray-50/80 dark:bg-navy">
                 <span class="w-2.5 h-2.5 rounded-full bg-red-400/70" />
@@ -229,7 +229,7 @@ const milestones = [
           </div>
         </AnimatedSection>
 
-        <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-5">
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
           <AnimatedSection v-for="(lang, i) in languages" :key="lang.name" :style="{ transitionDelay: `${i * 60}ms` }">
             <RouterLink :to="`/languages/${lang.slug}`" class="block rounded-xl border bg-white dark:bg-navy-light p-6 transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5" :style="{ borderColor: `${lang.color}33` }">
               <img :src="lang.icon" :alt="lang.name" class="h-8 w-auto mb-3" />
@@ -291,16 +291,10 @@ const milestones = [
           </div>
         </AnimatedSection>
         <AnimatedSection>
-          <div class="flex flex-wrap gap-8 items-center justify-center">
-            <img src="/images/supporters/supporter-boeing.svg" alt="Boeing" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
-            <img src="/images/supporters/supporter-md.svg" alt="McDonnell Douglas" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
-            <img src="/images/supporters/supporter-ge.svg" alt="General Electric" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
-            <img src="/images/supporters/supporter-nist.svg" alt="NIST" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
-            <img src="/images/supporters/supporter-pdes.png" alt="PDES Inc." class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
-            <img src="/images/supporters/supporter-steptools.svg" alt="STEP Tools" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
-            <img src="/images/supporters/supporter-jotneconnect.svg" alt="Jotne EPM Technology" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
-            <img src="/images/supporters/supporter-afnet.svg" alt="AFNeT Services" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
-            <img src="/images/supporters/supporter-ribose.svg" alt="Ribose" class="h-12 w-auto opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 dark:invert dark:opacity-50 dark:hover:opacity-90" />
+          <div class="flex flex-wrap gap-6 items-center justify-center">
+            <div v-for="logo in ['supporter-boeing.svg','supporter-md.svg','supporter-ge.svg','supporter-nist.svg','supporter-pdes.png','supporter-steptools.svg','supporter-jotneconnect.svg','supporter-afnet.svg','supporter-ribose.svg']" :key="logo" class="h-14 flex items-center rounded-lg bg-white p-2">
+              <img :src="`/images/supporters/${logo}`" :alt="logo.replace('supporter-','').replace(/\.\w+$/,'')" class="max-h-10 w-auto mx-auto object-contain" />
+            </div>
           </div>
           <p class="text-center mt-8">
             <RouterLink to="/supporters" class="text-sm font-medium text-elf-blue dark:text-elf-blue hover:underline">
@@ -399,9 +393,9 @@ const milestones = [
     </section>
 
     <!-- About / CTA -->
-    <section class="relative overflow-hidden py-24 bg-elf-blue dark:bg-navy-light">
+    <section class="relative overflow-hidden py-24 bg-elf-blue dark:bg-elf-blue-dark">
       <div class="absolute inset-0 pointer-events-none opacity-10">
-        <svg viewBox="0 0 200 200" fill="none" class="absolute -right-20 top-0 w-96 h-96 text-white dark:text-elf-blue">
+        <svg viewBox="0 0 200 200" fill="none" class="absolute -right-20 top-0 w-96 h-96 text-white dark:text-white">
           <path d="M40 40L100 100L40 160" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round"/>
           <path d="M160 40L100 100L160 160" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round"/>
         </svg>
