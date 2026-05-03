@@ -22,6 +22,20 @@ Content is authored in AsciiDoc under `content/`:
 
 The build pipeline converts `.adoc` files to JSON via `scripts/build-content.ts`, then ViteSSG generates static HTML.
 
+## Content authoring
+
+Content files use AsciiDoc syntax (`.adoc` extension) with YAML frontmatter:
+
+```
+---
+title: Page Title
+---
+
+AsciiDoc content here...
+```
+
+See the [AsciiDoc syntax quick reference](https://docs.asciidoctor.org/asciidoc/latest/syntax-quick-reference/) for markup details. After the frontmatter block, normal AsciiDoc content begins.
+
 ## Deployment
 
 Automatically deployed to GitHub Pages on push to `main` via GitHub Actions.

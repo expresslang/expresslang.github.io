@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import { resolve } from 'node:path'
 import { globby } from 'globby'
 import { basename } from 'node:path'
+
 export default defineConfig({
   plugins: [vue()],
   resolve: {
@@ -23,7 +24,7 @@ export default defineConfig({
 
       return [
         '/',
-        '/about', '/membership', '/references', '/privacy', '/tos',
+        '/about', '/membership', '/privacy', '/tos',
         '/blog', '/learn', '/standards', '/languages', '/leadership', '/supporters',
         ...posts.map((p) => `/blog/${basename(p, '.json')}`),
         ...learn.map((p) => `/learn/tutorial/${basename(p, '.json')}`),
