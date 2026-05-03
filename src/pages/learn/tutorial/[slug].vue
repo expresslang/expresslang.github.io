@@ -25,7 +25,7 @@ const baseUrl = '/learn/tutorial'
 
 <template>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="flex gap-8">
+    <div class="lg:flex lg:gap-8">
       <TheSidebar :items="learnNavigation" :current-slug="slug" base-url="/learn/tutorial" />
       <div class="flex-1 min-w-0">
         <template v-if="content">
