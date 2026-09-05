@@ -13,6 +13,7 @@ interoperability standards for industry.
 
 == Current Roles
 
+* *Convenor*, ISO/TC 184/SC 4/WG 21
 * *Président*, AFNeT Services (since 2021) — SaaS solutions for
   standards-based interoperability
 * Leads the *EasySTEP* and *STEP Next* initiatives:
