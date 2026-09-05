@@ -85,6 +85,7 @@ const founders: Person[] = [
     name: 'Jean Brangé',
     slug: 'jean-brange',
     role: 'Président, AFNeT Services',
+    highlight: 'Convenor, ISO/TC 184/SC 4/WG 21',
     desc: 'Leads the EasySTEP and STEP Next initiatives for open-source STEP tooling. Pioneer in STEP AP242 deployment and LOTAR long-term archiving in aerospace.',
     photo: '/images/people/jean-brange.jpg',
   },
@@ -102,6 +103,14 @@ const founders: Person[] = [
     highlight: 'Convenor, ISO/TC 184/SC 4/WG 12',
     desc: 'Associate Technical Fellow at Boeing with 25+ years in visualization and data exchange standards. Convenor of WG 12 at ISO/TC 184/SC 4, project lead of ISO/CD 14739-1 (PRC), and former Chair of OASIS WebCGM 2.1.',
     photo: '/images/people/stuart-galt.jpg',
+  },
+  {
+    name: 'Yoshiaki Sonoda',
+    slug: 'yoshiaki-sonoda',
+    role: 'Manager, DI Strategy & Planning Dept., Mitsubishi Heavy Industries',
+    highlight: 'Convenor, ISO/TC 184/SC 4/WG 25 · Project Leader, ISO 15926-6',
+    desc: 'Manager at Mitsubishi Heavy Industries and leader of its International Standardization Strategy Task Force. 35 years of IT supporting over 700 products across power plants, shipbuilding, aerospace, and defense.',
+    photo: '/images/people/yoshiaki-sonoda.jpg',
   },
   {
     name: 'Hiroshi Murayama',

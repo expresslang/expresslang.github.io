@@ -1,0 +1,71 @@
+---
+title: Yoshiaki Sonoda
+photo: /images/people/yoshiaki-sonoda.jpg
+role: Manager, DI Strategy & Planning Dept., Mitsubishi Heavy Industries
+categories: founders
+---
+
+== Manager, DI Strategy & Planning Department, Mitsubishi Heavy Industries
+
+Yoshiaki Sonoda is a founding member of the EXPRESS Language Foundation. He is
+the Manager of the DI Strategy & Planning Department at the Digital Innovation
+Headquarters of Mitsubishi Heavy Industries, Ltd. (MHI), and the leader of the
+company's International Standardization Strategy Task Force, which covers a
+broad range of manufacturing industry domains, including power plants,
+shipbuilding, aerospace, and defense.
+
+== Current Roles
+
+* *Manager, DI Strategy & Planning Department*, Digital Innovation
+  Headquarters, Mitsubishi Heavy Industries, Ltd.
+* *Leader, International Standardization Strategy Task Force*, Mitsubishi
+  Heavy Industries (since 1989)
+* *Convenor*, ISO/TC 184/SC 4/WG 25 — ISO CDD Validation Team (since 2025)
+* *Deputy Convenor*, ISO/TC 184/SC 4/WG 3 — Oil, Gas, Process and Power
+  (since 2025)
+* *Deputy Convenor*, ISO/TC 184/SC 4 – IEC/TC 3/SC 3D JWG 24 — Use of IEC CDD
+  for ISO data dictionaries and ontologies (since 2024)
+* *Project Leader*, ISO 15926-6
+* *Chairman, International Standards Committee*, Engineering Advancement
+  Association of Japan (since 2012)
+
+== Awards
+
+* *Industrial Standardization Project Award* — Minister of Economy, Trade and
+  Industry of Japan (2022), for his long-time contribution to advancing
+  industry through standardization activities
+* *Association Achievement Award* — Engineering Advancement Association of
+  Japan (2023), for his contribution to the engineering industry
+
+== Background
+
+Yoshiaki specializes primarily in information technology supporting more than
+700 products in MHI's manufacturing domains, and has been supporting their
+revolutions in R&D activities for 35 years. He participates in numerous
+committees at ISO and IEC as an expert.
+
+Additionally, he has been involved in organizational culture reform for over
+10 years, drawing on his knowledge of modern military organizational
+strategies and East Asian philosophies — particularly Confucianism,
+Shintoism, Buddhism, and Sun Tzu.
+
+== Publications
+
+* _Carbon Neutral and International Standardisation_
+  (図解でわかるカーボンニュートラル×国際標準化) — co-written with Mr. Tsutsui
+  and Dr. Tsunoda. link:https://amzn.to/3KPJ4MF[Available from Amazon].
+
+== Education
+
+* Master's degree, Information Engineering — Kyushu University Graduate School
+  (1989)
+
+== Personal
+
+In his free time, Yoshiaki enjoys sailing, watching movies, and reading
+classic literature. He participated in the sailing competition of the Tokyo
+2020 Olympic Games as a National Technical Official.
+
+== At ELF
+
+* Founding member of the EXPRESS Language Foundation
