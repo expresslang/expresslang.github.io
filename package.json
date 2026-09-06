@@ -8,10 +8,12 @@
     "dev": "npm run build:content && vite",
     "dev:watch": "concurrently \"tsx watch scripts/build-content.ts\" \"vite\"",
     "build": "npm run build:content && vite-ssg build && tsx scripts/generate-sitemap.ts",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest run"
   },
   "dependencies": {
     "@unhead/vue": "^1.11.14",
+    "js-yaml": "^5.4.1",
     "vue": "^3.4.38",
     "vue-router": "^4.4.3"
   },
@@ -20,6 +22,7 @@
     "@tailwindcss/container-queries": "^0.1.1",
     "@tailwindcss/postcss": "^4.2.4",
     "@tailwindcss/typography": "^0.5.16",
+    "@types/js-yaml": "^4.0.9",
     "@vitejs/plugin-vue": "^5.2.1",
     "concurrently": "^9.1.2",
     "globby": "^14.1.0",
@@ -31,6 +34,7 @@
     "typescript": "^5.7.3",
     "vite": "^5.4.14",
     "vite-ssg": "^0.23.7",
+    "vitest": "^2.1.9",
     "vue-tsc": "^2.2.7"
   }
 }

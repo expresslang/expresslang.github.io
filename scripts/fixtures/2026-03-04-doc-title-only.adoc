@@ -1,0 +1,7 @@
+:stem:
+
+= Only Doc Title
+
+== Section One
+
+Text without frontmatter.
