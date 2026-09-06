@@ -1,0 +1,8 @@
+---
+title: [unclosed
+---
+= Doc Title
+
+== Section
+
+Body text.

@@ -1,0 +1,20 @@
+---
+title: Fixture Post
+date: 2026-01-02
+categories: [news, elf]
+authors:
+  - name: Jane Doe
+excerpt: A short excerpt.
+---
+
+= Fixture Post
+
+== First Section
+
+Some introductory text.
+
+image::fixture.png[Fixture image]
+
+=== Sub Section
+
+More detail here.
