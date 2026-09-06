@@ -54,18 +54,22 @@ const activeText = '!text-elf-blue dark:!text-elf-blue'
                   </svg>
                   {isActive(item) && <span class="absolute bottom-0 left-3 right-3 h-0.5 bg-elf-blue dark:bg-elf-blue rounded-full" />}
                 </a>
-                <div class="absolute right-0 mt-1 w-44 rounded-lg bg-white dark:bg-navy-light border border-gray-200/80 dark:border-gray-700/60 shadow-lg shadow-gray-900/5 dark:shadow-black/20 py-1.5 z-50 opacity-0 scale-95 pointer-events-none origin-top-right transition duration-150 ease-out group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:scale-100 group-focus-within:pointer-events-auto">
-                  {item.children!.map((child) => (
-                    <a
-                      href={child.path}
-                      class:list={[
-                        'block px-4 py-2 text-[0.8rem] text-gray-600 dark:text-gray-300 hover:text-elf-blue dark:hover:text-elf-blue hover:bg-gray-50 dark:hover:bg-navy transition-colors',
-                        currentPath === child.path && 'text-elf-blue dark:text-elf-blue',
-                      ]}
-                    >
-                      {child.title}
-                    </a>
-                  ))}
+                <!-- top-full + pt-1 wrapper bridges the gap: its padding is part of the hover
+                     chain, so moving from the trigger into the panel never drops :hover -->
+                <div class="absolute right-0 top-full w-44 pt-1 z-50">
+                  <div class="rounded-lg bg-white dark:bg-navy-light border border-gray-200/80 dark:border-gray-700/60 shadow-lg shadow-gray-900/5 dark:shadow-black/20 py-1.5 opacity-0 scale-95 pointer-events-none origin-top-right transition duration-150 ease-out group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:scale-100 group-focus-within:pointer-events-auto">
+                    {item.children!.map((child) => (
+                      <a
+                        href={child.path}
+                        class:list={[
+                          'block px-4 py-2 text-[0.8rem] text-gray-600 dark:text-gray-300 hover:text-elf-blue dark:hover:text-elf-blue hover:bg-gray-50 dark:hover:bg-navy transition-colors',
+                          currentPath === child.path && 'text-elf-blue dark:text-elf-blue',
+                        ]}
+                      >
+                        {child.title}
+                      </a>
+                    ))}
+                  </div>
                 </div>
               </div>
             ),
