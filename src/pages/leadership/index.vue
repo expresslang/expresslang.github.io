@@ -160,7 +160,7 @@ const founders: Person[] = [
           <AnimatedSection v-for="(person, i) in officers" :key="person.slug" :style="{ transitionDelay: `${i * 80}ms` }">
             <RouterLink :to="`/people/${person.slug}`" class="block rounded-xl border border-gray-200/80 dark:border-gray-700/60 bg-white dark:bg-navy-light p-6 transition-all duration-200 hover:border-elf-blue/30 dark:hover:border-elf-blue/30 hover:shadow-lg hover:-translate-y-0.5">
               <div v-if="person.photo" class="w-14 h-14 rounded-full overflow-hidden mb-4">
-                <img :src="person.photo" :alt="person.name" class="w-full h-full object-cover" />
+                <img :src="person.photo" :alt="person.name" width="56" height="56" decoding="async" class="w-full h-full object-cover" />
               </div>
               <div v-else class="w-14 h-14 rounded-full bg-elf-blue/8 dark:bg-elf-blue/8 flex items-center justify-center mb-4">
                 <span class="text-xl font-serif font-bold text-elf-blue dark:text-elf-blue">{{ person.name.charAt(0) }}</span>
@@ -184,7 +184,7 @@ const founders: Person[] = [
           <AnimatedSection v-for="(person, i) in founders" :key="person.slug" :style="{ transitionDelay: `${i * 60}ms` }">
             <RouterLink :to="`/people/${person.slug}`" class="block rounded-xl border border-gray-200/80 dark:border-gray-700/60 bg-white dark:bg-navy-light p-5 transition-all duration-200 hover:border-elf-blue/30 dark:hover:border-elf-blue/30 hover:shadow-md hover:-translate-y-0.5 h-full">
               <div v-if="person.photo" class="w-10 h-10 rounded-full overflow-hidden mb-3">
-                <img :src="person.photo" :alt="person.name" class="w-full h-full object-cover" />
+                <img :src="person.photo" :alt="person.name" width="40" height="40" loading="lazy" decoding="async" class="w-full h-full object-cover" />
               </div>
               <div v-else class="w-10 h-10 rounded-full bg-elf-blue/8 dark:bg-elf-blue/8 flex items-center justify-center mb-3">
                 <span class="text-base font-serif font-bold text-elf-blue dark:text-elf-blue">{{ person.name.charAt(0) }}</span>
