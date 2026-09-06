@@ -12,51 +12,39 @@ export interface ContentData {
 
 const contentCache = new Map<string, ContentData>()
 
-const pageModules = import.meta.glob<ContentData>('../content/pages/*.json', { eager: true })
-const postModules = import.meta.glob<ContentData>('../content/posts/*.json', { eager: true })
-const learnModules = import.meta.glob<ContentData>('../content/learn/*.json', { eager: true })
-const courseModules = import.meta.glob<ContentData>('../content/course/*.json', { eager: true })
-const languageModules = import.meta.glob<ContentData>('../content/languages/*.json', { eager: true })
-const peopleModules = import.meta.glob<ContentData>('../content/people/*.json', { eager: true })
+const allModules = import.meta.glob<ContentData>('../content/*/*.json', { eager: true })
 
-const sectionModules: Record<string, Record<string, ContentData>> = {
-  pages: pageModules,
-  posts: postModules,
-  learn: learnModules,
-  course: courseModules,
-  languages: languageModules,
-  people: peopleModules,
-}
-
-function resolveKey(path: string): string {
+const sectionModules: Record<string, Record<string, ContentData>> = {}
+for (const [path, data] of Object.entries(allModules)) {
   const parts = path.split('/')
-  return parts[parts.length - 1].replace('.json', '')
+  const section = parts[parts.length - 2]
+  const slug = parts[parts.length - 1].replace('.json', '')
+  ;(sectionModules[section] ??= {})[slug] = data
 }
 
 export async function useContent(section: string, slug: string): Promise<ContentData | null> {
   const key = `${section}/${slug}`
   if (contentCache.has(key)) return contentCache.get(key)!
 
-  const modules = sectionModules[section]
-  if (!modules) return null
+  const content = sectionModules[section]?.[slug]
+  if (!content) return null
 
-  for (const [path, data] of Object.entries(modules)) {
-    if (resolveKey(path) === slug) {
-      const content = (data as any).default || data
-      contentCache.set(key, content)
-      return content
-    }
-  }
-  return null
+  const item = (content as { default?: ContentData }).default || content
+  contentCache.set(key, item)
+  return item
 }
 
 export async function useContentList(section: string): Promise<ContentData[]> {
   const modules = sectionModules[section]
   if (!modules) return []
 
-  const items = Object.values(modules).map((data) => (data as any).default || data)
-  return items.sort((a, b) => {
-    if (a.date && b.date) return b.date.localeCompare(a.date)
-    return (a.title ?? '').localeCompare(b.title ?? '')
-  })
+  const order = (d: ContentData) => Number(d.frontmatter?.order ?? Infinity)
+
+  return Object.values(modules)
+    .map((data) => (data as { default?: ContentData }).default || data)
+    .sort((a, b) => {
+      if (order(a) !== order(b)) return order(a) - order(b)
+      if (a.date && b.date) return b.date.localeCompare(a.date)
+      return (a.title ?? '').localeCompare(b.title ?? '')
+    })
 }

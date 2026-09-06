@@ -1,14 +1,16 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, statSync } from 'node:fs'
 import { join, basename, resolve } from 'node:path'
+import { pathToFileURL } from 'node:url'
 import matter from 'gray-matter'
 import asciidoctor from '@asciidoctor/core'
+import { contentCollections } from './collections'
 
 const asciiDoc = asciidoctor()
 
 const CONTENT_DIR = resolve(import.meta.dirname, '..', 'content')
 const OUTPUT_DIR = resolve(import.meta.dirname, '..', 'src', 'content')
 
-interface ContentItem {
+export interface ContentItem {
   title: string
   slug: string
   date: string | null
@@ -20,7 +22,7 @@ interface ContentItem {
   frontmatter: Record<string, unknown>
 }
 
-function extractToc(doc: any): Array<{ id: string; title: string; level: number }> {
+export function extractToc(doc: any): Array<{ id: string; title: string; level: number }> {
   const sections: Array<{ id: string; title: string; level: number }> = []
 
   function walk(section: any) {
@@ -45,14 +47,14 @@ function extractToc(doc: any): Array<{ id: string; title: string; level: number 
   return sections
 }
 
-function slugify(filename: string): string {
+export function slugify(filename: string): string {
   return filename
     .replace(/^\d{4}-\d{2}-\d{2}-/, '')
     .replace(/\.adoc$/, '')
     .replace(/\.md$/, '')
 }
 
-function convertFile(filePath: string, section: string, imagesDir: string): ContentItem | null {
+export function convertFile(filePath: string, section: string, imagesDir: string): ContentItem | null {
   const raw = readFileSync(filePath, 'utf-8')
 
   let frontmatterData: Record<string, unknown> = {}
@@ -152,22 +154,18 @@ function processSection(section: string, imagesDir: string) {
   return count
 }
 
-console.log('Building content...')
+function main() {
+  console.log('Building content...')
 
-const imagesDirs: Record<string, string> = {
-  pages: '/images',
-  posts: '/images/blog',
-  learn: '/images/learn',
-  course: '/course/images',
-  languages: '/images/languages',
-  people: '/images/people',
+  let total = 0
+  for (const collection of contentCollections) {
+    console.log(`\nProcessing ${collection.name}/...`)
+    const count = processSection(collection.name, collection.imagesDir)
+    total += count
+  }
+
+  console.log(`\nDone. ${total} content files converted.`)
 }
 
-let total = 0
-for (const section of Object.keys(imagesDirs)) {
-  console.log(`\nProcessing ${section}/...`)
-  const count = processSection(section, imagesDirs[section])
-  total += count
-}
-
-console.log(`\nDone. ${total} content files converted.`)
+const invokedDirectly = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href
+if (invokedDirectly) main()

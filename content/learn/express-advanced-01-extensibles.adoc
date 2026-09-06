@@ -1,3 +1,6 @@
+---
+order: 7
+---
 :stem:
 
 = Extensibles and Relationships

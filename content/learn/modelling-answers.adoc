@@ -1,3 +1,6 @@
+---
+order: 15
+---
 :stem:
 
 = Modeling Exercises -- Some Answers

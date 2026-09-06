@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import { useContent, type ContentData } from '@/composables/useContent'
-import { learnNavigation, type NavItem } from '@/data/navigation'
+import { useContent, useContentList, type ContentData } from '@/composables/useContent'
 import AsciiDocContent from '@/components/content/AsciiDocContent.vue'
 import TheSidebar from '@/components/layout/TheSidebar.vue'
 
@@ -9,24 +8,17 @@ const route = useRoute()
 const slug = route.params.slug as string
 const content: ContentData | null = await useContent('learn', slug)
 
-function flatten(items: NavItem[]): NavItem[] {
-  return items.flatMap((item) => {
-    if (item.children) return flatten(item.children)
-    return item.slug ? [item] : []
-  })
-}
-
-const flatItems = flatten(learnNavigation)
-const idx = flatItems.findIndex((i) => i.slug === slug)
-const prev = idx > 0 ? flatItems[idx - 1] : null
-const next = idx < flatItems.length - 1 ? flatItems[idx + 1] : null
+const items = (await useContentList('learn')).map((m) => ({ title: m.title, slug: m.slug }))
+const idx = items.findIndex((i) => i.slug === slug)
+const prev = idx > 0 ? items[idx - 1] : null
+const next = idx < items.length - 1 ? items[idx + 1] : null
 const baseUrl = '/learn/tutorial'
 </script>
 
 <template>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <div class="lg:flex lg:gap-8">
-      <TheSidebar :items="learnNavigation" :current-slug="slug" base-url="/learn/tutorial" />
+      <TheSidebar :items="items" :current-slug="slug" base-url="/learn/tutorial" />
       <div class="flex-1 min-w-0">
         <template v-if="content">
           <nav class="text-sm text-gray-400 dark:text-gray-500 mb-8">
