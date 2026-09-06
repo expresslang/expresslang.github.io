@@ -89,3 +89,15 @@ hr {
   opacity: 1;
   transform: none;
 }
+
+/* Site header scrolled state (toggled by script in SiteHeader.astro) */
+[data-site-header].is-scrolled {
+  background-color: color-mix(in srgb, white 90%, transparent);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0 1px 2px 0 rgb(17 24 39 / 0.05);
+}
+.dark [data-site-header].is-scrolled {
+  background-color: color-mix(in srgb, var(--color-navy) 90%, transparent);
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.2);
+}

@@ -7,7 +7,7 @@
     "build:content": "tsx scripts/build-content.ts",
     "dev": "npm run build:content && astro dev",
     "dev:watch": "concurrently \"tsx watch scripts/build-content.ts\" \"astro dev\"",
-    "build": "npm run build:content && astro build && tsx scripts/generate-sitemap.ts",
+    "build": "npm run build:content && astro build && tsx scripts/generate-sitemap.ts && tsx scripts/verify-dist.ts",
     "preview": "astro preview",
     "test": "vitest run",
     "astro": "astro"
