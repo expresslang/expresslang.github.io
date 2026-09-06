@@ -207,9 +207,8 @@ const milestones = [
                   <span :key="heroPairs[pairIndex].filename" class="ml-2 text-[0.7rem] font-mono text-gray-400 dark:text-gray-500">{{ heroPairs[pairIndex].filename }}</span>
                 </Transition>
               </div>
-              <div class="p-5 font-mono text-[0.8rem] leading-[1.8] whitespace-pre text-gray-700 dark:text-gray-300 h-[13rem]">
-                {{ typedText }}<span class="inline-block w-[2px] h-[1.1em] bg-elf-blue dark:bg-elf-blue align-middle animate-[cursor-blink_1s_step-end_infinite]" />
-              </div>
+              <!-- pre (not div) so html-minifier preserves newlines in SSG output, avoiding a reflow flash on hydration -->
+              <pre class="p-5 m-0 font-mono text-[0.8rem] leading-[1.8] text-gray-700 dark:text-gray-300 h-[13rem]">{{ typedText }}<span class="inline-block w-[2px] h-[1.1em] bg-elf-blue dark:bg-elf-blue align-middle animate-[cursor-blink_1s_step-end_infinite]" /></pre>
             </div>
           </div>
         </div>
