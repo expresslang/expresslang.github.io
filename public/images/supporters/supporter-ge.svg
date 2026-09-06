@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500">
 <g transform="matrix(1, 0, 0, 1, 0, 0) scale(0.1,0.1)">
 <path fill="#FFFFFF" d="M2499.8,4950C3853.2,4950,4950,3853.2,4950,2500.2
  C4950,1147.2,3853.2,50,2499.8,50C1146.8,50,50,1147.2,50,2500.2C50,3853.2,1146.8,4950,2499.8,4950"/>
