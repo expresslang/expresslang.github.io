@@ -33,6 +33,7 @@
   officer: 1
   founder: 4
   blurb: Owner of TRThurman Consulting. Technical lead for all four editions of ISO 10303-210 (AP 210). ISO Excellence Award and PDES Bryan K. Martin Award recipient.
+  linkedin: https://www.linkedin.com/in/tom-t-b4188010/
 
 - slug: allison-barnard-feeney
   name: Allison Barnard Feeney
@@ -41,6 +42,7 @@
   founder: 5
   highlight: 2018 ANSI Finegan Standards Medal
   blurb: General Manager of PDES, Inc. Key participant in STEP development since its inception. Dept. of Commerce Gold Medal recipient.
+  linkedin: https://www.linkedin.com/in/allison-barnard-9715a2/
 
 - slug: david-loffredo
   name: David Loffredo
@@ -49,6 +51,7 @@
   founder: 6
   highlight: Convener, ISO TC 184/SC 4/WG 11
   blurb: Co-founder of STEP Tools Inc. Editor of ISO 10303-238 (STEP-NC) and Part 21. Led 20+ major software releases used in over a million CAD seats.
+  linkedin: https://www.linkedin.com/in/loffredo/
 
 - slug: jean-brange
   name: Jean Brangé
@@ -57,6 +60,7 @@
   founder: 7
   highlight: Convenor, ISO/TC 184/SC 4/WG 21
   blurb: Leads the EasySTEP and STEP Next initiatives for open-source STEP tooling. Pioneer in STEP AP242 deployment and LOTAR long-term archiving in aerospace.
+  linkedin: https://www.linkedin.com/in/jbrange/
 
 - slug: phil-spiby
   name: Phil Spiby
@@ -64,6 +68,7 @@
   photo: /images/people/phil-spiby.jpg
   founder: 8
   blurb: Over 30 years in STEP and PLCS standardization. Key contributor to OASIS PLCS and European aerospace collaboration projects.
+  linkedin: https://www.linkedin.com/in/phil-spiby-76362b/
 
 - slug: stuart-galt
   name: Stuart Galt
@@ -72,6 +77,7 @@
   founder: 9
   highlight: Convenor, ISO/TC 184/SC 4/WG 12
   blurb: Associate Technical Fellow at Boeing with 25+ years in visualization and data exchange standards. Convenor of WG 12 at ISO/TC 184/SC 4, project lead of ISO/CD 14739-1 (PRC), and former Chair of OASIS WebCGM 2.1.
+  linkedin: https://www.linkedin.com/in/stuart-galt-94740256/
 
 - slug: yoshiaki-sonoda
   name: Yoshiaki Sonoda
@@ -80,6 +86,7 @@
   founder: 10
   highlight: Convenor, ISO/TC 184/SC 4/WG 25 · Project Leader, ISO 15926-6
   blurb: Manager at Mitsubishi Heavy Industries and leader of its International Standardization Strategy Task Force. 35 years of IT supporting over 700 products across power plants, shipbuilding, aerospace, and defense.
+  linkedin: https://www.linkedin.com/in/yoshiaki-sonoda-9b094945/
 
 - slug: hiroshi-murayama
   name: Hiroshi Murayama
@@ -89,6 +96,7 @@
   founder: 11
   highlight: Convenor, ISO/TC 184/SC 4/JWG 24
   blurb: Former Toshiba Research Fellow. Convenor of ISO TC 184/SC 4/JWG 24 and CEO of SATS Inc. Specializes in product data dictionaries, ontology, and data modelling.
+  linkedin: https://www.linkedin.com/in/hiroshi-murayama-86a03851/
 
 - slug: ronald-tse
   name: Ronald Tse
@@ -97,3 +105,5 @@
   officer: 3
   founder: 12
   blurb: Project Leader for Annotated EXPRESS and designer of the SUMA framework (STEP Unified Model Architecture) used to publish the ISO 10303 STEP Resource Library and Application Protocols. Founder and CEO of Ribose.
+
+  linkedin: https://www.linkedin.com/in/rhtse/
