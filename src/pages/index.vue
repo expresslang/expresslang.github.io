@@ -5,6 +5,17 @@ import { useContentList, type ContentData } from '@/composables/useContent'
 import AnimatedSection from '@/components/ui/AnimatedSection.vue'
 import BaseButton from '@/components/ui/BaseButton.vue'
 import BaseCard from '@/components/ui/BaseCard.vue'
+import languagesData from '@/data/languages.yaml'
+
+const languages = languagesData as Array<{
+  name: string
+  slug: string
+  color: string
+  icon: string
+  blurb: string
+  isoShort: string
+  invented: string
+}>
 
 const posts = await useContentList('posts')
 
@@ -71,54 +82,6 @@ onUnmounted(() => {
   if (pairTimer) clearInterval(pairTimer)
   if (typeTimer) clearInterval(typeTimer)
 })
-
-const languages = [
-  {
-    name: 'EXPRESS',
-    slug: 'express',
-    color: '#e99262',
-    icon: '/logos/logo-lang-icon-express.svg',
-    desc: 'The core data modelling language — entities, types, constraints, and rules for defining information schemas.',
-    iso: 'ISO 10303-11',
-    invented: '1982',
-  },
-  {
-    name: 'EXPRESS-G',
-    slug: 'express-g',
-    color: '#4ec0aa',
-    icon: '/logos/logo-lang-icon-expressg.svg',
-    desc: 'Graphical notation for EXPRESS — entity-relationship diagrams for visual data modelling.',
-    iso: 'ISO 10303-11',
-    invented: '1980s',
-  },
-  {
-    name: 'EXPRESS-I',
-    slug: 'express-i',
-    color: '#d85577',
-    icon: '/logos/logo-lang-icon-expressi.svg',
-    desc: 'Instance definition language for populated data models and conformance testing.',
-    iso: 'ISO 10303-12',
-    invented: '1994',
-  },
-  {
-    name: 'EXPRESS-X',
-    slug: 'express-x',
-    color: '#077783',
-    icon: '/logos/logo-lang-icon-expressx.svg',
-    desc: 'Schema mapping language for defining transformations between different EXPRESS data models.',
-    iso: 'ISO 10303-14',
-    invented: '2001',
-  },
-  {
-    name: 'EXPRESS-Q',
-    slug: 'express-q',
-    color: '#ed1c24',
-    icon: '/logos/logo-lang-icon-expressq.svg',
-    desc: 'Query language for defining mappings between ARM and MIM schemas with reference path syntax.',
-    iso: 'ELF Specification',
-    invented: '2001',
-  },
-]
 
 const milestones = [
   { year: '1982', event: 'EXPRESS conceived during the PDDI program at McDonnell Aircraft' },
@@ -233,9 +196,9 @@ const milestones = [
             <RouterLink :to="`/languages/${lang.slug}`" class="block rounded-xl border bg-white dark:bg-navy-light p-6 transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5" :style="{ borderColor: `${lang.color}33` }">
               <img :src="lang.icon" :alt="lang.name" class="h-8 w-auto mb-3" />
               <h3 class="font-[Montserrat,sans-serif] font-bold text-sm mb-1.5" :style="{ color: lang.color }">{{ lang.name }}</h3>
-              <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{{ lang.desc }}</p>
+              <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{{ lang.blurb }}</p>
               <div class="mt-3 flex items-center justify-between">
-                <p class="text-[0.65rem] font-mono text-gray-400 dark:text-gray-500 tracking-wide">{{ lang.iso }}</p>
+                <p class="text-[0.65rem] font-mono text-gray-400 dark:text-gray-500 tracking-wide">{{ lang.isoShort }}</p>
               </div>
               <span class="mt-3 inline-flex items-center text-xs font-medium" :style="{ color: lang.color }">
                 Explore

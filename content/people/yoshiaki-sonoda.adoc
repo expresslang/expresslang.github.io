@@ -1,8 +1,5 @@
 ---
 title: Yoshiaki Sonoda
-photo: /images/people/yoshiaki-sonoda.jpg
-role: Manager, DI Strategy & Planning Dept., Mitsubishi Heavy Industries
-categories: founders
 ---
 
 == Manager, DI Strategy & Planning Department, Mitsubishi Heavy Industries

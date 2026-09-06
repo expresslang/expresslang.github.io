@@ -1,7 +1,5 @@
 ---
 title: Prof. Bernd Wenzel
-role: Founder, Project Leader
-categories: founders
 ---
 
 == Project Leader, ISO 10303-11:1994

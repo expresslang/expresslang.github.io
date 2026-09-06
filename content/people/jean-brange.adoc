@@ -1,8 +1,5 @@
 ---
 title: Jean Brangé
-photo: /images/people/jean-brange.jpg
-role: Président, AFNeT Services
-categories: founders
 ---
 
 == Président, AFNeT Services
