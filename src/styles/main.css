@@ -3,6 +3,7 @@
 @plugin '@tailwindcss/container-queries';
 @custom-variant dark (&:where(.dark, .dark *));
 
+@source '../../src/**/*.astro';
 @source '../../src/**/*.vue';
 @source '../../src/**/*.ts';
 
@@ -76,4 +77,15 @@ hr {
 @keyframes cursor-blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
+}
+
+/* Scroll-reveal (AnimatedSection replacement, driven by a global observer in BaseLayout) */
+[data-animate] {
+  opacity: 0;
+  transform: translateY(0.5rem);
+  transition: opacity 200ms ease-out, transform 200ms ease-out;
+}
+[data-animate].is-visible {
+  opacity: 1;
+  transform: none;
 }

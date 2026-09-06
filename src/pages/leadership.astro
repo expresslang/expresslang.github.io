@@ -1,0 +1,52 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import AnimatedSection from '@/components/AnimatedSection.astro'
+import PageHero from '@/components/PageHero.astro'
+import PersonCard from '@/components/PersonCard.astro'
+import { peopleByRank } from '@/lib/content'
+
+const officers = peopleByRank('officer')
+const founders = peopleByRank('founder')
+---
+
+<BaseLayout title="Leadership" description="The leadership and founders of the EXPRESS Language Foundation.">
+  <PageHero
+    eyebrow="Organization"
+    title="Leadership & Founders"
+    lead="The EXPRESS Language Foundation is led by a team that includes the original inventors of EXPRESS, experts who guided its standardization at ISO, and stakeholders dedicated to the language family's future."
+    crumbs={[{ label: 'Home', to: '/' }, { label: 'Leadership' }]}
+  />
+
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+    <!-- Officers -->
+    <section class="mb-20">
+      <AnimatedSection>
+        <h2 class="text-xl font-serif font-bold text-gray-900 dark:text-white mb-8">Officers</h2>
+      </AnimatedSection>
+      <div class="grid md:grid-cols-3 gap-6">
+        {officers.map((person, i) => (
+          <AnimatedSection delay={i * 80}>
+            <PersonCard person={person} size="officer" />
+          </AnimatedSection>
+        ))}
+      </div>
+    </section>
+
+    <!-- Founders -->
+    <section>
+      <AnimatedSection>
+        <h2 class="text-xl font-serif font-bold text-gray-900 dark:text-white mb-2">Founders</h2>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mb-8">
+          The founders include the original inventors of EXPRESS, experts who enhanced it, and stakeholders deeply committed to the foundation's mission.
+        </p>
+      </AnimatedSection>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+        {founders.map((person, i) => (
+          <AnimatedSection delay={i * 60}>
+            <PersonCard person={person} size="founder" />
+          </AnimatedSection>
+        ))}
+      </div>
+    </section>
+  </div>
+</BaseLayout>

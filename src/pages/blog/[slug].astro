@@ -1,0 +1,50 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import AsciiDocContent from '@/components/AsciiDocContent.astro'
+import { getList } from '@/lib/content'
+
+export function getStaticPaths() {
+  return getList('posts').map((post) => ({ params: { slug: post.slug }, props: { post } }))
+}
+
+const { post } = Astro.props
+
+const formatDate = (date: string) =>
+  new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+---
+
+<BaseLayout title={post.title} description={post.excerpt || undefined}>
+  <div>
+    <!-- Hero -->
+    <div class="bg-gradient-to-b from-slate-50 to-white dark:from-navy dark:to-navy-light/30 pt-12 pb-8">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <nav class="text-sm text-gray-400 dark:text-gray-500 mb-8">
+          <a href="/" class="hover:text-elf-blue dark:hover:text-elf-blue transition-colors">Home</a>
+          <span class="mx-2 text-gray-300 dark:text-gray-600">/</span>
+          <a href="/blog" class="hover:text-elf-blue dark:hover:text-elf-blue transition-colors">Blog</a>
+          <span class="mx-2 text-gray-300 dark:text-gray-600">/</span>
+          <span class="text-gray-600 dark:text-gray-300">{post.title}</span>
+        </nav>
+
+        <div class="flex flex-wrap items-center gap-2 mb-4">
+          {post.date && <span class="font-mono text-xs text-gray-400 dark:text-gray-500">{formatDate(post.date)}</span>}
+          {post.categories.map((cat) => (
+            <span class="text-[0.65rem] px-2 py-0.5 rounded-full bg-elf-blue/8 dark:bg-elf-blue/8 text-elf-blue dark:text-elf-blue font-medium tracking-wide">{cat}</span>
+          ))}
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-serif font-bold text-gray-900 dark:text-white leading-tight">{post.title}</h1>
+        {
+          post.authors?.length > 0 && (
+            <div class="mt-4 flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+              By {post.authors.map((a) => a.name).join(', ')}
+            </div>
+          )
+        }
+      </div>
+    </div>
+
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+      <AsciiDocContent html={post.body} />
+    </div>
+  </div>
+</BaseLayout>
