@@ -1,7 +1,7 @@
 ---
 import '@/styles/main.css'
 import '@/styles/asciidoc.css'
-import SiteHeader from '@/components/SiteHeader.vue'
+import SiteHeader from '@/components/SiteHeader.astro'
 import SiteFooter from '@/components/SiteFooter.astro'
 
 interface Props {
@@ -16,7 +16,10 @@ const {
 
 const siteTitle = 'EXPRESS Language Foundation'
 const fullTitle = title ? `${title} — ${siteTitle}` : siteTitle
-const canonical = `https://www.expresslang.org${Astro.url.pathname}`
+// build.format "file" exposes Astro.url.pathname as "/about.html" (and "/index" for home) —
+// public URLs never carry those suffixes
+const currentPath = Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '/')
+const canonical = `https://www.expresslang.org${currentPath}`
 ---
 
 <!doctype html>
@@ -67,7 +70,7 @@ const canonical = `https://www.expresslang.org${Astro.url.pathname}`
       Skip to content
     </a>
     <div class="min-h-screen flex flex-col">
-      <SiteHeader client:load current-path={Astro.url.pathname} />
+      <SiteHeader currentPath={currentPath} />
       <main id="main-content" class="flex-1">
         <slot />
       </main>
