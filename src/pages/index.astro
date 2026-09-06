@@ -169,7 +169,7 @@ const formatDate = (date: string) =>
           {
             ['supporter-boeing.svg', 'supporter-md.svg', 'supporter-ge.svg', 'supporter-nist.svg', 'supporter-pdes.png', 'supporter-steptools.svg', 'supporter-jotneconnect.svg', 'supporter-afnet.svg', 'supporter-ribose.svg'].map((logo) => (
               <a href="/supporters" class="h-14 flex items-center rounded-lg bg-white p-2 hover:shadow-md transition-shadow">
-                <img src={`/images/supporters/${logo}`} alt={logo.replace('supporter-', '').replace(/\.\w+$/, '')} class="max-h-10 w-auto mx-auto object-contain" />
+                <img src={`/images/supporters/${logo}`} alt={logo.replace('supporter-', '').replace(/\.\w+$/, '')} class="h-10 w-auto mx-auto object-contain" />
               </a>
             ))
           }
