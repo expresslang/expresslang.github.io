@@ -1,3 +1,6 @@
+---
+order: 8
+---
 :stem:
 
 = Subtypes and Supertypes

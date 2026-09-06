@@ -1,3 +1,6 @@
+---
+order: 10
+---
 :stem:
 
 = Rule Principles

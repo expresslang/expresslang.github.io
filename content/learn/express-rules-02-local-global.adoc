@@ -1,3 +1,6 @@
+---
+order: 11
+---
 :stem:
 
 = Local and Global Rules

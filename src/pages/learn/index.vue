@@ -1,26 +1,24 @@
 <script setup lang="ts">
-import { learnNavigation, courseNavigation } from '@/data/navigation'
+import { useContentList } from '@/composables/useContent'
 import AnimatedSection from '@/components/ui/AnimatedSection.vue'
 import BaseCard from '@/components/ui/BaseCard.vue'
+import PageHero from '@/components/ui/PageHero.vue'
+
+const toItems = (modules: Awaited<ReturnType<typeof useContentList>>) =>
+  modules.map((m) => ({ title: m.title, slug: m.slug }))
+
+const learnModules = toItems(await useContentList('learn'))
+const courseModules = toItems(await useContentList('course'))
 </script>
 
 <template>
   <div>
-    <!-- Hero -->
-    <div class="bg-gradient-to-b from-slate-50 to-white dark:from-navy dark:to-navy-light/30 pt-12 pb-16">
-      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <nav class="text-sm text-gray-400 dark:text-gray-500 mb-6 flex items-center gap-1.5">
-          <RouterLink to="/" class="hover:text-elf-blue dark:hover:text-elf-blue transition-colors">Home</RouterLink>
-          <span>/</span>
-          <span class="text-gray-700 dark:text-gray-300">Learn</span>
-        </nav>
-        <p class="font-mono text-xs tracking-[0.2em] uppercase text-elf-blue dark:text-elf-blue mb-3">Learning</p>
-        <h1 class="text-3xl sm:text-4xl font-serif font-bold text-gray-900 dark:text-white">Learn EXPRESS</h1>
-        <p class="mt-4 text-gray-500 dark:text-gray-400 max-w-xl leading-relaxed">
-          Two complementary courses from leading authorities in the EXPRESS community — one covering the language itself, the other covering the broader ISO 10303 ecosystem and its practical applications.
-        </p>
-      </div>
-    </div>
+    <PageHero
+      eyebrow="Learning"
+      title="Learn EXPRESS"
+      lead="Two complementary courses from leading authorities in the EXPRESS community — one covering the language itself, the other covering the broader ISO 10303 ecosystem and its practical applications."
+      :crumbs="[{ label: 'Home', to: '/' }, { label: 'Learn' }]"
+    />
 
     <!-- Course cards -->
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
@@ -35,7 +33,7 @@ import BaseCard from '@/components/ui/BaseCard.vue'
               The authoritative course on the EXPRESS language — from the co-inventor of EXPRESS-G and EXPRESS-X. Covers syntax, semantics, modelling patterns, rules, and practical exercises.
             </p>
             <p class="text-xs text-gray-400 dark:text-gray-500 italic mb-4">By Peter Wilson, co-author of <em class="italic">Information Modelling: The EXPRESS Way</em></p>
-            <p class="text-xs font-mono text-gray-400 dark:text-gray-500 mb-3">{{ learnNavigation.length }} modules</p>
+            <p class="text-xs font-mono text-gray-400 dark:text-gray-500 mb-3">{{ learnModules.length }} modules</p>
             <div class="flex items-center gap-2">
               <img src="/logos/logo-lang-icon-express.svg" alt="EXPRESS" title="EXPRESS" class="h-6 w-auto" />
               <img src="/logos/logo-lang-icon-expressg.svg" alt="EXPRESS-G" title="EXPRESS-G" class="h-6 w-auto" />
@@ -53,7 +51,7 @@ import BaseCard from '@/components/ui/BaseCard.vue'
               The applied course on the ISO 10303 ecosystem — STEP file formats, data validation, schema querying, business rules, SDAI programming, and PLCS. Assumes basic EXPRESS knowledge.
             </p>
             <p class="text-xs text-gray-400 dark:text-gray-500 italic mb-4">Contributed by Jotne EPM Technology</p>
-            <p class="text-xs font-mono text-gray-400 dark:text-gray-500 mb-3">{{ courseNavigation.length }} modules</p>
+            <p class="text-xs font-mono text-gray-400 dark:text-gray-500 mb-3">{{ courseModules.length }} modules</p>
             <div class="flex items-center gap-2">
               <img src="/logos/logo-lang-icon-express.svg" alt="EXPRESS" title="EXPRESS" class="h-6 w-auto" />
               <img src="/logos/logo-lang-icon-expressg.svg" alt="EXPRESS-G" title="EXPRESS-G" class="h-6 w-auto" />
@@ -72,7 +70,7 @@ import BaseCard from '@/components/ui/BaseCard.vue'
       </AnimatedSection>
 
       <div class="space-y-3">
-        <AnimatedSection v-for="(item, idx) in learnNavigation" :key="item.slug" :style="{ transitionDelay: `${idx * 50}ms` }">
+        <AnimatedSection v-for="(item, idx) in learnModules" :key="item.slug" :style="{ transitionDelay: `${idx * 50}ms` }">
           <BaseCard :to="`/learn/tutorial/${item.slug}`" padding="md">
             <div class="flex items-center gap-4">
               <span class="w-9 h-9 rounded-lg bg-elf-blue/8 dark:bg-elf-blue/8 flex items-center justify-center font-mono text-xs font-bold text-elf-blue dark:text-elf-blue shrink-0">
@@ -96,7 +94,7 @@ import BaseCard from '@/components/ui/BaseCard.vue'
         </AnimatedSection>
 
         <div class="space-y-3">
-          <AnimatedSection v-for="(item, i) in courseNavigation" :key="item.slug" :style="{ transitionDelay: `${i * 30}ms` }">
+          <AnimatedSection v-for="(item, i) in courseModules" :key="item.slug" :style="{ transitionDelay: `${i * 30}ms` }">
             <BaseCard :to="`/learn/jotne-express/${item.slug}`" padding="md">
               <div class="flex items-center gap-4">
                 <span class="w-9 h-9 rounded-lg bg-elf-blue/8 dark:bg-elf-blue/8 flex items-center justify-center font-mono text-xs font-bold text-elf-blue dark:text-elf-blue shrink-0">
