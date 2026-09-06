@@ -22,6 +22,7 @@ const officers: Person[] = [
     name: 'Hiroshi Murayama',
     slug: 'hiroshi-murayama',
     role: 'Vice-President',
+    highlight: 'Convenor, ISO/TC 184/SC 4/JWG 24',
     desc: 'Former Toshiba Research Fellow. Convenor of ISO TC 184/SC 4/JWG 24 and CEO of SATS Inc. Specializes in product data dictionaries, ontology, and data modelling.',
     photo: '/images/people/hiroshi-murayama.jpg',
   },
@@ -116,6 +117,7 @@ const founders: Person[] = [
     name: 'Hiroshi Murayama',
     slug: 'hiroshi-murayama',
     role: 'Vice-President',
+    highlight: 'Convenor, ISO/TC 184/SC 4/JWG 24',
     desc: 'Former Toshiba Research Fellow. Convenor of ISO TC 184/SC 4/JWG 24 and CEO of SATS Inc. Specializes in product data dictionaries, ontology, and data modelling.',
     photo: '/images/people/hiroshi-murayama.jpg',
   },
@@ -165,6 +167,7 @@ const founders: Person[] = [
               </div>
               <h3 class="font-serif font-bold text-lg text-gray-900 dark:text-white">{{ person.name }}</h3>
               <p class="font-mono text-xs text-elf-blue dark:text-elf-blue tracking-wide mt-1">{{ person.role }}</p>
+              <p v-if="person.highlight" class="text-[0.65rem] font-mono text-amber-600 dark:text-amber-400 mt-1">{{ person.highlight }}</p>
               <p class="mt-3 text-sm text-gray-500 dark:text-gray-400 leading-relaxed">{{ person.desc }}</p>
             </RouterLink>
           </AnimatedSection>
