@@ -2,10 +2,21 @@
 import { useRoute } from 'vue-router'
 import { useContent, type ContentData } from '@/composables/useContent'
 import AsciiDocContent from '@/components/content/AsciiDocContent.vue'
+import peopleData from '@/data/people.yaml'
+
+interface Person {
+  name: string
+  slug: string
+  role: string
+  photo?: string
+}
+
+const people = peopleData as Person[]
 
 const route = useRoute()
 const slug = route.params.slug as string
 const content: ContentData | null = await useContent('people', slug)
+const person = people.find((p) => p.slug === slug)
 </script>
 
 <template>
@@ -22,15 +33,15 @@ const content: ContentData | null = await useContent('people', slug)
             <span class="text-gray-700 dark:text-gray-300">{{ content.title }}</span>
           </nav>
           <div class="flex items-center gap-5">
-            <div v-if="content.frontmatter.photo" class="w-16 h-16 rounded-full overflow-hidden shrink-0">
-              <img :src="content.frontmatter.photo" :alt="content.title" class="w-full h-full object-cover" />
+            <div v-if="person?.photo" class="w-16 h-16 rounded-full overflow-hidden shrink-0">
+              <img :src="person.photo" :alt="person.name" width="64" height="64" class="w-full h-full object-cover" />
             </div>
             <div v-else class="w-16 h-16 rounded-full bg-elf-blue/10 dark:bg-elf-blue/10 flex items-center justify-center shrink-0">
               <span class="text-2xl font-serif font-bold text-elf-blue dark:text-elf-blue">{{ content.title.charAt(0) }}</span>
             </div>
             <div>
               <h1 class="text-3xl sm:text-4xl font-serif font-bold text-gray-900 dark:text-white leading-tight">{{ content.title }}</h1>
-              <p v-if="content.frontmatter.role" class="font-mono text-sm text-elf-blue dark:text-elf-blue tracking-wide mt-1">{{ content.frontmatter.role }}</p>
+              <p v-if="person?.role" class="font-mono text-sm text-elf-blue dark:text-elf-blue tracking-wide mt-1">{{ person.role }}</p>
             </div>
           </div>
         </div>

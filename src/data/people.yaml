@@ -1,0 +1,99 @@
+# People of the EXPRESS Language Foundation.
+# Single source of truth for the /leadership page and profile hero headers.
+# `officer` / `founder` give the position in each section (omit when not applicable).
+# Profile prose lives in content/people/<slug>.adoc.
+
+- slug: douglas-schenck
+  name: Douglas Schenck
+  role: Inventor of EXPRESS
+  photo: /images/people/douglas-schenck.jpg
+  founder: 1
+  highlight: Project Leader, ISO 10303-11:1994 (with Bernd Wenzel)
+  blurb: 'Original inventor of the EXPRESS language at McDonnell Aircraft (1982). Co-author of the authoritative reference "Information Modelling: The EXPRESS Way".'
+
+- slug: bernd-wenzel
+  name: Prof. Bernd Wenzel
+  role: Project Leader
+  founder: 2
+  highlight: Project Leader, ISO 10303-11:1994 (with Douglas Schenck)
+  blurb: Co-project leader of the first edition of the EXPRESS language standard, guiding it through international standardization at ISO.
+
+- slug: peter-wilson
+  name: Peter Wilson
+  role: Designer of EXPRESS-G & EXPRESS-X
+  photo: /images/people/peter-wilson.jpg
+  founder: 3
+  highlight: Project Leader, ISO 10303-11:2004 (with David Loffredo)
+  blurb: 'Designer of EXPRESS-G (graphical notation) and EXPRESS-X (schema mapping). Co-author of "Information Modelling: The EXPRESS Way". Author of the EXPRESS Tutorial.'
+
+- slug: thomas-thurman
+  name: Thomas Thurman
+  role: President
+  photo: /images/people/thomas-thurman.jpg
+  officer: 1
+  founder: 4
+  blurb: Owner of TRThurman Consulting. Technical lead for all four editions of ISO 10303-210 (AP 210). ISO Excellence Award and PDES Bryan K. Martin Award recipient.
+
+- slug: allison-barnard-feeney
+  name: Allison Barnard Feeney
+  role: General Manager, PDES Inc.
+  photo: /images/people/allison-barnard-feeney.jpg
+  founder: 5
+  highlight: 2018 ANSI Finegan Standards Medal
+  blurb: General Manager of PDES, Inc. Key participant in STEP development since its inception. Dept. of Commerce Gold Medal recipient.
+
+- slug: david-loffredo
+  name: David Loffredo
+  role: VP Product Development, STEP Tools Inc.
+  photo: /images/people/david-loffredo.jpg
+  founder: 6
+  highlight: Convener, ISO TC 184/SC 4/WG 11
+  blurb: Co-founder of STEP Tools Inc. Editor of ISO 10303-238 (STEP-NC) and Part 21. Led 20+ major software releases used in over a million CAD seats.
+
+- slug: jean-brange
+  name: Jean Brangé
+  role: Président, AFNeT Services
+  photo: /images/people/jean-brange.jpg
+  founder: 7
+  highlight: Convenor, ISO/TC 184/SC 4/WG 21
+  blurb: Leads the EasySTEP and STEP Next initiatives for open-source STEP tooling. Pioneer in STEP AP242 deployment and LOTAR long-term archiving in aerospace.
+
+- slug: phil-spiby
+  name: Phil Spiby
+  role: Senior Consultant, Eurostep Limited
+  photo: /images/people/phil-spiby.jpg
+  founder: 8
+  blurb: Over 30 years in STEP and PLCS standardization. Key contributor to OASIS PLCS and European aerospace collaboration projects.
+
+- slug: stuart-galt
+  name: Stuart Galt
+  role: Associate Technical Fellow, Boeing
+  photo: /images/people/stuart-galt.jpg
+  founder: 9
+  highlight: Convenor, ISO/TC 184/SC 4/WG 12
+  blurb: Associate Technical Fellow at Boeing with 25+ years in visualization and data exchange standards. Convenor of WG 12 at ISO/TC 184/SC 4, project lead of ISO/CD 14739-1 (PRC), and former Chair of OASIS WebCGM 2.1.
+
+- slug: yoshiaki-sonoda
+  name: Yoshiaki Sonoda
+  role: Manager, DI Strategy & Planning Dept., Mitsubishi Heavy Industries
+  photo: /images/people/yoshiaki-sonoda.jpg
+  founder: 10
+  highlight: Convenor, ISO/TC 184/SC 4/WG 25 · Project Leader, ISO 15926-6
+  blurb: Manager at Mitsubishi Heavy Industries and leader of its International Standardization Strategy Task Force. 35 years of IT supporting over 700 products across power plants, shipbuilding, aerospace, and defense.
+
+- slug: hiroshi-murayama
+  name: Hiroshi Murayama
+  role: Vice-President
+  photo: /images/people/hiroshi-murayama.jpg
+  officer: 2
+  founder: 11
+  highlight: Convenor, ISO/TC 184/SC 4/JWG 24
+  blurb: Former Toshiba Research Fellow. Convenor of ISO TC 184/SC 4/JWG 24 and CEO of SATS Inc. Specializes in product data dictionaries, ontology, and data modelling.
+
+- slug: ronald-tse
+  name: Ronald Tse
+  role: Secretary
+  photo: /images/people/ronald-tse.jpg
+  officer: 3
+  founder: 12
+  blurb: Project Leader for Annotated EXPRESS and designer of the SUMA framework (STEP Unified Model Architecture) used to publish the ISO 10303 STEP Resource Library and Application Protocols. Founder and CEO of Ribose.

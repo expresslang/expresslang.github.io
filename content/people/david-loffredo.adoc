@@ -1,8 +1,5 @@
 ---
 title: David Loffredo
-photo: /images/people/david-loffredo.jpg
-role: VP Product Development, STEP Tools Inc.
-categories: founders
 ---
 
 == Vice President of Product Development, STEP Tools, Inc.

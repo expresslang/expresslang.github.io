@@ -1,8 +1,5 @@
 ---
 title: Phil Spiby
-photo: /images/people/phil-spiby.jpg
-role: Senior Consultant, Eurostep Limited
-categories: founders
 ---
 
 == Senior Consultant, Eurostep Limited

@@ -1,11 +1,23 @@
-import { defineConfig } from 'vite'
+import { defineConfig, type Plugin } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { resolve } from 'node:path'
 import { globby } from 'globby'
 import { basename } from 'node:path'
+import { load as loadYaml } from 'js-yaml'
+import { contentCollections } from './scripts/collections'
+
+function yamlData(): Plugin {
+  return {
+    name: 'yaml-data',
+    transform(code, id) {
+      if (!id.endsWith('.yaml')) return
+      return { code: `export default ${JSON.stringify(loadYaml(code))}`, map: null }
+    },
+  }
+}
 
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [vue(), yamlData()],
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),
@@ -15,23 +27,19 @@ export default defineConfig({
     script: 'async',
     formatting: 'minify',
     includedRoutes: async () => {
-      const pages = await globby('src/content/pages/*.json')
-      const posts = await globby('src/content/posts/*.json')
-      const learn = await globby('src/content/learn/*.json')
-      const course = await globby('src/content/course/*.json')
-      const languages = await globby('src/content/languages/*.json')
-      const people = await globby('src/content/people/*.json')
-
-      return [
+      const routes = [
         '/',
         '/about', '/membership', '/privacy', '/tos',
         '/blog', '/learn', '/standards', '/languages', '/leadership', '/supporters',
-        ...posts.map((p) => `/blog/${basename(p, '.json')}`),
-        ...learn.map((p) => `/learn/tutorial/${basename(p, '.json')}`),
-        ...course.map((p) => `/learn/jotne-express/${basename(p, '.json')}`),
-        ...languages.map((p) => `/languages/${basename(p, '.json')}`),
-        ...people.map((p) => `/people/${basename(p, '.json')}`),
       ]
+
+      for (const collection of contentCollections) {
+        if (!collection.routePrefix) continue
+        const files = await globby(`src/content/${collection.name}/*.json`)
+        routes.push(...files.map((f) => `${collection.routePrefix}/${basename(f, '.json')}`))
+      }
+
+      return routes
     },
   },
 })

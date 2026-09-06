@@ -1,0 +1,88 @@
+# The EXPRESS language family.
+# Single source of truth for the home page cards, /languages index cards,
+# and the /languages/:slug sidebar. Prose lives in content/languages/<slug>.adoc.
+
+- slug: express
+  name: EXPRESS
+  color: '#e99262'
+  icon: /logos/logo-lang-icon-express.svg
+  iso: 'ISO 10303-11:2004'
+  isoShort: ISO 10303-11
+  invented: '1982'
+  blurb: The core data modelling language — entities, types, constraints, and rules for defining information schemas.
+  desc: The core information modelling language for defining data schemas, entities, types, functions, and constraints. Used across industrial data exchange and product lifecycle management.
+  features:
+    - Entity declarations
+    - Inheritance hierarchies
+    - WHERE rules
+    - FUNCTION / PROCEDURE
+    - ENUMERATION / SELECT types
+  history: Originated in 1982 from the PDDI program at McDonnell Aircraft, invented by Douglas Schenck.
+
+- slug: express-g
+  name: EXPRESS-G
+  color: '#4ec0aa'
+  icon: /logos/logo-lang-icon-expressg.svg
+  iso: 'ISO 10303-11:2004'
+  isoShort: ISO 10303-11
+  invented: 1980s
+  blurb: Graphical notation for EXPRESS — entity-relationship diagrams for visual data modelling.
+  desc: Graphical notation for EXPRESS models — entity-relationship style diagrams for visual representation, communication, and documentation of data models.
+  features:
+    - Entity type symbols
+    - Relationship lines
+    - Subtype/supertype
+    - Attribute annotations
+    - Schema diagrams
+  history: Designed by Peter Wilson as a visual companion to EXPRESS.
+
+- slug: express-i
+  name: EXPRESS-I
+  color: '#d85577'
+  icon: /logos/logo-lang-icon-expressi.svg
+  iso: ISO 10303-12
+  isoShort: ISO 10303-12
+  invented: '1994'
+  blurb: Instance definition language for populated data models and conformance testing.
+  desc: Instance language for defining populated data models and conformance test cases against EXPRESS schemas.
+  features:
+    - Instance definitions
+    - Population data
+    - Conformance testing
+    - Validation test cases
+    - Schema conformance
+  history: Developed for conformance testing of STEP implementations.
+
+- slug: express-x
+  name: EXPRESS-X
+  color: '#077783'
+  icon: /logos/logo-lang-icon-expressx.svg
+  iso: ISO 10303-14
+  isoShort: ISO 10303-14
+  invented: '2001'
+  blurb: Schema mapping language for defining transformations between different EXPRESS data models.
+  desc: Schema mapping language for defining transformations between different EXPRESS schemas — supporting 1:1, 1:n, n:1, and n:n cardinalities.
+  features:
+    - SCHEMA_MAP declarations
+    - MAP / COMPOSE
+    - FROM / WHEN clauses
+    - GLOBAL declarations
+    - Source-to-target mapping
+  history: Designed by Peter Wilson for schema interoperability.
+
+- slug: express-q
+  name: EXPRESS-Q
+  color: '#ed1c24'
+  icon: /logos/logo-lang-icon-expressq.svg
+  iso: ELF Specification
+  isoShort: ELF Specification
+  invented: '2001'
+  blurb: Query language for defining mappings between ARM and MIM schemas with reference path syntax.
+  desc: Query language for defining mappings between Application Reference Model (ARM) and Model Implementation Model (MIM) schemas, with reference path syntax for precise schema navigation.
+  features:
+    - ENTITY_MAPPING declarations
+    - ATTRIBUTE_MAPPING definitions
+    - Reference path syntax
+    - EXPRESS links
+    - YAML serialization
+  history: Developed alongside EXPRESS-X for ARM-to-MIM schema mapping.

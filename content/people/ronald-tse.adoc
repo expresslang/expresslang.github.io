@@ -1,8 +1,5 @@
 ---
 title: Ronald Tse
-photo: /images/people/ronald-tse.jpg
-role: Secretary
-categories: founders
 ---
 
 == Secretary, EXPRESS Language Foundation

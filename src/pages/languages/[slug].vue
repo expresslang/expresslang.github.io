@@ -2,32 +2,23 @@
 import { useRoute } from 'vue-router'
 import { useContent, type ContentData } from '@/composables/useContent'
 import AsciiDocContent from '@/components/content/AsciiDocContent.vue'
+import languagesData from '@/data/languages.yaml'
 
 const route = useRoute()
 const slug = route.params.slug as string
 const content: ContentData | null = await useContent('languages', slug)
 
 interface LanguageInfo {
+  name: string
+  slug: string
   iso: string
   color: string
   icon: string
 }
 
-const languageMeta: Record<string, LanguageInfo> = {
-  express: { iso: 'ISO 10303-11:2004', color: '#e99262', icon: '/logos/logo-lang-icon-express.svg' },
-  'express-g': { iso: 'ISO 10303-11:2004', color: '#4ec0aa', icon: '/logos/logo-lang-icon-expressg.svg' },
-  'express-i': { iso: 'ISO 10303-12', color: '#d85577', icon: '/logos/logo-lang-icon-expressi.svg' },
-  'express-x': { iso: 'ISO 10303-14', color: '#077783', icon: '/logos/logo-lang-icon-expressx.svg' },
-  'express-q': { iso: 'ELF Specification', color: '#ed1c24', icon: '/logos/logo-lang-icon-expressq.svg' },
-}
-
-const siblings = [
-  { name: 'EXPRESS', slug: 'express' },
-  { name: 'EXPRESS-G', slug: 'express-g' },
-  { name: 'EXPRESS-I', slug: 'express-i' },
-  { name: 'EXPRESS-X', slug: 'express-x' },
-  { name: 'EXPRESS-Q', slug: 'express-q' },
-]
+const languages = languagesData as LanguageInfo[]
+const languageMeta = Object.fromEntries(languages.map((l) => [l.slug, l])) as Record<string, LanguageInfo>
+const siblings = languages.map((l) => ({ name: l.name, slug: l.slug }))
 
 const meta = languageMeta[slug]
 </script>

@@ -1,8 +1,5 @@
 ---
 title: Allison Barnard Feeney
-photo: /images/people/allison-barnard-feeney.jpg
-role: General Manager, PDES Inc.
-categories: founders
 ---
 
 == General Manager, PDES, Inc.
