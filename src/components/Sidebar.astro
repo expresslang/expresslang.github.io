@@ -1,0 +1,91 @@
+---
+interface Item {
+  title: string
+  slug: string
+}
+
+interface Props {
+  items: Item[]
+  currentSlug: string
+  baseUrl: string
+}
+
+const { items, currentSlug, baseUrl } = Astro.props
+---
+
+<aside class="hidden lg:block w-52 shrink-0" aria-label="Section navigation">
+  <div class="sticky top-24 pr-6">
+    <nav class="space-y-0.5">
+      {
+        items.map((item) => (
+          <a
+            href={`${baseUrl}/${item.slug}`}
+            class={`block px-3 py-1.5 text-[0.8rem] rounded-md transition-colors duration-150 border-l-2 ${
+              item.slug === currentSlug
+                ? 'text-elf-blue dark:text-elf-blue font-semibold bg-elf-blue/5 dark:bg-elf-blue/5 border-elf-blue dark:border-elf-blue'
+                : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-navy-light border-transparent'
+            }`}
+          >
+            {item.title}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</aside>
+
+<div class="lg:hidden mb-4">
+  <button
+    data-sidebar-toggle
+    class="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-navy-light rounded-lg hover:bg-gray-100 dark:hover:bg-navy min-h-[44px] transition-colors"
+    aria-expanded="false"
+    aria-controls="mobile-sidebar"
+  >
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    Table of Contents
+  </button>
+</div>
+
+<div data-sidebar-panel class="fixed inset-0 z-50 lg:hidden hidden" role="dialog" aria-modal="true" aria-label="Table of contents">
+  <div class="fixed inset-0 bg-black/20 dark:bg-black/40 backdrop-blur-sm" data-sidebar-close></div>
+  <div id="mobile-sidebar" class="fixed top-0 left-0 bottom-0 w-72 max-w-[80vw] bg-white dark:bg-navy shadow-2xl overflow-y-auto">
+    <div class="flex items-center justify-between p-5 border-b border-gray-100 dark:border-gray-800">
+      <span class="font-serif font-semibold text-sm text-gray-900 dark:text-white">Contents</span>
+      <button data-sidebar-close class="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 rounded-md min-h-[44px] min-w-[44px] flex items-center justify-center" aria-label="Close table of contents">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <nav class="p-4 space-y-0.5" aria-label="Section navigation">
+      {
+        items.map((item) => (
+          <a
+            href={`${baseUrl}/${item.slug}`}
+            class={`block px-3 py-2.5 text-sm rounded-md transition-colors min-h-[44px] flex items-center border-l-2 ${
+              item.slug === currentSlug
+                ? 'text-elf-blue dark:text-elf-blue font-semibold bg-elf-blue/5 dark:bg-elf-blue/5 border-elf-blue dark:border-elf-blue'
+                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-navy-light border-transparent'
+            }`}
+          >
+            {item.title}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</div>
+
+<script>
+  for (const toggle of document.querySelectorAll('[data-sidebar-toggle]')) {
+    const panel = toggle.closest('div.lg\\:hidden')?.parentElement?.querySelector('[data-sidebar-panel]')
+    if (!panel) continue
+    const setOpen = (open: boolean) => {
+      panel.classList.toggle('hidden', !open)
+      toggle.setAttribute('aria-expanded', String(open))
+      document.body.style.overflow = open ? 'hidden' : ''
+    }
+    toggle.addEventListener('click', () => setOpen(panel.classList.contains('hidden')))
+    for (const closer of panel.querySelectorAll('[data-sidebar-close], a')) {
+      closer.addEventListener('click', () => setOpen(false))
+    }
+  }
+</script>

@@ -1,0 +1,48 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import AnimatedSection from '@/components/AnimatedSection.astro'
+import PageHero from '@/components/PageHero.astro'
+import BaseCard from '@/components/BaseCard.astro'
+import { getList } from '@/lib/content'
+
+const posts = getList('posts')
+
+const formatDate = (date: string) =>
+  new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+---
+
+<BaseLayout title="Blog" description="News and updates from the EXPRESS Language Foundation.">
+  <PageHero
+    eyebrow="News"
+    title="Blog"
+    lead="News and updates from the EXPRESS Language Foundation"
+    crumbs={[{ label: 'Home', to: '/' }, { label: 'Blog' }]}
+  />
+
+  <!-- Posts -->
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+    {
+      posts.length > 0 && (
+        <div class="grid sm:grid-cols-2 gap-6">
+          {posts.map((post, i) => (
+            <AnimatedSection delay={i * 60}>
+              <BaseCard to={`/blog/${post.slug}`} padding="lg">
+                <div class="flex flex-wrap items-center gap-2 mb-3">
+                  <span class="font-mono text-xs text-gray-400 dark:text-gray-500">{formatDate(post.date!)}</span>
+                  {post.categories.map((cat) => (
+                    <span class="text-[0.65rem] px-2 py-0.5 rounded-full bg-elf-blue/8 dark:bg-elf-blue/8 text-elf-blue dark:text-elf-blue font-medium tracking-wide">{cat}</span>
+                  ))}
+                </div>
+                <h3 class="font-serif font-bold text-lg text-gray-900 dark:text-white leading-snug">{post.title}</h3>
+                {post.excerpt && <p class="mt-2 text-sm text-gray-500 dark:text-gray-400 line-clamp-3">{post.excerpt}</p>}
+                {post.authors?.length > 0 && (
+                  <p class="mt-4 text-xs text-gray-400 dark:text-gray-500">By {post.authors.map((a) => a.name).join(', ')}</p>
+                )}
+              </BaseCard>
+            </AnimatedSection>
+          ))}
+        </div>
+      )
+    }
+  </div>
+</BaseLayout>

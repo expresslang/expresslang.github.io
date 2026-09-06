@@ -1,0 +1,58 @@
+---
+import LinkedInIcon from '@/components/LinkedInIcon.astro'
+import type { Person } from '@/lib/content'
+
+interface Props {
+  person: Person
+  size: 'officer' | 'founder'
+}
+
+const { person, size } = Astro.props
+
+const photoSize = size === 'officer' ? 'w-14 h-14' : 'w-10 h-10'
+const dims = size === 'officer' ? 56 : 40
+---
+
+<div
+  class={`relative rounded-xl border border-gray-200/80 dark:border-gray-700/60 bg-white dark:bg-navy-light transition-all duration-200 hover:border-elf-blue/30 dark:hover:border-elf-blue/30 hover:-translate-y-0.5 h-full ${size === 'officer' ? 'p-6 hover:shadow-lg' : 'p-5 hover:shadow-md'}`}
+>
+  <div class="flex items-start justify-between gap-2">
+    <div class={size === 'officer' ? 'mb-4' : 'mb-3'}>
+      {
+        person.photo ? (
+          <img
+            src={person.photo}
+            alt={person.name}
+            width={dims}
+            height={dims}
+            loading={size === 'founder' ? 'lazy' : undefined}
+            decoding="async"
+            class={`${photoSize} rounded-full object-cover`}
+          />
+        ) : (
+          <div class={`${photoSize} rounded-full bg-elf-blue/8 dark:bg-elf-blue/8 flex items-center justify-center`}>
+            <span class={`font-serif font-bold text-elf-blue dark:text-elf-blue ${size === 'officer' ? 'text-xl' : 'text-base'}`}>{person.name.charAt(0)}</span>
+          </div>
+        )
+      }
+    </div>
+    {
+      person.linkedin && (
+        <a
+          href={person.linkedin}
+          target="_blank"
+          rel="noopener"
+          aria-label={`${person.name} on LinkedIn`}
+          class="relative z-10 shrink-0 p-1.5 rounded-md text-gray-400 dark:text-gray-500 hover:text-elf-blue dark:hover:text-elf-blue hover:bg-elf-blue/5 dark:hover:bg-elf-blue/5 transition-colors"
+        >
+          <LinkedInIcon class="w-4 h-4" />
+        </a>
+      )
+    }
+  </div>
+  <h3 class={`font-serif font-bold text-gray-900 dark:text-white ${size === 'officer' ? 'text-lg' : ''}`}>{person.name}</h3>
+  <p class={`font-mono text-elf-blue dark:text-elf-blue tracking-wide ${size === 'officer' ? 'text-xs mt-1' : 'text-[0.65rem] mt-0.5'}`}>{person.role}</p>
+  {person.highlight && <p class="text-[0.65rem] font-mono text-amber-600 dark:text-amber-400 mt-1">{person.highlight}</p>}
+  <p class={`text-gray-500 dark:text-gray-400 leading-relaxed ${size === 'officer' ? 'mt-3 text-sm' : 'mt-2 text-xs'}`}>{person.blurb}</p>
+  <a href={`/people/${person.slug}`} class="absolute inset-0" aria-label={`${person.name} profile`}></a>
+</div>
