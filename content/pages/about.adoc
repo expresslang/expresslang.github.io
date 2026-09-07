@@ -83,6 +83,14 @@ ELF is composed of the following internal bodies and roles:
 
 * Technical Coordination Committee
 
+=== Governance documents
+
+The governing documents of the EXPRESS Language Foundation are publicly
+available:
+
+* link:/documents/elf-articles-of-incorporation.pdf[Articles of Incorporation] (approved) — establishes ELF as a legal entity
+* link:/documents/elf-bylaws.docx[Bylaws] — the statutes of the organization: membership, governance, and consensus process
+
 
 == Technical work
 
@@ -120,5 +128,4 @@ See the link:/leadership[Leadership & Founders] page for detailed profiles.
 * link:/people/hiroshi-murayama[Hiroshi Murayama] — Vice-President
 * link:/people/ronald-tse[Ronald Tse] — Secretary
 * link:/people/stuart-galt[Stuart Galt] — Associate Technical Fellow, Boeing; Convenor, ISO/TC 184/SC 4/WG 12
-* link:/people/hiroshi-murayama[Hiroshi Murayama] — Vice-President
-* link:/people/ronald-tse[Ronald Tse] — Secretary
+* link:/people/yoshiaki-sonoda[Yoshiaki Sonoda] — Manager, DI Strategy & Planning Dept., Mitsubishi Heavy Industries; Convenor, ISO/TC 184/SC 4/WG 25
