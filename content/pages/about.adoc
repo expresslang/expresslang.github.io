@@ -89,7 +89,7 @@ The governing documents of the EXPRESS Language Foundation are publicly
 available:
 
 * link:/documents/elf-articles-of-incorporation.pdf[Articles of Incorporation] (approved) — establishes ELF as a legal entity
-* link:/documents/elf-bylaws.docx[Bylaws] — the statutes of the organization: membership, governance, and consensus process
+* link:/documents/elf-bylaws.pdf[Bylaws] — the statutes of the organization: membership, governance, and consensus process
 
 
 == Technical work
