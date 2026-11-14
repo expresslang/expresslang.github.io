@@ -1,0 +1,36 @@
+---
+title: ELF applies for Category A liaison with ISO/TC 184/SC 4
+date: 2026-09-06
+categories: announcements
+authors:
+  -
+    name: Thomas Thurman
+    email: thomas.thurman@expresslang.org
+excerpt: >-
+  ELF has applied for Category A liaison with ISO/TC 184/SC 4, formalizing
+  the working relationship between the Foundation and the STEP committee.
+---
+
+The EXPRESS Language Foundation has applied to establish a Category A
+liaison with ISO/TC 184/SC 4, the ISO committee responsible for
+industrial data and the ISO 10303 (STEP) series.
+
+The working relationship between ELF and SC 4 already exists in practice:
+the ISO 10303 STEP Resource Library published by SC 4 is built using ELF's
+SUMA framework and ELF standards — Annotated EXPRESS (ELF 5001), the
+EXPRESS changes model (ELF 5005), and the EXPRESS mapping language
+(ELF 5006). ELF experts serve as convenors and project leaders across SC 4
+working groups, and ELF continues to develop members of the EXPRESS
+language family intended for standardization within SC 4, including
+EXPRESS-Q and the EXPRESS mapping language.
+
+A Category A liaison gives ELF's experts a single, official channel to
+contribute this work directly to the committee's development of ISO 10303
+and related International Standards. Short-term goals include introducing
+ELF's work at the SC 4 plenary, participating in WG 11, WG 12, WG 21, and
+JWG 24, and providing ELF's open-source EXPRESS toolchain for editing and
+validating ISO 10303 schemas.
+
+The application is available on the
+link:https://www.expresslang.org/governance[Foundation's governance page]
+together with its published directives and standards.

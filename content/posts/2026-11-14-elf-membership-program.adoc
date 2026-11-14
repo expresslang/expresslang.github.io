@@ -1,0 +1,39 @@
+---
+title: ELF launches membership program
+date: 2026-11-14
+categories: announcements
+authors:
+  -
+    name: Ronald Tse
+    email: info@expresslang.org
+excerpt: >-
+  Membership is now open to organizations and individuals worldwide, with
+  categorized fees and equal participation rights — founding members across
+  six countries.
+---
+
+The EXPRESS Language Foundation is pleased to announce the launch of its
+membership program.
+
+ELF membership is open to all organizations and individuals worldwide that
+support the Foundation's mission. Members participate and vote in the
+Foundation's link:/technical-committees[technical committees] — one member,
+one vote — and are represented in the Technical Coordination Committee
+through committee chairs.
+
+.Members founding in 2022 span six countries:
+
+* Boeing, General Electric, NIST, PDES Inc., and STEP Tools (United States)
+* Jotne EPM Technology (Norway)
+* AFNeT Services (France)
+* Ribose Limited (United Kingdom)
+* Individual members from Austria, France, Japan, the United Kingdom, and the United States
+
+Membership categories cover corporations of every size, small businesses,
+non-profits and government bodies, universities, and individuals. The fee
+schedule is a draft, pending approval by the Board of Directors ahead of
+2027.
+
+Organizations and individuals can apply through the
+link:/join[membership application form]. The member roster is published at
+link:/members[members].
