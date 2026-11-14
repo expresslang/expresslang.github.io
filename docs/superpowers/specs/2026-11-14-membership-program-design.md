@@ -134,11 +134,11 @@ Component work: new `MemberCard.astro` (logo/name, country, category badge), new
 ## 7. Testing
 
 - `npm run build` succeeds; `npm run preview` renders all six pages (light + dark), nav submenu, `/supporters` → `/members` redirect.
-- Country/category data renders for all 21 members and 12 people.
+- Country/category data renders for all 20 members (8 organizations + 12 individuals) and 12 people.
 - Lychee link check passes on `dist/`.
 
 ## Out of scope (deferred)
 
-- Fee calculator widget, member directory filters, application form page (Approach B extras — pointless at 21 members).
+- Fee calculator widget, member directory filters, application form page (Approach B extras — pointless at 20 members).
 - Publishing TC chair names (explicitly deferred by user).
 - Formal adoption of the fee schedule (Board decision; site copy is ready for the moment it passes).
