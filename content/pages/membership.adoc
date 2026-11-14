@@ -9,16 +9,16 @@ programming languages, with a focus on the EXPRESS language family.
 
 .Members participate in the Foundation's technical life:
 
-* participate and vote in any xref:/technical-committees[Technical Committee] —
+* participate and vote in any link:/technical-committees[Technical Committee] —
 one member, one vote;
 * propose new technical committees and chair their work;
 * be represented in the Technical Coordination Committee through committee
 chairs;
 * access work in progress, drafts, and member discussions;
-* be listed on the xref:/members[Members] page.
+* be listed on the link:/members[Members] page.
 
 Corporate governance — budgets, legal matters, and bylaws — remains the
-responsibility of the xref:/governance[Board of Directors].
+responsibility of the link:/governance[Board of Directors].
 
 == Membership categories and fees
 
@@ -82,7 +82,7 @@ request the membership agreement.
 . Return the signed agreement — the Board reviews and approves membership
 per the bylaws.
 . Upon approval you receive an invoice; once dues are settled, your
-membership is activated and listed on the xref:/members[Members] page.
+membership is activated and listed on the link:/members[Members] page.
 
 Founding membership is by Board invitation and carries the same rights as
 corporate membership without the requirement of an annual donation.
