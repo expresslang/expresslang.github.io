@@ -29,15 +29,16 @@ for (const page of pages) {
   const html = readFileSync(page, 'utf-8')
 
   const canonical = html.match(/<link rel="canonical" href="([^"]+)"/)?.[1]
-  if (!canonicalExempt.has(rel)) {
-    canonicals++
-    if (canonical.endsWith('.html')) errors.push(`${rel}: canonical ends with .html: ${canonical}`)
-    const expectedPath = '/' + rel.replace(/(?:^|\/)index\.html$/, '').replace(/\.html$/, '')
-    const expected = `https://www.expresslang.org${expectedPath}`
-    if (canonical !== expected) errors.push(`${rel}: canonical ${canonical} != expected ${expected}`)
-  } else if (!canonicalExempt.has(rel)) {
+  if (canonicalExempt.has(rel)) continue
+  canonicals++
+  if (!canonical) {
     errors.push(`${rel}: missing canonical link`)
+    continue
   }
+  if (canonical.endsWith('.html')) errors.push(`${rel}: canonical ends with .html: ${canonical}`)
+  const expectedPath = '/' + rel.replace(/(?:^|\/)index\.html$/, '').replace(/\.html$/, '')
+  const expected = `https://www.expresslang.org${expectedPath}`
+  if (canonical !== expected) errors.push(`${rel}: canonical ${canonical} != expected ${expected}`)
 
   for (const match of html.matchAll(/props="([^"]*)"/g)) {
     const props = match[1]
