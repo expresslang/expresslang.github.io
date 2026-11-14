@@ -1,5 +1,6 @@
 ---
 order: 17
+title: EXPRESS-G Example Model — Car Registration
 ---
 :stem:
 

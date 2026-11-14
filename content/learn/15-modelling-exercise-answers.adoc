@@ -1,5 +1,6 @@
 ---
 order: 15
+title: Modelling Exercises — Some Answers
 ---
 :stem:
 

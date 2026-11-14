@@ -80,4 +80,4 @@ EXPRESS-I complements ISO 10303-21 (STEP Part 21 physical file format) by provid
 
 * link:/languages[EXPRESS Language Family] — overview of all EXPRESS languages
 * link:/standards[Standards & BNF] — ISO standards and grammar references
-* link:/learn/jotne-express/07-validation-execution[EXPRESS Course: Validation] — data validation concepts and techniques
+* link:/learn/practice-course/07-validation-execution[EXPRESS Course: Validation] — data validation concepts and techniques

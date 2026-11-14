@@ -1,0 +1,70 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import PageHero from '@/components/PageHero.astro'
+import BaseCard from '@/components/BaseCard.astro'
+import { toNavItems } from '@/lib/content'
+
+const modules = toNavItems('learn')
+
+const bySlug = new Map(modules.map((m) => [m.slug, m]))
+const parts: Array<{ name: string; range: [number, number] }> = [
+  { name: 'Basics', range: [1, 5] },
+  { name: 'Advanced modelling', range: [6, 9] },
+  { name: 'Rules', range: [10, 13] },
+  { name: 'Modelling practice', range: [14, 15] },
+  { name: 'Example models', range: [16, 18] },
+]
+
+const baseUrl = '/learn/reference-course'
+const rowClasses = 'group flex items-center gap-3'
+---
+
+<BaseLayout title="EXPRESS Language Reference Course" description="The authoritative EXPRESS language course by Peter Wilson — syntax, semantics, EXPRESS-G, rules, and modelling practice.">
+  <PageHero
+    eyebrow="Learning"
+    title="EXPRESS Language Reference Course"
+    lead="The authoritative course on the EXPRESS language — from the co-inventor of EXPRESS-G and EXPRESS-X. Covers syntax, semantics, modelling patterns, rules, and practical exercises."
+    crumbs={[{ label: 'Home', to: '/' }, { label: 'Learn', to: '/learn' }, { label: 'Reference Course' }]}
+  />
+
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+    <p class="text-sm text-gray-500 dark:text-gray-400 mb-8">
+      By <span class="font-semibold text-gray-700 dark:text-gray-200">Peter Wilson</span> — co-inventor of EXPRESS-G and EXPRESS-X, co-author of <em class="italic">Information Modelling: The EXPRESS Way</em> · {modules.length} modules
+    </p>
+
+    {
+      parts.map((part, partIdx) => {
+        const items = modules
+          .slice(part.range[0] - 1, part.range[1])
+          .map((m, i) => ({ ...m, num: part.range[0] + i }))
+        return (
+          <section class={partIdx > 0 ? 'mt-12' : ''}>
+            <h2 class="font-mono text-xs tracking-[0.2em] uppercase text-elf-blue dark:text-elf-blue mb-4">{part.name}</h2>
+            <div class="grid sm:grid-cols-2 gap-2.5">
+              {items.map((item) => (
+                <BaseCard to={`${baseUrl}/${item.slug}`} padding="sm">
+                  <div class={rowClasses}>
+                    <span class="w-8 h-8 rounded-lg bg-elf-blue/8 dark:bg-elf-blue/8 flex items-center justify-center font-mono text-xs font-bold text-elf-blue dark:text-elf-blue shrink-0">
+                      {String(item.num).padStart(2, '0')}
+                    </span>
+                    <h3 class="font-serif text-sm font-semibold text-gray-900 dark:text-white group-hover:text-elf-blue dark:group-hover:text-elf-blue transition-colors leading-snug">
+                      {item.title}
+                    </h3>
+                  </div>
+                </BaseCard>
+              ))}
+            </div>
+          </section>
+        )
+      })
+    }
+
+    <div class="mt-12 rounded-xl border border-gray-200/80 dark:border-gray-700/60 bg-slate-50 dark:bg-navy-light p-6 flex items-center justify-between gap-4">
+      <p class="text-sm text-gray-500 dark:text-gray-400">Start at the beginning, or dip into any module.</p>
+      <a href={`${baseUrl}/${modules[0].slug}`} class="shrink-0 inline-flex items-center text-sm font-medium text-elf-blue dark:text-elf-blue hover:underline">
+        Start module 01
+        <svg class="w-4 h-4 inline ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</BaseLayout>

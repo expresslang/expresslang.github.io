@@ -75,7 +75,7 @@ Several tools support EXPRESS-G diagram creation and editing:
 [[resources]]
 == Learn more
 
-* link:/learn/tutorial/express-g[Tutorial: EXPRESS-G] — introductory module on EXPRESS-G notation
-* link:/learn/jotne-express/04-express-g-visualization[EXPRESS Course: EXPRESS-G Visualization] — visual data modelling with EXPRESS-G
-* link:/learn/jotne-express/05-express-g-practice[EXPRESS Course: EXPRESS-G in Practice] — real-world EXPRESS-G diagram walkthrough
+* link:/learn/reference-course/05-introducing-express-g[Tutorial: Introducing EXPRESS-G] — introductory module on EXPRESS-G notation
+* link:/learn/practice-course/04-express-g-visualization[EXPRESS Course: EXPRESS-G Visualization] — visual data modelling with EXPRESS-G
+* link:/learn/practice-course/05-express-g-practice[EXPRESS Course: EXPRESS-G in Practice] — real-world EXPRESS-G diagram walkthrough
 * link:/standards[Standards & BNF] — download the formal EXPRESS grammar
