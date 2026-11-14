@@ -1,0 +1,112 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import AnimatedSection from '@/components/AnimatedSection.astro'
+import PageHero from '@/components/PageHero.astro'
+
+const layers = [
+  {
+    name: 'Board of Directors',
+    role: 'Corporate governance',
+    body: 'The Board holds corporate responsibility: budget, legal matters, bylaws, and final appeals. It delegates technical authority to the Technical Coordination Committee and the technical committees by resolution.',
+    items: ['President · Vice-President · Secretary', 'Approves membership, adopts policies', 'Final appeal authority'],
+  },
+  {
+    name: 'Technical Coordination Committee',
+    role: 'Coordination & approval',
+    body: 'The TCC comprises the chairs of the active technical committees and a Board representative. It coordinates committee work, approves the formation of new technical committees and their charters, and gives final approval for publication of committee documents after Last Call.',
+    items: ['Composed of active committee chairs', 'Approves new committees and charters', 'Approves publication after Last Call'],
+  },
+  {
+    name: 'Technical Committees',
+    role: 'Standards development',
+    body: 'Committees are open to all members. Decisions are made by consensus of participating members; where consensus cannot be reached, a supermajority vote settles the question — one member, one vote. Formal objections escalate to the TCC, and ultimately to the Board.',
+    items: ['Open to every member, one member one vote', 'Consensus first, supermajority fallback', 'Objections: committee → TCC → Board'],
+  },
+]
+
+const mechanics = [
+  { title: 'Public review', body: 'All drafts are publicly reviewed per the ELF directives; every comment receives a published disposition.' },
+  { title: 'Open participation', body: 'Non-members may comment on all work through public channels; members direct and vote on outcomes.' },
+  { title: 'Transparent records', body: 'Board minutes are public once accepted (bylaws §11.05); committee records and dispositions are published.' },
+  { title: 'Documented rules', body: 'Decision-making follows the published governance documents and directives — not informal convention.' },
+]
+
+const documents = [
+  { label: 'Articles of Incorporation', href: '/documents/elf-articles-of-incorporation.pdf', note: 'Establishes ELF as a legal entity' },
+  { label: 'Bylaws', href: '/documents/elf-bylaws.pdf', note: 'Membership, governance, and consensus process' },
+  { label: 'ELF Directive 101 — Standardization directives', href: '/docs/documents/directive-standardization/document.html', note: 'Public review and standards process' },
+]
+---
+
+<BaseLayout
+  title="Governance"
+  description="How the EXPRESS Language Foundation is governed and makes decisions."
+>
+  <PageHero
+    eyebrow="Organization"
+    title="Governance"
+    lead="ELF separates corporate governance from technical governance: a small Board holds legal responsibility for the Foundation, while its standards work is directed by its members through open, consensus-based technical committees."
+    crumbs={[{ label: 'Home', to: '/' }, { label: 'Governance' }]}
+  />
+
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+    {layers.map((layer, i) => (
+      <AnimatedSection delay={i * 80}>
+        <div class="relative rounded-xl border border-gray-200/80 dark:border-gray-700/60 bg-white dark:bg-navy-light p-8 mb-4">
+          <div class="flex items-baseline justify-between gap-3 flex-wrap">
+            <h2 class="text-lg font-serif font-bold text-gray-900 dark:text-white">{layer.name}</h2>
+            <span class="font-mono text-[0.65rem] uppercase tracking-wider text-elf-blue dark:text-elf-blue">{layer.role}</span>
+          </div>
+          <p class="mt-3 text-sm text-gray-500 dark:text-gray-400 leading-relaxed">{layer.body}</p>
+          <ul class="mt-4 space-y-1.5">
+            {layer.items.map((item) => (
+              <li class="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-300">
+                <svg class="w-4 h-4 mt-0.5 shrink-0 text-elf-blue dark:text-elf-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+        {i < layers.length - 1 && (
+          <div class="flex justify-center mb-4" aria-hidden="true">
+            <svg class="w-5 h-5 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+          </div>
+        )}
+      </AnimatedSection>
+    ))}
+
+    <section class="mt-16">
+      <AnimatedSection>
+        <h2 class="text-xl font-serif font-bold text-gray-900 dark:text-white mb-8">How decisions are made</h2>
+      </AnimatedSection>
+      <div class="grid sm:grid-cols-2 gap-5">
+        {mechanics.map((m, i) => (
+          <AnimatedSection delay={i * 60}>
+            <div class="rounded-xl border border-gray-200/80 dark:border-gray-700/60 bg-slate-50 dark:bg-navy-light p-6 h-full">
+              <h3 class="font-serif font-bold text-gray-900 dark:text-white">{m.title}</h3>
+              <p class="mt-2 text-sm text-gray-500 dark:text-gray-400 leading-relaxed">{m.body}</p>
+            </div>
+          </AnimatedSection>
+        ))}
+      </div>
+    </section>
+
+    <section class="mt-16">
+      <AnimatedSection>
+        <h2 class="text-xl font-serif font-bold text-gray-900 dark:text-white mb-6">Governance documents</h2>
+      </AnimatedSection>
+      <AnimatedSection>
+        <ul class="space-y-3">
+          {documents.map((d) => (
+            <li>
+              <a href={d.href} class="group flex items-baseline gap-2 text-sm">
+                <span class="font-medium text-elf-blue dark:text-elf-blue group-hover:underline">{d.label}</span>
+                <span class="text-gray-400 dark:text-gray-500">— {d.note}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </AnimatedSection>
+    </section>
+  </div>
+</BaseLayout>
