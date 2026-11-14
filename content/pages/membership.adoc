@@ -2,19 +2,87 @@
 title: Membership
 ---
 
-ELF serves organizations and individuals alike with a need in defining
-interchangeable information models across information systems.
+ELF membership is open to all organizations and individuals worldwide that
+support the mission of the Foundation: the education, standardization,
+research, promotion, definition, and usage of information modelling and
+programming languages, with a focus on the EXPRESS language family.
 
-ELF membership is open to all parties internationally through an annual
-donation.
+.Members participate in the Foundation's technical life:
 
-* Corporate membership enables the participation of corporate
-staff in ELF technical committees with voting rights.
+* participate and vote in any xref:/technical-committees[Technical Committee] —
+one member, one vote;
+* propose new technical committees and chair their work;
+* be represented in the Technical Coordination Committee through committee
+chairs;
+* access work in progress, drafts, and member discussions;
+* be listed on the xref:/members[Members] page.
 
-* Individual membership enables participation in technical committees and
-working groups in expert capacity.
+Corporate governance — budgets, legal matters, and bylaws — remains the
+responsibility of the xref:/governance[Board of Directors].
 
-* Founding membership carries the same benefits as corporate membership
-but does not carry the requirement of an annual donation.
+== Membership categories and fees
 
-For membership inquiries, please contact link:mailto:info@expresslang.org[us].
+[NOTE]
+====
+The fee schedule is subject to adoption by resolution of the Board of
+Directors.
+====
+
+[cols="3,1,2", options="header"]
+|===
+|Category
+|Annual fee
+|Eligibility
+
+|Founding
+|By invitation
+|Inaugural members designated by the Board
+
+|Corporate — revenue under $10M
+|$3,000
+|For-profit organizations
+
+|Corporate — revenue $10M–$100M
+|$6,000
+|For-profit organizations
+
+|Corporate — revenue over $100M
+|$12,000
+|For-profit organizations
+
+|Small business
+|$2,000
+|For-profit organizations with 50 or fewer employees
+
+|Non-profit / Government
+|$1,200
+|Registered non-profits and government bodies
+
+|University
+|$550
+|Accredited academic institutions
+
+|Individual
+|$550
+|Natural persons
+|===
+
+All members share the same participation rights regardless of category:
+each member organization appoints one delegate, and each individual member
+participates directly. Voting in technical committees is one member, one
+vote — never proportional to size. Dues fund the Foundation's exempt
+purposes; they are not deductible as charitable contributions where
+membership benefits are received.
+
+== How to join
+
+. Choose the category matching your organization or status.
+. Write to link:mailto:info@expresslang.org[info@expresslang.org] to
+request the membership agreement.
+. Return the signed agreement — the Board reviews and approves membership
+per the bylaws.
+. Upon approval you receive an invoice; once dues are settled, your
+membership is activated and listed on the xref:/members[Members] page.
+
+Founding membership is by Board invitation and carries the same rights as
+corporate membership without the requirement of an annual donation.
