@@ -29,5 +29,23 @@ import BaseLayout from '@/layouts/BaseLayout.astro'
     <a href="/" class="mt-6 inline-flex items-center px-6 py-3 rounded-lg bg-elf-blue dark:bg-elf-blue text-white dark:text-navy font-medium hover:bg-elf-blue-dark dark:hover:bg-elf-blue/90 transition-colors">
       Go home
     </a>
+    <div class="mt-10">
+      <p class="font-mono text-xs uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500 mb-4">Or explore</p>
+      <nav class="flex flex-wrap justify-center gap-2" aria-label="Site sections">
+        {[
+          { label: 'Languages', href: '/languages' },
+          { label: 'Learn', href: '/learn' },
+          { label: 'Standards', href: '/standards' },
+          { label: 'Members', href: '/members' },
+          { label: 'Membership', href: '/membership' },
+          { label: 'Governance', href: '/governance' },
+          { label: 'Blog', href: '/blog' },
+        ].map((link) => (
+          <a href={link.href} class="px-4 py-2 rounded-lg border border-gray-200/80 dark:border-gray-700/60 bg-white dark:bg-navy-light text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-elf-blue dark:hover:text-elf-blue hover:border-elf-blue/30 dark:hover:border-elf-blue/30 transition-colors">
+            {link.label}
+          </a>
+        ))}
+      </nav>
+    </div>
   </div>
 </BaseLayout>

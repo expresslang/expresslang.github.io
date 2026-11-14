@@ -80,6 +80,13 @@ const activeText = '!text-elf-blue dark:!text-elf-blue'
       <!-- Right side -->
       <div class="flex items-center gap-2">
         <button
+          data-search-open
+          class="p-2 rounded-md text-gray-500 dark:text-gray-400 hover:text-elf-blue dark:hover:text-elf-blue transition-colors duration-150 min-h-[44px] min-w-[44px] flex items-center justify-center"
+          aria-label="Search (press /)"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        </button>
+        <button
           data-theme-toggle
           class="p-2 rounded-md text-gray-500 dark:text-gray-400 hover:text-elf-blue dark:hover:text-elf-blue transition-colors duration-150"
           aria-label="Toggle dark mode"
@@ -197,3 +204,59 @@ const activeText = '!text-elf-blue dark:!text-elf-blue'
     closer.addEventListener('click', () => setNav(false))
   }
 </script>
+
+  <!-- Search (Pagefind UI, lazily loaded on first open) -->
+  <dialog data-search-dialog class="backdrop:bg-black/40 backdrop:backdrop-blur-sm p-0 bg-transparent max-w-2xl w-[calc(100vw-2rem)] mt-[8vh]">
+    <div class="rounded-xl bg-white dark:bg-navy border border-gray-200/80 dark:border-gray-700/60 shadow-2xl overflow-hidden">
+      <div id="search" class="p-1"></div>
+    </div>
+  </dialog>
+
+  <script>
+    const searchDialog = document.querySelector<HTMLDialogElement>('[data-search-dialog]')!
+    let pagefindStarted = false
+
+    async function startPagefind() {
+      if (pagefindStarted) return
+      pagefindStarted = true
+      const css = document.createElement('link')
+      css.rel = 'stylesheet'
+      css.href = '/pagefind/pagefind-ui.css'
+      document.head.appendChild(css)
+      await new Promise<void>((resolve) => {
+        const s = document.createElement('script')
+        s.src = '/pagefind/pagefind-ui.js'
+        s.onload = () => resolve()
+        document.body.appendChild(s)
+      })
+      // @ts-expect-error PagefindUI is loaded from the pagefind bundle
+      new window.PagefindUI({
+        element: '#search',
+        showImages: false,
+        showMeta: false,
+        autofocus: true,
+        translations: { placeholder: 'Search the site…', clear_search: 'Clear', load_more: 'More results', search_label: 'Search' },
+      })
+    }
+
+    function openSearch() {
+      if (!searchDialog.open) searchDialog.showModal()
+      startPagefind()
+    }
+
+    for (const button of document.querySelectorAll('[data-search-open]')) {
+      button.addEventListener('click', openSearch)
+    }
+    searchDialog.addEventListener('click', (e) => {
+      if (e.target === searchDialog) searchDialog.close()
+    })
+    document.addEventListener('keydown', (e) => {
+      const target = e.target as HTMLElement
+      const typing = /INPUT|TEXTAREA|SELECT/.test(target.tagName) || target.isContentEditable
+      if (e.key === '/' && !typing && !searchDialog.open) {
+        e.preventDefault()
+        openSearch()
+      }
+    })
+  </script>
+

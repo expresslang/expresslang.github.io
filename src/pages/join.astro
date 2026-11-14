@@ -1,0 +1,123 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import PageHero from '@/components/PageHero.astro'
+
+const categories = [
+  { value: 'founding', label: 'Founding — by Board invitation', fee: 'By invitation' },
+  { value: 'corporate-small', label: 'Corporate — revenue under $10M', fee: '$3,000' },
+  { value: 'corporate-mid', label: 'Corporate — revenue $10M–$100M', fee: '$6,000' },
+  { value: 'corporate-large', label: 'Corporate — revenue over $100M', fee: '$12,000' },
+  { value: 'small', label: 'Small business (≤50 employees)', fee: '$2,000' },
+  { value: 'nonprofit', label: 'Non-profit / Government', fee: '$1,200' },
+  { value: 'university', label: 'University', fee: '$550' },
+  { value: 'individual', label: 'Individual', fee: '$550' },
+]
+
+const inputClasses =
+  'w-full rounded-lg border border-gray-200/80 dark:border-gray-700/60 bg-white dark:bg-navy px-3.5 py-2.5 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-elf-blue/50 focus:border-elf-blue transition'
+const labelClasses = 'block text-xs font-mono uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1.5'
+---
+
+<BaseLayout title="Join" description="Apply to join the EXPRESS Language Foundation — membership is open to organizations and individuals worldwide.">
+  <PageHero
+    eyebrow="Membership"
+    title="Join the Foundation"
+    lead="Membership is open to organizations and individuals worldwide. Choose a category, tell us about yourself, and the Board will review your application per the bylaws."
+    crumbs={[{ label: 'Home', to: '/' }, { label: 'Membership', to: '/membership' }, { label: 'Join' }]}
+  />
+
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+    <div class="rounded-xl border border-amber-400/40 bg-amber-50 dark:bg-amber-500/5 dark:border-amber-500/30 p-4 mb-8 text-sm text-amber-800 dark:text-amber-300">
+      Draft pricing notice — the new membership pricing is pending approval by the Board of Directors ahead of 2027.
+    </div>
+
+    <form id="join-form" class="rounded-xl border border-gray-200/80 dark:border-gray-700/60 bg-white dark:bg-navy-light p-6 sm:p-8 space-y-5">
+      <div>
+        <label for="f-category" class={labelClasses}>Membership category *</label>
+        <select id="f-category" name="category" required class={inputClasses}>
+          {categories.map((c) => <option value={c.value} data-fee={c.fee}>{c.label} — {c.fee}</option>)}
+        </select>
+        <p class="mt-1.5 text-xs text-gray-400 dark:text-gray-500">Annual fee: <span id="fee-display" class="font-mono font-semibold text-elf-blue dark:text-elf-blue">$3,000</span></p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 gap-5">
+        <div>
+          <label for="f-name" class={labelClasses}>Your name *</label>
+          <input id="f-name" name="name" type="text" required autocomplete="name" class={inputClasses} placeholder="Jane Doe" />
+        </div>
+        <div>
+          <label for="f-email" class={labelClasses}>Email *</label>
+          <input id="f-email" name="email" type="email" required autocomplete="email" class={inputClasses} placeholder="jane@example.com" />
+        </div>
+      </div>
+
+      <div class="grid sm:grid-cols-2 gap-5">
+        <div>
+          <label for="f-org" class={labelClasses}>Organization</label>
+          <input id="f-org" name="organization" type="text" autocomplete="organization" class={inputClasses} placeholder="Example Corp" />
+        </div>
+        <div>
+          <label for="f-country" class={labelClasses}>Country *</label>
+          <input id="f-country" name="country" type="text" required autocomplete="country-name" class={inputClasses} placeholder="United Kingdom" />
+        </div>
+      </div>
+
+      <div>
+        <label for="f-website" class={labelClasses}>Website</label>
+        <input id="f-website" name="website" type="url" class={inputClasses} placeholder="https://example.com" />
+      </div>
+
+      <div>
+        <label for="f-interests" class={labelClasses}>Which technical committees or work areas interest you?</label>
+        <textarea id="f-interests" name="interests" rows="3" class={inputClasses} placeholder="TC EXPRESS, TC OpenCDD, education…"></textarea>
+      </div>
+
+      <div class="pt-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <p class="text-xs text-gray-400 dark:text-gray-500 max-w-sm">
+          Submitting opens a pre-filled email to the Foundation — the Board reviews membership applications per the bylaws (§3.01).
+        </p>
+        <button type="submit" class="shrink-0 inline-flex items-center gap-2 rounded-lg bg-elf-blue px-5 py-2.5 text-sm font-semibold text-white hover:bg-elf-blue-dark transition-colors focus:outline-none focus:ring-2 focus:ring-elf-blue/50">
+          Submit application
+          <svg aria-hidden="true" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </button>
+      </div>
+    </form>
+
+    <p class="mt-6 text-sm text-gray-500 dark:text-gray-400">
+      Questions first? See the <a href="/membership" class="text-elf-blue dark:text-elf-blue hover:underline">categories, fees, and rights</a> or write to
+      <a href="mailto:info@expresslang.org" class="text-elf-blue dark:text-elf-blue hover:underline">info@expresslang.org</a>.
+    </p>
+  </div>
+
+  <script>
+    const form = document.getElementById('join-form') as HTMLFormElement
+    const category = document.getElementById('f-category') as HTMLSelectElement
+    const feeDisplay = document.getElementById('fee-display')
+
+    const showFee = () => {
+      const fee = category.options[category.selectedIndex]?.dataset.fee
+      if (feeDisplay && fee) feeDisplay.textContent = fee
+    }
+    category.addEventListener('change', showFee)
+    showFee()
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault()
+      const data = new FormData(form)
+      const get = (k: string) => String(data.get(k) ?? '').trim()
+      const categoryLabel = category.options[category.selectedIndex]?.text.split(' — ').slice(0, -1).join(' — ') ?? ''
+      const lines = [
+        `Category: ${categoryLabel}`,
+        `Annual fee: ${feeDisplay?.textContent ?? ''}`,
+        `Name: ${get('name')}`,
+        `Email: ${get('email')}`,
+        `Organization: ${get('organization') || '—'}`,
+        `Country: ${get('country')}`,
+        `Website: ${get('website') || '—'}`,
+        `Interests: ${get('interests') || '—'}`,
+      ]
+      const subject = `Membership application — ${get('organization') || get('name')}`
+      window.location.href = `mailto:info@expresslang.org?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`
+    })
+  </script>
+</BaseLayout>

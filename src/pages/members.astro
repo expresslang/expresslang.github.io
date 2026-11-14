@@ -65,15 +65,16 @@ const countryPaths = worldShapes.features.map((f) => ({
           id="members-map"
           viewBox="0 0 1000 500"
           class="w-full h-auto rounded-xl border border-gray-200/80 dark:border-gray-700/60 bg-slate-50 dark:bg-navy-light"
-          role="img"
+          role="group"
+          aria-label={`World map of ELF members: ${stats.map((s) => label(s)).join(', ')}`}
         >
-          <title>{`ELF members by country: ${stats.map((s) => label(s)).join(', ')}`}</title>
           {countryPaths.map((p) => (
             <path
               d={p.d}
               class={p.stat ? 'map-country map-country--member' : 'map-country'}
               data-country={p.stat?.name}
               tabindex={p.stat ? 0 : undefined}
+              aria-label={p.stat ? `${p.stat.name} — ${p.stat.members.length} member${p.stat.members.length === 1 ? '' : 's'}` : undefined}
             >
               {p.stat && <title>{`${label(p.stat)}: ${p.stat.members.join(' · ')}`}</title>}
             </path>
@@ -131,7 +132,7 @@ const countryPaths = worldShapes.features.map((f) => ({
         </p>
         <a href="/membership" class="mt-4 inline-flex items-center text-sm font-medium text-elf-blue dark:text-elf-blue hover:underline">
           Join the EXPRESS Language Foundation
-          <svg class="w-4 h-4 inline ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          <svg aria-hidden="true" class="w-4 h-4 inline ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
         </a>
       </div>
     </AnimatedSection>
@@ -172,24 +173,35 @@ const countryPaths = worldShapes.features.map((f) => ({
     fill: #5b8dd9;
   }
   .map-country--member:hover,
-  .map-country--member:focus {
+  .map-country--member:focus-visible {
     fill: #1e4f9e;
-    outline: none;
+  }
+  .map-country--member:focus-visible {
+    outline: 2px solid #1e4f9e;
+    outline-offset: 1px;
   }
 </style>
 
 <script>
-  document.querySelectorAll<HTMLAnchorElement | SVGPathElement>('#members-map .map-country--member').forEach((el) => {
+  document.querySelectorAll<SVGPathElement>('#members-map .map-country--member').forEach((el) => {
+    let timer: number | undefined
     const highlight = () => {
-      const name = (el as HTMLElement).dataset.country
+      const name = el.dataset.country
       if (!name) return
       const cards = document.querySelectorAll<HTMLElement>(`[data-member-country="${CSS.escape(name)}"]`)
       cards.forEach((c) => c.classList.add('ring-2', 'ring-elf-blue', 'ring-offset-2'))
-      window.setTimeout(() => cards.forEach((c) => c.classList.remove('ring-2', 'ring-elf-blue', 'ring-offset-2')), 2000)
+      if (timer !== undefined) window.clearTimeout(timer)
+      timer = window.setTimeout(() => {
+        cards.forEach((c) => c.classList.remove('ring-2', 'ring-elf-blue', 'ring-offset-2'))
+        timer = undefined
+      }, 2000)
     }
     el.addEventListener('click', highlight)
     el.addEventListener('keydown', (e) => {
-      if ((e as KeyboardEvent).key === 'Enter' || (e as KeyboardEvent).key === ' ') highlight()
+      if ((e as KeyboardEvent).key === 'Enter' || (e as KeyboardEvent).key === ' ') {
+        e.preventDefault()
+        highlight()
+      }
     })
   })
 </script>
