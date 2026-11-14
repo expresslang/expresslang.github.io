@@ -18,6 +18,9 @@ function yamlData() {
 export default defineConfig({
   site: 'https://www.expresslang.org',
   output: 'static',
+  redirects: {
+    '/supporters': '/members',
+  },
   // Flat filenames (about.html) keep the pre-Astro URL space — no trailing-slash 301s
   build: { format: 'file' },
   integrations: [vue()],

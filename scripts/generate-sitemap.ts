@@ -17,7 +17,7 @@ function findHtmlFiles(dir: string): string[] {
   return files
 }
 
-const htmlFiles = findHtmlFiles(DIST_DIR)
+const htmlFiles = findHtmlFiles(DIST_DIR).filter((f) => relative(DIST_DIR, f) !== 'supporters.html')
 const today = new Date().toISOString().split('T')[0]
 
 const urls = htmlFiles.map((f) => {

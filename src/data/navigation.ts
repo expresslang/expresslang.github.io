@@ -15,9 +15,11 @@ export const mainNavigation: NavItem[] = [
     path: '/about',
     children: [
       { title: 'About ELF', path: '/about' },
-      { title: 'Leadership', path: '/leadership' },
-      { title: 'Supporters', path: '/supporters' },
+      { title: 'Governance', path: '/governance' },
+      { title: 'Technical Committees', path: '/technical-committees' },
+      { title: 'Members', path: '/members' },
       { title: 'Membership', path: '/membership' },
+      { title: 'Leadership', path: '/leadership' },
     ],
   },
 ]
