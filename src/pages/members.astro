@@ -9,7 +9,7 @@ import { feature } from 'topojson-client'
 import world from 'world-atlas/countries-110m.json'
 import countries from 'i18n-iso-countries'
 import en from 'i18n-iso-countries/langs/en.json'
-import { members, peopleByRank } from '@/lib/content'
+import { members, peopleByRank, countryCode } from '@/lib/content'
 
 const orgs = members.filter((m) => m.category !== 'individual')
 const individuals = peopleByRank('founder')
@@ -21,8 +21,11 @@ for (const m of members) {
   byCountry.get(m.country)!.push(m.name)
 }
 const stats = [...byCountry.entries()]
-  .map(([name, ms]) => ({ name, members: ms }))
+  .map(([name, ms]) => ({ name, code: countryCode(name), members: ms }))
   .sort((a, b) => b.members.length - a.members.length)
+
+// Display label "United Kingdom (GB)"; falls back to the bare name if unresolved.
+const label = (s: { name: string; code: string | null }) => (s.code ? `${s.name} (${s.code})` : s.name)
 
 // Build-time map: project once, bake paths into HTML — zero client JS for rendering.
 countries.registerLocale(en)
@@ -64,7 +67,7 @@ const countryPaths = worldShapes.features.map((f) => ({
           class="w-full h-auto rounded-xl border border-gray-200/80 dark:border-gray-700/60 bg-slate-50 dark:bg-navy-light"
           role="img"
         >
-          <title>{`ELF members by country: ${stats.map((s) => s.name).join(', ')}`}</title>
+          <title>{`ELF members by country: ${stats.map((s) => label(s)).join(', ')}`}</title>
           {countryPaths.map((p) => (
             <path
               d={p.d}
@@ -72,14 +75,14 @@ const countryPaths = worldShapes.features.map((f) => ({
               data-country={p.stat?.name}
               tabindex={p.stat ? 0 : undefined}
             >
-              {p.stat && <title>{`${p.stat.name}: ${p.stat.members.join(' · ')}`}</title>}
+              {p.stat && <title>{`${label(p.stat)}: ${p.stat.members.join(' · ')}`}</title>}
             </path>
           ))}
         </svg>
         <ul class="mt-4 flex flex-wrap justify-center gap-x-6 gap-y-1 text-xs text-gray-500 dark:text-gray-400">
           {stats.map((s) => (
             <li>
-              <span class="font-medium text-gray-700 dark:text-gray-200">{s.name}</span> — {s.members.length}
+              <span class="font-medium text-gray-700 dark:text-gray-200">{label(s)}</span> — {s.members.length}
             </li>
           ))}
         </ul>

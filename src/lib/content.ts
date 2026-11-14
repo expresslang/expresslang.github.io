@@ -2,6 +2,10 @@ import peopleData from '@/data/people.yaml'
 import languagesData from '@/data/languages.yaml'
 import membersData from '@/data/members.yaml'
 import committeesData from '@/data/committees.yaml'
+import countries from 'i18n-iso-countries'
+import en from 'i18n-iso-countries/langs/en.json'
+
+countries.registerLocale(en)
 
 export interface ContentData {
   title: string
@@ -98,4 +102,10 @@ export const committees = committeesData as Committee[]
 
 export function peopleByRank(key: 'officer' | 'founder'): Person[] {
   return people.filter((p) => p[key] != null).sort((a, b) => a[key]! - b[key]!)
+}
+
+// ISO 3166-1 alpha-2 code derived from a country name (e.g. "United Kingdom" → "GB").
+// Null when the name does not resolve — callers fall back to the bare name.
+export function countryCode(name: string): string | null {
+  return countries.getAlpha2Code(name, 'en') ?? null
 }
