@@ -1,0 +1,49 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import PageHero from '@/components/PageHero.astro'
+import BaseCard from '@/components/BaseCard.astro'
+import { toNavItems } from '@/lib/content'
+
+const modules = toNavItems('course')
+const baseUrl = '/learn/practice-course'
+---
+
+<BaseLayout title="EXPRESS & STEP in Practice" description="The applied ISO 10303 course contributed by Jotne EPM Technology — STEP formats, validation, querying, SDAI, and PLCS.">
+  <PageHero
+    eyebrow="Learning"
+    title="EXPRESS &amp; STEP in Practice"
+    lead="The applied course on the ISO 10303 ecosystem — STEP file formats, data validation, schema querying, business rules, SDAI programming, and PLCS. Assumes basic EXPRESS knowledge."
+    crumbs={[{ label: 'Home', to: '/' }, { label: 'Learn', to: '/learn' }, { label: 'Practice Course' }]}
+  />
+
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+    <p class="text-sm text-gray-500 dark:text-gray-400 mb-8">
+      Contributed by <span class="font-semibold text-gray-700 dark:text-gray-200">Jotne EPM Technology</span> · {modules.length} modules
+    </p>
+
+    <div class="grid sm:grid-cols-2 gap-2.5">
+      {
+        modules.map((item, i) => (
+          <BaseCard to={`${baseUrl}/${item.slug}`} padding="sm">
+            <div class="group flex items-center gap-3">
+              <span class="w-8 h-8 rounded-lg bg-elf-blue/8 dark:bg-elf-blue/8 flex items-center justify-center font-mono text-xs font-bold text-elf-blue dark:text-elf-blue shrink-0">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <h3 class="font-serif text-sm font-semibold text-gray-900 dark:text-white group-hover:text-elf-blue dark:group-hover:text-elf-blue transition-colors leading-snug">
+                {item.title}
+              </h3>
+            </div>
+          </BaseCard>
+        ))
+      }
+    </div>
+
+    <div class="mt-12 rounded-xl border border-gray-200/80 dark:border-gray-700/60 bg-slate-50 dark:bg-navy-light p-6 flex items-center justify-between gap-4">
+      <p class="text-sm text-gray-500 dark:text-gray-400">New to EXPRESS? Start with the Reference Course first.</p>
+      <a href="/learn/reference-course" class="shrink-0 inline-flex items-center text-sm font-medium text-elf-blue dark:text-elf-blue hover:underline">
+        Reference Course
+        <svg class="w-4 h-4 inline ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</BaseLayout>

@@ -271,5 +271,5 @@ EXPRESS is used across multiple industries:
 
 * link:/learn[Tutorial: Learn EXPRESS] — comprehensive introductory course by Peter Wilson
 * link:/standards[Standards & BNF] — download the formal EXPRESS grammar
-* link:/learn/jotne-express/01-intro-iso-10303[EXPRESS Course] — structured course covering ISO 10303 and EXPRESS topics
+* link:/learn/practice-course/01-intro-iso-10303[EXPRESS Course] — structured course covering ISO 10303 and EXPRESS topics
 * *Information Modelling: The EXPRESS Way* — Douglas Schenck and Peter Wilson (Oxford University Press, 1994)

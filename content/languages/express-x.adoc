@@ -87,6 +87,6 @@ EXPRESS-X is supported by several tools in the EXPRESS ecosystem:
 [[resources]]
 == Learn more
 
-* link:/learn/jotne-express/06-express-x[EXPRESS Course: The EXPRESS-X Language] — practical EXPRESS-X training
+* link:/learn/practice-course/06-express-x[EXPRESS Course: The EXPRESS-X Language] — practical EXPRESS-X training
 * link:/standards[Standards & BNF] — download the EXPRESS-X grammar
 * link:/learn[Learn EXPRESS] — foundation tutorial covering prerequisite concepts
