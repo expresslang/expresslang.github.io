@@ -19,7 +19,7 @@ const layers = [
   {
     name: 'Technical Committees',
     role: 'Standards development',
-    body: 'Committees are open to all members. Decisions are made by consensus of participating members; where consensus cannot be reached, a supermajority vote settles the question — one member, one vote. Formal objections escalate to the TCC, and ultimately to the Board.',
+    body: 'Committees are open to all members. Decisions are made by consensus of participating members; where consensus cannot be reached, a supermajority vote settles the question — one member, one vote. Formal objections escalate to the TCC, and ultimately to the Board. ELF\'s technical work is organized into five technical committees — described on the <a class="text-elf-blue dark:text-elf-blue hover:underline" href="/technical-committees">Technical Committees</a> page.',
     items: ['Open to every member, one member one vote', 'Consensus first, supermajority fallback', 'Objections: committee → TCC → Board'],
   },
 ]
@@ -57,7 +57,7 @@ const documents = [
             <h2 class="text-lg font-serif font-bold text-gray-900 dark:text-white">{layer.name}</h2>
             <span class="font-mono text-[0.65rem] uppercase tracking-wider text-elf-blue dark:text-elf-blue">{layer.role}</span>
           </div>
-          <p class="mt-3 text-sm text-gray-500 dark:text-gray-400 leading-relaxed">{layer.body}</p>
+          <p class="mt-3 text-sm text-gray-500 dark:text-gray-400 leading-relaxed" set:html={layer.body} />
           <ul class="mt-4 space-y-1.5">
             {layer.items.map((item) => (
               <li class="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-300">

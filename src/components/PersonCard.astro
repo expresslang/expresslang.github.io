@@ -16,6 +16,7 @@ const dims = size === 'officer' ? 56 : 40
 ---
 
 <div
+  data-member-country={person.country}
   class={`relative rounded-xl border border-gray-200/80 dark:border-gray-700/60 bg-white dark:bg-navy-light transition-all duration-200 hover:border-elf-blue/30 dark:hover:border-elf-blue/30 hover:-translate-y-0.5 h-full ${size === 'officer' ? 'p-6 hover:shadow-lg' : 'p-5 hover:shadow-md'}`}
 >
   <div class="flex items-start justify-between gap-2">

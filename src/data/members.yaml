@@ -1,7 +1,9 @@
 # ELF member roster — single source of truth for the /members page.
 # Organizations are Founding Members (Board-designated inaugural members).
 # Individuals are Individual Members; `slug` links to /people/<slug>.
-# Countries are text names — never flags, never ISO codes.
+# Countries are text names; ISO 3166 alpha-2 codes are derived from the names
+# at build time and displayed alongside (e.g. "United Kingdom (GB)").
+# Codes are never stored in data files.
 # NOTE: McDonnell Douglas is deliberately absent (merged into Boeing, 1997);
 # it remains only in historical contexts (homepage heritage strip, history post).
 
