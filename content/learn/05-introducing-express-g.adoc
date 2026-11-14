@@ -406,3 +406,7 @@ ENTITY i SUBTYPE OF (a); END_ENTITY; -- illegal
 
 .EXPRESS-G with SUBTYPE_CONSTRAINTs
 image::02-models-10.svg[]
+
+== See also
+
+* link:/languages/express-g[EXPRESS-G language reference] — notation overview, features, and tooling support
