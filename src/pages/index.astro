@@ -168,15 +168,15 @@ const formatDate = (date: string) =>
         <div class="flex flex-wrap gap-6 items-center justify-center">
           {
             ['supporter-boeing.svg', 'supporter-md.svg', 'supporter-ge.svg', 'supporter-nist.svg', 'supporter-pdes.png', 'supporter-steptools.svg', 'supporter-jotneconnect.svg', 'supporter-afnet.svg', 'supporter-ribose.svg'].map((logo) => (
-              <a href="/supporters" class="h-14 flex items-center rounded-lg bg-white p-2 hover:shadow-md transition-shadow">
+              <a href="/members" class="h-14 flex items-center rounded-lg bg-white p-2 hover:shadow-md transition-shadow">
                 <img src={`/images/supporters/${logo}`} alt={logo.replace('supporter-', '').replace(/\.\w+$/, '')} class="h-10 w-auto mx-auto object-contain" />
               </a>
             ))
           }
         </div>
         <p class="text-center mt-8">
-          <a href="/supporters" class="text-sm font-medium text-elf-blue dark:text-elf-blue hover:underline">
-            View all supporters
+          <a href="/members" class="text-sm font-medium text-elf-blue dark:text-elf-blue hover:underline">
+            Meet our members
             <svg class="w-4 h-4 inline ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
           </a>
         </p>

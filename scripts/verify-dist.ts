@@ -20,7 +20,7 @@ function walk(dir: string): string[] {
 }
 
 const pages = walk(DIST).filter((f) => f.endsWith('.html'))
-const canonicalExempt = new Set(['404.html', 'references.html'])
+const canonicalExempt = new Set(['404.html', 'references.html', 'supporters.html'])
 let canonicals = 0
 let islands = 0
 

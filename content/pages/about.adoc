@@ -51,56 +51,6 @@ understanding of shared data and the relationships between them,
 specifically for the EXPRESS language families.
 
 
-== Membership
-
-ELF serves organizations and individuals alike with a need in defining
-interchangeable information models across information systems.
-
-Please refer to the link:/membership[membership] page for more details.
-
-
-== Governance structure
-
-ELF consists of a board and members of the organization. Our members are
-organized into a central office with multiple technical committees:
-
-* The central office functions to support the activities of technical
-committees, including for the publication of standards.
-
-* Technical committees are organized by volunteers who are experts in a selected
-domain of the technical committee and develop best practices and information for
-the international arena.
-
-ELF is composed of the following internal bodies and roles:
-
-* Board of Directors
-
-* Executive functions
-** President
-** Vice-President
-** Executive Director
-** Chief Financial Officer
-
-* Technical Coordination Committee
-
-=== Governance documents
-
-The governing documents of the EXPRESS Language Foundation are publicly
-available:
-
-* link:/documents/elf-articles-of-incorporation.pdf[Articles of Incorporation] (approved) — establishes ELF as a legal entity
-* link:/documents/elf-bylaws.pdf[Bylaws] — the statutes of the organization: membership, governance, and consensus process
-
-
-== Technical work
-
-Technical work at ELF is performed by its Technical Committees, including:
-
-* TC EXPRESS
-* TC EXPRESS-G
-* TC EXPRESS-I
-
-
 == International cooperation
 
 The mission of ELF is international in nature, given that its founding team is
@@ -109,23 +59,41 @@ spread across the globe.
 ELF consists of international experts and will work with international partners.
 
 
+== Governance
+
+ELF separates corporate governance from technical governance: a Board of
+Directors holds legal responsibility for the Foundation, while standards
+work is directed by members through open, consensus-based technical
+committees and coordinated by the Technical Coordination Committee.
+
+See the link:/governance[governance] page for how decisions are made, and
+the governing documents:
+
+* link:/documents/elf-articles-of-incorporation.pdf[Articles of Incorporation] (approved)
+* link:/documents/elf-bylaws.pdf[Bylaws]
+
+
+== Technical committees
+
+Technical work at ELF is performed by its technical committees, including
+TC EXPRESS, TC EXPRESS-G, TC EXPRESS-I, TC OpenCDD, and TC Education.
+
+See the link:/technical-committees[Technical Committees] page for each
+committee's scope and standardization alignment.
+
+== Membership
+
+ELF serves organizations and individuals alike with a need in defining
+interchangeable information models across information systems.
+
+See the link:/members[Members] page for our member roster, and the
+link:/membership[membership] page for categories, fees, and how to join.
+
+
 == Founders
 
-The founders of ELF include the original inventors of EXPRESS, experts involved
-in enhancing EXPRESS, as well as EXPRESS stakeholders deeply interested in the
-achievement of the Foundation's mission.
+The founders of ELF include the original inventors of EXPRESS, experts
+involved in enhancing EXPRESS, as well as EXPRESS stakeholders deeply
+interested in the achievement of the Foundation's mission.
 
 See the link:/leadership[Leadership & Founders] page for detailed profiles.
-
-* link:/people/douglas-schenck[Douglas Schenck] — Inventor of EXPRESS; Project Leader, ISO 10303-11:1994
-* link:/people/bernd-wenzel[Prof. Bernd Wenzel] — Project Leader, ISO 10303-11:1994
-* link:/people/peter-wilson[Peter Wilson] — Designer of EXPRESS-G & EXPRESS-X; Project Leader, ISO 10303-11:2004
-* link:/people/thomas-thurman[Thomas Thurman] — President
-* link:/people/allison-barnard-feeney[Allison Barnard Feeney] — General Manager, PDES Inc.
-* link:/people/david-loffredo[David Loffredo] — Project Leader, ISO 10303-11:2004
-* link:/people/jean-brange[Jean Brange]
-* link:/people/phil-spiby[Phil Spiby]
-* link:/people/hiroshi-murayama[Hiroshi Murayama] — Vice-President
-* link:/people/ronald-tse[Ronald Tse] — Secretary
-* link:/people/stuart-galt[Stuart Galt] — Associate Technical Fellow, Boeing; Convenor, ISO/TC 184/SC 4/WG 12
-* link:/people/yoshiaki-sonoda[Yoshiaki Sonoda] — Manager, DI Strategy & Planning Dept., Mitsubishi Heavy Industries; Convenor, ISO/TC 184/SC 4/WG 25

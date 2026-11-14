@@ -1,0 +1,195 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import AnimatedSection from '@/components/AnimatedSection.astro'
+import PageHero from '@/components/PageHero.astro'
+import MemberCard from '@/components/MemberCard.astro'
+import PersonCard from '@/components/PersonCard.astro'
+import { geoNaturalEarth1, geoPath } from 'd3-geo'
+import { feature } from 'topojson-client'
+import world from 'world-atlas/countries-110m.json'
+import countries from 'i18n-iso-countries'
+import en from 'i18n-iso-countries/langs/en.json'
+import { members, peopleByRank, countryCode } from '@/lib/content'
+
+const orgs = members.filter((m) => m.category !== 'individual')
+const individuals = peopleByRank('founder')
+
+// Group members by country for the map legend and card highlighting.
+const byCountry = new Map<string, string[]>()
+for (const m of members) {
+  if (!byCountry.has(m.country)) byCountry.set(m.country, [])
+  byCountry.get(m.country)!.push(m.name)
+}
+const stats = [...byCountry.entries()]
+  .map(([name, ms]) => ({ name, code: countryCode(name), members: ms }))
+  .sort((a, b) => b.members.length - a.members.length)
+
+// Display label "United Kingdom (GB)"; falls back to the bare name if unresolved.
+const label = (s: { name: string; code: string | null }) => (s.code ? `${s.name} (${s.code})` : s.name)
+
+// Build-time map: project once, bake paths into HTML — zero client JS for rendering.
+countries.registerLocale(en)
+const worldShapes = feature(world, world.objects.countries)
+const projection = geoNaturalEarth1().fitExtent([[10, 10], [990, 490]], worldShapes)
+const geoPathGen = geoPath(projection)
+// ISO 3166-1 numeric codes are derived from country names via i18n-iso-countries
+// (alpha-2 first — v7 exposes no getNumericCode(name)); alpha2ToNumeric returns
+// zero-padded strings ("040"), matching world-atlas feature ids exactly.
+const statByNumeric = new Map(
+  stats.map((s) => {
+    const a2 = countries.getAlpha2Code(s.name, 'en')
+    return [countries.alpha2ToNumeric(a2), s]
+  }),
+)
+const countryPaths = worldShapes.features.map((f) => ({
+  d: geoPathGen(f),
+  stat: statByNumeric.get(String(f.id).padStart(3, '0')),
+}))
+---
+
+<BaseLayout
+  title="Members"
+  description="The members of the EXPRESS Language Foundation — organizations and individuals worldwide."
+>
+  <PageHero
+    eyebrow="Membership"
+    title="Our Members"
+    lead="ELF members are organizations and individuals worldwide who have joined the Foundation to develop, standardize, and promote the EXPRESS language family. Members participate and vote in the technical committees."
+    crumbs={[{ label: 'Home', to: '/' }, { label: 'Members' }]}
+  />
+
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+    <AnimatedSection>
+      <section class="mb-16" aria-label="World map of member countries">
+        <svg
+          id="members-map"
+          viewBox="0 0 1000 500"
+          class="w-full h-auto rounded-xl border border-gray-200/80 dark:border-gray-700/60 bg-slate-50 dark:bg-navy-light"
+          role="img"
+        >
+          <title>{`ELF members by country: ${stats.map((s) => label(s)).join(', ')}`}</title>
+          {countryPaths.map((p) => (
+            <path
+              d={p.d}
+              class={p.stat ? 'map-country map-country--member' : 'map-country'}
+              data-country={p.stat?.name}
+              tabindex={p.stat ? 0 : undefined}
+            >
+              {p.stat && <title>{`${label(p.stat)}: ${p.stat.members.join(' · ')}`}</title>}
+            </path>
+          ))}
+        </svg>
+        <ul class="mt-4 flex flex-wrap justify-center gap-x-6 gap-y-1 text-xs text-gray-500 dark:text-gray-400">
+          {stats.map((s) => (
+            <li>
+              <span class="font-medium text-gray-700 dark:text-gray-200">{label(s)}</span> — {s.members.length}
+            </li>
+          ))}
+        </ul>
+      </section>
+    </AnimatedSection>
+
+    <section class="mb-20">
+      <AnimatedSection>
+        <h2 class="text-xl font-serif font-bold text-gray-900 dark:text-white mb-2">Founding Members</h2>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mb-8">
+          Organizations designated by the Board as inaugural members of the Foundation.
+        </p>
+      </AnimatedSection>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {orgs.map((member, i) => (
+          <AnimatedSection delay={i * 60}>
+            <MemberCard member={member} />
+          </AnimatedSection>
+        ))}
+      </div>
+    </section>
+
+    <section>
+      <AnimatedSection>
+        <h2 class="text-xl font-serif font-bold text-gray-900 dark:text-white mb-2">Individual Members</h2>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mb-8">
+          Experts and practitioners participating in the Foundation's technical committees —
+          including the original inventors and stewards of the EXPRESS language family.
+        </p>
+      </AnimatedSection>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+        {individuals.map((person, i) => (
+          <AnimatedSection delay={i * 60}>
+            <PersonCard person={person} size="founder" />
+          </AnimatedSection>
+        ))}
+      </div>
+    </section>
+
+    <AnimatedSection>
+      <div class="mt-16 rounded-xl border border-gray-200/80 dark:border-gray-700/60 bg-slate-50 dark:bg-navy-light p-8 text-center">
+        <h2 class="text-lg font-serif font-bold text-gray-900 dark:text-white">Become a member</h2>
+        <p class="mt-2 text-sm text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
+          Membership is open to organizations and individuals worldwide. See the
+          categories, fees, and how to join.
+        </p>
+        <a href="/membership" class="mt-4 inline-flex items-center text-sm font-medium text-elf-blue dark:text-elf-blue hover:underline">
+          Join the EXPRESS Language Foundation
+          <svg class="w-4 h-4 inline ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </AnimatedSection>
+  </div>
+
+  <script is:inline type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Members of the EXPRESS Language Foundation',
+    itemListElement: orgs.map((o, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      item: {
+        '@type': 'Organization',
+        name: o.name,
+        url: o.url,
+        address: { '@type': 'PostalAddress', addressCountry: o.country },
+      },
+    })),
+  })} />
+</BaseLayout>
+
+<style>
+  .map-country {
+    fill: var(--map-land, #d8dde4);
+    stroke: var(--map-border, #ffffff);
+    stroke-width: 0.5;
+  }
+  :global(.dark) .map-country {
+    fill: var(--map-land-dark, #31445e);
+    stroke: var(--map-border-dark, #1e293b);
+  }
+  .map-country--member {
+    fill: var(--elf-blue, #2f6bbf);
+    cursor: pointer;
+  }
+  :global(.dark) .map-country--member {
+    fill: #5b8dd9;
+  }
+  .map-country--member:hover,
+  .map-country--member:focus {
+    fill: #1e4f9e;
+    outline: none;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLAnchorElement | SVGPathElement>('#members-map .map-country--member').forEach((el) => {
+    const highlight = () => {
+      const name = (el as HTMLElement).dataset.country
+      if (!name) return
+      const cards = document.querySelectorAll<HTMLElement>(`[data-member-country="${CSS.escape(name)}"]`)
+      cards.forEach((c) => c.classList.add('ring-2', 'ring-elf-blue', 'ring-offset-2'))
+      window.setTimeout(() => cards.forEach((c) => c.classList.remove('ring-2', 'ring-elf-blue', 'ring-offset-2')), 2000)
+    }
+    el.addEventListener('click', highlight)
+    el.addEventListener('keydown', (e) => {
+      if ((e as KeyboardEvent).key === 'Enter' || (e as KeyboardEvent).key === ' ') highlight()
+    })
+  })
+</script>

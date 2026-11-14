@@ -1,0 +1,54 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import AnimatedSection from '@/components/AnimatedSection.astro'
+import PageHero from '@/components/PageHero.astro'
+import CommitteeCard from '@/components/CommitteeCard.astro'
+import { committees } from '@/lib/content'
+---
+
+<BaseLayout
+  title="Technical Committees"
+  description="The technical committees of the EXPRESS Language Foundation."
+>
+  <PageHero
+    eyebrow="Technical work"
+    title="Technical Committees"
+    lead="ELF's technical committees steward the EXPRESS language family and its ecosystem. Committees are open to all members, decide by consensus, and align their work with its standardization targets at ISO/TC 184/SC 4 and IEC."
+    crumbs={[{ label: 'Home', to: '/' }, { label: 'Technical Committees' }]}
+  />
+
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+    <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+      {committees.map((committee, i) => (
+        <AnimatedSection delay={i * 60}>
+          <CommitteeCard committee={committee} />
+        </AnimatedSection>
+      ))}
+    </div>
+
+    <AnimatedSection>
+      <div class="mt-16 rounded-xl border border-gray-200/80 dark:border-gray-700/60 bg-slate-50 dark:bg-navy-light p-8 text-center">
+        <h2 class="text-lg font-serif font-bold text-gray-900 dark:text-white">Participate in a committee</h2>
+        <p class="mt-2 text-sm text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
+          All members may join any committee, propose new committees, and chair their work.
+          How committees decide is described on the governance page.
+        </p>
+        <div class="mt-4 flex justify-center gap-6 text-sm font-medium">
+          <a href="/membership" class="text-elf-blue dark:text-elf-blue hover:underline">Join ELF</a>
+          <a href="/governance" class="text-elf-blue dark:text-elf-blue hover:underline">How we decide</a>
+        </div>
+      </div>
+    </AnimatedSection>
+  </div>
+
+  <script is:inline type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Technical Committees of the EXPRESS Language Foundation',
+    itemListElement: committees.map((c, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      item: { '@type': 'Organization', name: c.name, description: c.scope },
+    })),
+  })} />
+</BaseLayout>

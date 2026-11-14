@@ -16,8 +16,12 @@
     "@astrojs/vue": "^7.0.2",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.1",
+    "d3-geo": "^3.1.2",
+    "i18n-iso-countries": "^7.14.0",
     "js-yaml": "^5.4.1",
-    "vue": "^3.4.38"
+    "topojson-client": "^3.1.0",
+    "vue": "^3.4.38",
+    "world-atlas": "^2.0.2"
   },
   "devDependencies": {
     "@asciidoctor/core": "^3.0.4",

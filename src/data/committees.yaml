@@ -1,0 +1,47 @@
+# ELF technical committees — source of truth for /technical-committees.
+# Scope statements name standardization targets, not personnel.
+# NOTE: CDDAL is intentionally absent from TC OpenCDD per approved scope.
+
+- id: tc-express
+  name: TC EXPRESS
+  scope: >-
+    The EXPRESS modelling language: definition, maintenance and evolution
+    (ISO 10303-11); schema lifecycle standards (schema manifest, changes
+    model); language extensions — the EXPRESS mapping language and
+    EXPRESS-Q; Annotated EXPRESS and pretty-print; the SUMA publication
+    framework for ISO 10303 resources; and the open-source language
+    toolchain (parser, validation, conformance).
+  standardization: ISO/TC 184/SC 4 WG 11
+  status: active
+
+- id: tc-express-g
+  name: TC EXPRESS-G
+  scope: >-
+    The EXPRESS-G graphical notation: definition, maintenance, and
+    visualization practice.
+  standardization: ISO/TC 184/SC 4 WG 12
+  status: active
+
+- id: tc-express-i
+  name: TC EXPRESS-I
+  scope: >-
+    Implementation methods: the Part 21 exchange structure, Part 28 XML
+    representation, SDAI language bindings, and data interchange practice.
+  standardization: ISO/TC 184/SC 4 WG 21
+  status: active
+
+- id: tc-opencdd
+  name: TC OpenCDD
+  scope: >-
+    OpenCDD: EXPRESS schemas for the IEC Common Data Dictionary
+    (IEC 61360 / IEC 62656), open model libraries, and supporting tooling.
+  standardization: ISO/TC 184/SC 4 JWG 24 (with IEC)
+  status: active
+
+- id: tc-education
+  name: TC Education
+  scope: >-
+    Education and community: tutorials, courses, modelling best practices,
+    documentation, and user-community support.
+  standardization: External outreach
+  status: active
