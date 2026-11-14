@@ -52,6 +52,7 @@ const dims = size === 'officer' ? 56 : 40
   </div>
   <h3 class={`font-serif font-bold text-gray-900 dark:text-white ${size === 'officer' ? 'text-lg' : ''}`}>{person.name}</h3>
   <p class={`font-mono text-elf-blue dark:text-elf-blue tracking-wide ${size === 'officer' ? 'text-xs mt-1' : 'text-[0.65rem] mt-0.5'}`}>{person.role}</p>
+  {person.country && <p class="text-[0.65rem] font-mono text-gray-400 dark:text-gray-500 mt-0.5">{person.country}</p>}
   {person.highlight && <p class="text-[0.65rem] font-mono text-amber-600 dark:text-amber-400 mt-1">{person.highlight}</p>}
   <p class={`text-gray-500 dark:text-gray-400 leading-relaxed ${size === 'officer' ? 'mt-3 text-sm' : 'mt-2 text-xs'}`}>{person.blurb}</p>
   <a href={`/people/${person.slug}`} class="absolute inset-0" aria-label={`${person.name} profile`}></a>
