@@ -31,10 +31,34 @@ const mechanics = [
   { title: 'Documented rules', body: 'Decision-making follows the published governance documents and directives — not informal convention.' },
 ]
 
-const documents = [
-  { label: 'Articles of Incorporation', href: '/documents/elf-articles-of-incorporation.pdf', note: 'Establishes ELF as a legal entity' },
-  { label: 'Bylaws', href: '/documents/elf-bylaws.pdf', note: 'Membership, governance, and consensus process' },
-  { label: 'ELF Directive 101 — Standardization directives', href: '/docs/documents/directive-standardization/document.html', note: 'Public review and standards process' },
+const documentGroups = [
+  {
+    heading: 'Corporate',
+    items: [
+      { label: 'Articles of Incorporation', href: '/documents/elf-articles-of-incorporation.pdf', note: 'Establishes ELF as a legal entity' },
+      { label: 'Bylaws', href: '/documents/elf-bylaws.pdf', note: 'Membership, governance, and consensus process' },
+    ],
+  },
+  {
+    heading: 'ELF directives',
+    items: [
+      { label: 'ELF 101 — Standardization and publication', href: '/docs/documents/directive-standardization/document.html', note: 'How ELF develops and publishes standards, including public review' },
+      { label: 'ELF 102 — Standard document requirements', href: '/docs/documents/directive-document-requirements/document.html', note: 'Structure and language required in ELF documents' },
+      { label: 'ELF 103 — Patent policy', href: '/docs/documents/directive-patent-policy/document.html', note: 'Patent disclosure and licensing rules' },
+      { label: 'ELF 104 — Patent policy implementation guidelines', href: '/docs/documents/directive-ipr-guidelines/document.html', note: 'How the patent policy is applied in practice' },
+      { label: 'ELF 105 — Intellectual property rights policy', href: '/docs/documents/directive-ipr-policy/document.html', note: 'Copyright and IPR terms for ELF outputs' },
+    ],
+  },
+  {
+    heading: 'ELF standards',
+    items: [
+      { label: 'ELF 5001 — Annotated EXPRESS', href: '/docs/documents/annotated-express/document.html', note: 'Annotated presentation of EXPRESS schemas' },
+      { label: 'ELF 5002 — EXPRESS language pretty print format', href: '/docs/documents/express-pretty/document.html', note: 'Canonical pretty-printed layout for EXPRESS' },
+      { label: 'ELF 5004 — EXPRESS schema manifest specification', href: '/docs/documents/express-schema-manifest/document.html', note: 'Manifest format for schema collections' },
+      { label: 'ELF 5005 — EXPRESS changes model (in YAML)', href: '/docs/documents/express-changes/document.html', note: 'Model for tracking schema changes' },
+      { label: 'ELF 5006 — EXPRESS mapping language specification', href: '/docs/documents/express-mapping/document.html', note: 'Language for mapping across EXPRESS schemas' },
+    ],
+  },
 ]
 ---
 
@@ -93,20 +117,24 @@ const documents = [
 
     <section class="mt-16">
       <AnimatedSection>
-        <h2 class="text-xl font-serif font-bold text-gray-900 dark:text-white mb-6">Governance documents</h2>
+        <h2 class="text-xl font-serif font-bold text-gray-900 dark:text-white mb-2">Documents</h2>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">The Foundation's governing documents, directives, and published standards are publicly available.</p>
       </AnimatedSection>
-      <AnimatedSection>
-        <ul class="space-y-3">
-          {documents.map((d) => (
-            <li>
-              <a href={d.href} class="group flex items-baseline gap-2 text-sm">
-                <span class="font-medium text-elf-blue dark:text-elf-blue group-hover:underline">{d.label}</span>
-                <span class="text-gray-400 dark:text-gray-500">— {d.note}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </AnimatedSection>
+      {documentGroups.map((group) => (
+        <div class="mt-8">
+          <h3 class="font-mono text-xs tracking-[0.2em] uppercase text-gray-400 dark:text-gray-500 mb-4">{group.heading}</h3>
+          <ul class="space-y-3">
+            {group.items.map((d) => (
+              <li>
+                <a href={d.href} class="group flex items-baseline gap-2 text-sm">
+                  <span class="font-medium text-elf-blue dark:text-elf-blue group-hover:underline">{d.label}</span>
+                  <span class="text-gray-400 dark:text-gray-500">— {d.note}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
     </section>
   </div>
 </BaseLayout>
