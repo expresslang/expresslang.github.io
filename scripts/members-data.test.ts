@@ -2,6 +2,10 @@ import { describe, it, expect } from 'vitest'
 import { readFileSync, existsSync } from 'node:fs'
 import { load as loadYaml } from 'js-yaml'
 import { join, resolve } from 'node:path'
+import countries from 'i18n-iso-countries'
+import en from 'i18n-iso-countries/langs/en.json'
+
+countries.registerLocale(en)
 
 const read = (p: string) => loadYaml(readFileSync(resolve(__dirname, '..', p), 'utf-8'))
 
@@ -28,6 +32,17 @@ describe('members data', () => {
     for (const m of members) {
       expect(m.country, `${m.name} missing country`).toBeTruthy()
       expect(COUNTRIES, `${m.name}: unknown country ${m.country}`).toContain(m.country)
+    }
+  })
+
+  it('every member country name resolves to an ISO 3166 code (map rendering depends on it)', () => {
+    for (const m of members) {
+      const a2 = countries.getAlpha2Code(m.country, 'en')
+      // i18n-iso-countries v7 has no getNumericCode(); the numeric code is derived
+      // from the alpha-2 code via the library's own table (padded, e.g. "040").
+      const n3 = countries.alpha2ToNumeric(a2)
+      expect(a2, `${m.country}: no alpha-2 code`).toBeTruthy()
+      expect(n3, `${m.country}: no numeric code`).toBeTruthy()
     }
   })
 
