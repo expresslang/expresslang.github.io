@@ -79,17 +79,6 @@ hr {
   50% { opacity: 0; }
 }
 
-/* Scroll-reveal (AnimatedSection replacement, driven by a global observer in BaseLayout) */
-[data-animate] {
-  opacity: 0;
-  transform: translateY(0.5rem);
-  transition: opacity 200ms ease-out, transform 200ms ease-out;
-}
-[data-animate].is-visible {
-  opacity: 1;
-  transform: none;
-}
-
 /* Site header scrolled state (toggled by script in SiteHeader.astro) */
 [data-site-header].is-scrolled {
   background-color: color-mix(in srgb, white 90%, transparent);

@@ -1,11 +1,10 @@
 ---
+// Scroll-reveal was removed: all content renders immediately, with no
+// hidden state or IntersectionObserver. The wrapper is kept so page
+// markup doesn't need touching; `delay` is accepted but unused.
 interface Props {
   delay?: number
 }
-
-const { delay = 0 } = Astro.props
 ---
 
-<div data-animate style={`transition-delay:${delay}ms`}>
-  <slot />
-</div>
+<slot />
