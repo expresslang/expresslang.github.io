@@ -1,5 +1,7 @@
 import peopleData from '@/data/people.yaml'
 import languagesData from '@/data/languages.yaml'
+import membersData from '@/data/members.yaml'
+import committeesData from '@/data/committees.yaml'
 
 export interface ContentData {
   title: string
@@ -47,12 +49,32 @@ export interface Person {
   name: string
   slug: string
   role: string
+  country?: string
   photo?: string
   linkedin?: string
   highlight?: string
   blurb: string
   officer?: number
   founder?: number
+}
+
+export interface Member {
+  name: string
+  logo?: string
+  url?: string
+  slug?: string
+  country: string
+  category: 'founding' | 'corporate' | 'small' | 'nonprofit' | 'university' | 'individual'
+  joined: number
+  desc?: string
+}
+
+export interface Committee {
+  id: string
+  name: string
+  scope: string
+  standardization: string
+  status: string
 }
 
 export interface Language {
@@ -71,6 +93,8 @@ export interface Language {
 
 export const people = peopleData as Person[]
 export const languages = languagesData as Language[]
+export const members = membersData as Member[]
+export const committees = committeesData as Committee[]
 
 export function peopleByRank(key: 'officer' | 'founder'): Person[] {
   return people.filter((p) => p[key] != null).sort((a, b) => a[key]! - b[key]!)

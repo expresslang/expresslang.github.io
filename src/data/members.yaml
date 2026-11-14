@@ -1,0 +1,142 @@
+# ELF member roster — single source of truth for the /members page.
+# Organizations are Founding Members (Board-designated inaugural members).
+# Individuals are Individual Members; `slug` links to /people/<slug>.
+# Countries are text names — never flags, never ISO codes.
+# NOTE: McDonnell Douglas is deliberately absent (merged into Boeing, 1997);
+# it remains only in historical contexts (homepage heritage strip, history post).
+
+- name: Boeing
+  logo: /images/supporters/supporter-boeing.svg
+  url: https://www.boeing.com
+  country: United States
+  category: founding
+  joined: 2022
+  desc: Associate Technical Fellows contributing to ISO TC 184/SC 4 working groups on visualization and data exchange standards.
+
+- name: General Electric
+  logo: /images/supporters/supporter-ge.svg
+  url: https://www.ge.com
+  country: United States
+  category: founding
+  joined: 2022
+  desc: Early contributor to STEP standardization and industrial data exchange standards development.
+
+- name: NIST
+  logo: /images/supporters/supporter-nist.svg
+  url: https://www.nist.gov
+  country: United States
+  category: founding
+  joined: 2022
+  desc: National Institute of Standards and Technology — proposed EXPRESS as an International Standard at ISO and led STEP development since inception.
+
+- name: PDES Inc.
+  logo: /images/supporters/supporter-pdes.png
+  url: https://pdesinc.org
+  country: United States
+  category: founding
+  joined: 2022
+  desc: Industry/government consortium that accelerates the development and implementation of STEP standards.
+
+- name: STEP Tools
+  logo: /images/supporters/supporter-steptools.svg
+  url: https://www.steptools.com
+  country: United States
+  category: founding
+  joined: 2022
+  desc: Co-founded by David Loffredo. Developed software deployed in over a million CAD seats. Editor of ISO 10303-238 (STEP-NC) and Part 21.
+
+- name: Jotne EPM Technology
+  logo: /images/supporters/supporter-jotneconnect.svg
+  url: https://www.jotne.com
+  country: Norway
+  category: founding
+  joined: 2022
+  desc: Developer of the EDMvisualExpress tool and EXPRESS Data Manager. Contributed the EDMsdk course materials to ELF.
+
+- name: AFNeT Services
+  logo: /images/supporters/supporter-afnet.svg
+  url: https://www.afnet.fr
+  country: France
+  category: founding
+  joined: 2022
+  desc: Led by Jean Brangé. French organization focused on digital interoperability standards for industry, including EasySTEP and STEP Next initiatives.
+
+- name: Ribose Limited
+  logo: /images/supporters/supporter-ribose.svg
+  url: https://www.ribose.com
+  country: United Kingdom
+  category: founding
+  joined: 2022
+  desc: Provided operational and administrative support for the establishment and ongoing operations of the EXPRESS Language Foundation.
+
+- name: Douglas Schenck
+  slug: douglas-schenck
+  country: United States
+  category: individual
+  joined: 2022
+
+- name: Prof. Bernd Wenzel
+  slug: bernd-wenzel
+  country: Austria
+  category: individual
+  joined: 2022
+
+- name: Peter Wilson
+  slug: peter-wilson
+  country: United States
+  category: individual
+  joined: 2022
+
+- name: Thomas Thurman
+  slug: thomas-thurman
+  country: United States
+  category: individual
+  joined: 2022
+
+- name: Allison Barnard Feeney
+  slug: allison-barnard-feeney
+  country: United States
+  category: individual
+  joined: 2022
+
+- name: David Loffredo
+  slug: david-loffredo
+  country: United States
+  category: individual
+  joined: 2022
+
+- name: Jean Brangé
+  slug: jean-brange
+  country: France
+  category: individual
+  joined: 2022
+
+- name: Phil Spiby
+  slug: phil-spiby
+  country: United Kingdom
+  category: individual
+  joined: 2022
+
+- name: Stuart Galt
+  slug: stuart-galt
+  country: United States
+  category: individual
+  joined: 2022
+
+- name: Yoshiaki Sonoda
+  slug: yoshiaki-sonoda
+  country: Japan
+  category: individual
+  joined: 2022
+
+- name: Hiroshi Murayama
+  slug: hiroshi-murayama
+  country: Japan
+  category: individual
+  joined: 2022
+
+- name: Ronald Tse
+  slug: ronald-tse
+  country: United Kingdom
+  category: individual
+  joined: 2022
