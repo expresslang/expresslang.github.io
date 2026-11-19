@@ -215,24 +215,21 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
     const insideGlobe = (p: [number, number]) =>
       Math.hypot(p[0] - projection.translate()[0], p[1] - projection.translate()[1]) <= projection.scale()
 
-    svg.addEventListener('pointerdown', (e) => {
-      const p = point(e)
-      if (!insideGlobe(p)) return
-      dragging = true
-      suppressClick = false
-      moved = 0
-      vel = 0
-      lastX = e.clientX
-      lastY = e.clientY
-      lastMoveT = performance.now()
-      lastInteraction = lastMoveT
-      svg.setPointerCapture(e.pointerId)
-      const spherical = projection.invert(p)
-      v0 = spherical ? (versor.cartesian(spherical) as unknown as [number, number, number]) : null
-      q0 = [...Q]
-    })
-
-    svg.addEventListener('pointermove', (e) => {
+    // Window-level move/up listeners: no setPointerCapture (throws on SVG in
+    // some browsers), and the gesture keeps tracking outside the SVG bounds.
+    const endDrag = () => {
+      if (!dragging) return
+      dragging = false
+      v0 = null
+      q0 = null
+      svg.classList.remove('is-dragging')
+      suppressClick = moved > DRAG_SUPPRESS_PX
+      lastInteraction = performance.now()
+      window.removeEventListener('pointermove', onWindowMove)
+      window.removeEventListener('pointerup', endDrag)
+      window.removeEventListener('pointercancel', endDrag)
+    }
+    const onWindowMove = (e: PointerEvent) => {
       if (!dragging || !v0 || !q0) return
       const p = point(e)
       const spherical = projection.invert(p)
@@ -256,19 +253,34 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
       lastMoveT = now
       lastInteraction = now
       dirty = true
-    })
-
-    const endDrag = () => {
-      if (!dragging) return
-      dragging = false
-      v0 = null
-      q0 = null
-      suppressClick = moved > DRAG_SUPPRESS_PX
-      lastInteraction = performance.now()
-      window.setTimeout(() => (suppressClick = false), 0)
     }
-    svg.addEventListener('pointerup', endDrag)
-    svg.addEventListener('pointercancel', endDrag)
+
+    svg.addEventListener('pointerdown', (e) => {
+      if (dragging) return
+      const p = point(e)
+      if (!insideGlobe(p)) return
+      // gesture state first — nothing after this point may throw before it lands
+      dragging = true
+      suppressClick = false
+      moved = 0
+      vel = 0
+      lastX = e.clientX
+      lastY = e.clientY
+      lastMoveT = performance.now()
+      lastInteraction = lastMoveT
+      const spherical = projection.invert(p)
+      v0 = spherical ? (versor.cartesian(spherical) as unknown as [number, number, number]) : null
+      q0 = [...Q]
+      svg.classList.add('is-dragging')
+      try {
+        svg.setPointerCapture(e.pointerId)
+      } catch {
+        // Safari/older Chrome: capture unavailable — window listeners still track
+      }
+      window.addEventListener('pointermove', onWindowMove)
+      window.addEventListener('pointerup', endDrag)
+      window.addEventListener('pointercancel', endDrag)
+    })
 
     // --- hover pauses auto-rotation; cursor handled by CSS --------------------
     let hovering = false
@@ -422,7 +434,8 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
   .globe-svg {
     cursor: grab;
   }
-  .globe-svg:active {
+  .globe-svg:active,
+  .globe-svg.is-dragging {
     cursor: grabbing;
   }
   .globe-sphere {
