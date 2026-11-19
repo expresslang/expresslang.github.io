@@ -121,12 +121,16 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
 
 <script>
   import { geoOrthographic, geoPath, geoGraticule10, geoCentroid } from 'd3-geo'
-  import { feature } from 'topojson-client'
   import versor from 'versor'
   import worldUrl from 'world-atlas/countries-110m.json?url'
 
   const AUTO_RESUME_MS = 3000
-  const AUTO_SPEED = 3.2 // degrees per second
+  const AUTO_SPEED = 3.2 // degrees per second, eased in
+  const DRAG_SUPPRESS_PX = 6
+
+  // Canonical versor-dragging (Bostock/Fil): screen -> invert -> earth cartesian,
+  // incremental quaternion composition. Screen-frame hand-mapping is precisely
+  // what breaks this projection — do not replace invert with manual sphere math.
 
   for (const section of document.querySelectorAll<HTMLElement>('[data-globe-section]')) {
     const svg = section.querySelector<SVGSVGElement>('[data-globe-svg]')
@@ -159,7 +163,6 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
     const paths = new Map<string, SVGPathElement>()
     svg.querySelectorAll<SVGPathElement>('path.map-country').forEach((el) => {
       paths.set(el.dataset.featureId!, el)
-      // The custom tooltip takes over; native titles would double up.
       el.querySelector('title')?.remove()
     })
     const memberPaths = svg.querySelectorAll<SVGPathElement>('path.map-country--member')
@@ -168,6 +171,7 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
     const centroids = new Map<string, [number, number]>()
 
     let loaded = false
+    let dirty = false
     fetch(worldUrl)
       .then((r) => r.json())
       .then((topo) => {
@@ -177,78 +181,96 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
           if (paths.has(id)) centroids.set(id, geoCentroid(f as object))
         }
         loaded = true
+        dirty = true
       })
 
-    const rotation: [number, number, number] = [...initial, 0]
-    const renderFrame = () => {
-      projection.rotate(rotation)
+    // Orientation: one quaternion, converted to Euler angles only for render
+    // and idle motions. Never clamped mid-gesture.
+    let Q = versor(initial) as unknown as number[]
+    const applyQ = () => {
+      projection.rotate(versor.rotation(Q as unknown as [number, number, number]) as [number, number, number])
       graticuleEl.setAttribute('d', pathGen(graticuleObj) ?? '')
       for (const [id, el] of paths) {
         el.setAttribute('d', pathGen(featuresById.get(id) as object) ?? '')
       }
     }
-    const setRotation = () => {
-      dirty = true
-      if (loaded) renderFrame()
-    }
 
-    // --- versor drag (Fil's canonical versor-dragging), rAF-coalesced --------
-    // Math runs per pointermove; DOM writes happen once per frame in the loop.
+    // --- canonical versor drag, rAF-coalesced ---------------------------------
     let dragging = false
-    let q0: number[] | null = null // quaternion at drag start / last move
-    let v0: [number, number, number] | null = null // cartesian on sphere at last move
+    let v0: [number, number, number] | null = null
+    let q0: number[] | null = null
+    let vel = 0
+    let lastYaw = versor.rotation(Q as unknown as [number, number, number])[0]
     let lastMoveT = 0
-    let vel = 0 // smoothed degrees per second around λ
     let lastInteraction = 0
-    let dirty = false
+    let moved = 0
+    let lastX: number | null = null
+    let lastY: number | null = null
+    let suppressClick = false
 
     const point = (e: PointerEvent): [number, number] => {
       const rect = svg.getBoundingClientRect()
       return [((e.clientX - rect.left) * size) / rect.width, ((e.clientY - rect.top) * size) / rect.height]
     }
+    const insideGlobe = (p: [number, number]) =>
+      Math.hypot(p[0] - projection.translate()[0], p[1] - projection.translate()[1]) <= projection.scale()
 
     svg.addEventListener('pointerdown', (e) => {
+      const p = point(e)
+      if (!insideGlobe(p)) return
       dragging = true
+      suppressClick = false
+      moved = 0
       vel = 0
+      lastX = e.clientX
+      lastY = e.clientY
       lastMoveT = performance.now()
       lastInteraction = lastMoveT
       svg.setPointerCapture(e.pointerId)
-      q0 = versor(rotation) as unknown as number[]
-      const spherical = projection.invert(point(e))
+      const spherical = projection.invert(p)
       v0 = spherical ? (versor.cartesian(spherical) as unknown as [number, number, number]) : null
+      q0 = [...Q]
     })
 
     svg.addEventListener('pointermove', (e) => {
-      if (!dragging || !q0 || !v0) return
-      const spherical = projection.invert(point(e))
-      if (!spherical) return // pointer left the sphere; keep tracking
+      if (!dragging || !v0 || !q0) return
+      const p = point(e)
+      const spherical = projection.invert(p)
+      if (!spherical) return // left the sphere: hold the gesture state
       const v1 = versor.cartesian(spherical) as unknown as [number, number, number]
       const q1 = versor.multiply(versor.delta(v0, v1), q0) as unknown as number[]
-      const r = versor.rotation(q1 as unknown as [number, number, number]) as [number, number, number]
       const now = performance.now()
       const dt = Math.max(now - lastMoveT, 1)
-      const instant = ((r[0] - rotation[0]) / dt) * 1000
-      vel = Math.abs(instant) > 4000 ? instant : vel * 0.6 + instant * 0.4 // low-pass; bypass on teleports
-      rotation[0] = r[0]
-      rotation[1] = Math.max(-89, Math.min(89, r[1]))
-      rotation[2] = 0
+      const yaw = versor.rotation(q1 as unknown as [number, number, number])[0]
+      let dYaw = yaw - lastYaw
+      dYaw = ((dYaw + 540) % 360) - 180
+      const instant = (dYaw / dt) * 1000
+      if (Number.isFinite(instant) && Math.abs(instant) < 4000) vel = vel * 0.5 + instant * 0.5
+      lastYaw = yaw
+      Q = q1
       v0 = v1
       q0 = q1
+      moved += Math.hypot(e.clientX - (lastX ?? e.clientX), e.clientY - (lastY ?? e.clientY))
+      lastX = e.clientX
+      lastY = e.clientY
       lastMoveT = now
       lastInteraction = now
       dirty = true
     })
 
     const endDrag = () => {
+      if (!dragging) return
       dragging = false
-      q0 = null
       v0 = null
+      q0 = null
+      suppressClick = moved > DRAG_SUPPRESS_PX
       lastInteraction = performance.now()
+      window.setTimeout(() => (suppressClick = false), 0)
     }
     svg.addEventListener('pointerup', endDrag)
     svg.addEventListener('pointercancel', endDrag)
 
-    // --- hover pauses auto-rotation so the globe never spins under the cursor
+    // --- hover pauses auto-rotation; cursor handled by CSS --------------------
     let hovering = false
     svg.addEventListener('pointerenter', () => (hovering = true))
     svg.addEventListener('pointerleave', () => {
@@ -256,12 +278,19 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
       lastInteraction = performance.now()
     })
 
-    // --- tooltip -------------------------------------------------------------
+    // --- tooltip ---------------------------------------------------------------
     const tooltip = section.querySelector<HTMLElement>('[data-globe-tooltip]')!
     const tooltipTitle = tooltip.querySelector('[data-globe-tooltip-title]')!
     const tooltipBody = tooltip.querySelector('[data-globe-tooltip-body]')!
     const wrap = section.querySelector<HTMLElement>('[data-globe-wrap]')!
 
+    const moveTooltip = (e: PointerEvent) => {
+      const rect = wrap.getBoundingClientRect()
+      const x = e.clientX - rect.left
+      const y = e.clientY - rect.top
+      tooltip.style.left = `${Math.min(Math.max(x + 14, 0), rect.width - tooltip.offsetWidth)}px`
+      tooltip.style.top = `${Math.max(y - tooltip.offsetHeight - 10, 0)}px`
+    }
     const showTooltip = (el: SVGPathElement, e: PointerEvent) => {
       const stat = stats.find((s) => s.name === el.dataset.country)
       if (!stat) return
@@ -270,13 +299,6 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
       tooltipBody.textContent = `${stat.members.length} member${stat.members.length === 1 ? '' : 's'}: ${stat.members.join(' · ')}`
       tooltip.classList.remove('hidden')
       moveTooltip(e)
-    }
-    const moveTooltip = (e: PointerEvent) => {
-      const rect = wrap.getBoundingClientRect()
-      const x = e.clientX - rect.left
-      const y = e.clientY - rect.top
-      tooltip.style.left = `${Math.min(Math.max(x + 14, 0), rect.width - tooltip.offsetWidth)}px`
-      tooltip.style.top = `${Math.max(y - tooltip.offsetHeight - 10, 0)}px`
     }
     svg.addEventListener('pointerover', (e) => {
       const target = (e.target as Element).closest('path.map-country--member')
@@ -291,48 +313,51 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
       if (from && from !== to) tooltip.classList.add('hidden')
     })
 
-    // --- highlight member cards ---------------------------------------------
+    // --- highlight member cards ------------------------------------------------
     const flashCards = (name: string) => {
       const cards = document.querySelectorAll<HTMLElement>(`[data-member-country="${CSS.escape(name)}"]`)
       cards.forEach((c) => c.classList.add('ring-2', 'ring-elf-blue', 'ring-offset-2'))
       window.setTimeout(() => cards.forEach((c) => c.classList.remove('ring-2', 'ring-elf-blue', 'ring-offset-2')), 2200)
     }
 
-    svg.addEventListener('click', (e) => {
-      const target = (e.target as Element).closest('path.map-country--member') as SVGPathElement | null
-      if (target?.dataset.country) flashCards(target.dataset.country)
-    })
+    svg.addEventListener(
+      'click',
+      (e) => {
+        if (suppressClick) return // drag ended here; not a click
+        const target = (e.target as Element).closest('path.map-country--member') as SVGPathElement | null
+        if (target?.dataset.country) flashCards(target.dataset.country)
+      },
+      true,
+    )
 
-    // --- rotate to a country -------------------------------------------------
+    // --- rotate to a country (quaternion slerp) --------------------------------
     let animating = false
     const rotateTo = (name: string, then?: () => void) => {
       const stat = stats.find((s) => s.name === name)
       const c = stat && (centroids.get(stat.id) ?? centroids.get(FEATURE_FALLBACKS[stat.id]))
       if (!c) return
-      let dλ = -c[0] - rotation[0]
-      dλ = ((dλ + 540) % 360) - 180
-      const from: [number, number] = [rotation[0], rotation[1]]
-      const to: [number, number] = [rotation[0] + dλ, Math.max(-89, Math.min(89, -c[1]))]
       vel = 0
+      const current = versor.rotation(Q as unknown as [number, number, number]) as [number, number, number]
+      let dλ = -c[0] - current[0]
+      dλ = ((dλ + 540) % 360) - 180
+      const target: [number, number, number] = [current[0] + dλ, Math.max(-89, Math.min(89, -c[1])), 0]
       if (reducedMotion) {
-        rotation[0] = to[0]
-        rotation[1] = to[1]
-        setRotation()
+        Q = versor(target) as unknown as number[]
+        dirty = true
         then?.()
         return
       }
-      const interpolate = versor.interpolate(from, to)
+      const interpolate = versor.interpolate(current, target)
       const t0 = performance.now()
       const duration = 850
       lastInteraction = t0 + duration
       animating = true
       const step = (t: number) => {
         const p = Math.min((t - t0) / duration, 1)
-        const e = 1 - Math.pow(1 - p, 3)
-        const r = interpolate(e) as [number, number, number]
-        rotation[0] = r[0]
-        rotation[1] = Math.max(-89, Math.min(89, r[1]))
-        setRotation()
+        const eased = 1 - Math.pow(1 - p, 3)
+        Q = interpolate(eased) as unknown as number[]
+        lastYaw = versor.rotation(Q as unknown as [number, number, number])[0]
+        dirty = true
         if (p < 1) requestAnimationFrame(step)
         else {
           animating = false
@@ -355,7 +380,7 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
       })
     })
 
-    // --- animation loop (paused offscreen) -----------------------------------
+    // --- animation loop (paused offscreen; one DOM flush per frame) ------------
     let visible = true
     new IntersectionObserver(([entry]) => (visible = entry.isIntersecting)).observe(svg)
 
@@ -364,22 +389,27 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
       const dt = Math.min(t - lastFrame, 100)
       lastFrame = t
       if (visible && loaded) {
-        if (dirty) {
-          renderFrame() // one DOM write per frame, however often events fire
-          dirty = false
-        }
         if (!dragging && !animating && !hovering) {
+          const angles = versor.rotation(Q as unknown as [number, number, number]) as [number, number, number]
           if (Math.abs(vel) > 1) {
-            rotation[0] += (vel * dt) / 1000
+            angles[0] += (vel * dt) / 1000
             vel *= Math.pow(0.95, dt / 16.7)
+            angles[2] *= Math.pow(0.98, dt / 16.7) // gently self-level
             lastInteraction = t
+            Q = versor(angles) as unknown as number[]
             dirty = true
           } else if (!reducedMotion && t - lastInteraction > AUTO_RESUME_MS) {
             const since = t - lastInteraction - AUTO_RESUME_MS
-            const ramp = Math.min(since / 1200, 1) // ease auto-rotation in
-            rotation[0] += (AUTO_SPEED * ramp * dt) / 1000
+            const ramp = Math.min(since / 1200, 1)
+            angles[0] += (AUTO_SPEED * ramp * dt) / 1000
+            angles[2] *= Math.pow(0.995, dt / 16.7)
+            Q = versor(angles) as unknown as number[]
             dirty = true
           }
+        }
+        if (dirty) {
+          applyQ()
+          dirty = false
         }
       }
       requestAnimationFrame(loop)
