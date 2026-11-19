@@ -3,11 +3,27 @@ import BaseLayout from '@/layouts/BaseLayout.astro'
 import AnimatedSection from '@/components/AnimatedSection.astro'
 import PageHero from '@/components/PageHero.astro'
 
+const elfStandards = [
+  { num: 'ELF 5001', title: 'Annotated EXPRESS', desc: 'Annotated presentation of EXPRESS schemas.', href: '/docs/documents/annotated-express/document.html' },
+  { num: 'ELF 5002', title: 'EXPRESS language pretty print format', desc: 'Canonical pretty-printed layout for EXPRESS.', href: '/docs/documents/express-pretty/document.html' },
+  { num: 'ELF 5004', title: 'EXPRESS schema manifest specification', desc: 'Manifest format for schema collections.', href: '/docs/documents/express-schema-manifest/document.html' },
+  { num: 'ELF 5005', title: 'EXPRESS changes model (in YAML)', desc: 'Model for tracking schema changes.', href: '/docs/documents/express-changes/document.html' },
+  { num: 'ELF 5006', title: 'EXPRESS mapping language specification', desc: 'Language for mapping across EXPRESS schemas.', href: '/docs/documents/express-mapping/document.html' },
+  { num: 'ELF 5007', title: 'EXPRESS-Q', desc: 'Query language across sets of EXPRESS schemas — in development.', href: null },
+]
+
+const elfDirectives = [
+  { num: 'ELF 101', title: 'Standardization and publication', desc: 'How ELF develops and publishes standards, including public review.', href: '/docs/documents/directive-standardization/document.html' },
+  { num: 'ELF 102', title: 'Standard document requirements', desc: 'Structure and language required in ELF documents.', href: '/docs/documents/directive-document-requirements/document.html' },
+  { num: 'ELF 103', title: 'Patent policy', desc: 'Patent disclosure and licensing rules.', href: '/docs/documents/directive-patent-policy/document.html' },
+  { num: 'ELF 104', title: 'Patent policy implementation guidelines', desc: 'How the patent policy is applied in practice.', href: '/docs/documents/directive-ipr-guidelines/document.html' },
+  { num: 'ELF 105', title: 'Intellectual property rights policy', desc: 'Copyright and IPR terms for ELF outputs.', href: '/docs/documents/directive-ipr-policy/document.html' },
+]
+
 const standards = [
   { iso: 'ISO 10303-11', title: 'EXPRESS Language', desc: 'The core information modelling language for defining data schemas, entities, types, and constraints. Edition 2 published 2004.' },
   { iso: 'ISO 10303-12', title: 'EXPRESS-I', desc: 'Instance definition language for populated data models and conformance test cases.' },
   { iso: 'ISO 10303-14', title: 'EXPRESS-X', desc: 'Schema mapping language for defining transformations between different EXPRESS schemas.' },
-  { iso: 'ELF Spec', title: 'EXPRESS-Q', desc: 'Query language for defining mappings between ARM and MIM schemas with reference path syntax. Published by the EXPRESS Language Foundation.' },
   { iso: 'ISO 10303-21', title: 'STEP Physical File', desc: 'Clear-text encoding of product data (Part 21 file format). The most widely deployed STEP exchange format.' },
   { iso: 'ISO 10303-28', title: 'STEP XML Binding', desc: 'XML representation of EXPRESS-driven data for web-based exchange.' },
 ]
@@ -23,21 +39,80 @@ const bnfFiles = [
 ]
 
 const references = [
-  { title: 'Information modeling: the EXPRESS Way', authors: 'Douglas Schenck, Peter Wilson', publisher: 'Oxford University Press, 1994', url: 'https://global.oup.com/academic/product/information-modeling-the-express-way-9780195087147' },
-  { title: 'STEP: An Introduction', authors: 'Jon Owen', publisher: 'Information Geometers, 1993', url: '' },
-  { title: 'Express Metamodel, version 1.1', authors: 'Object Management Group', publisher: 'OMG, 2015', url: 'https://www.omg.org/spec/EXPRESS/' },
+  {
+    title: 'Information modeling: the EXPRESS Way',
+    authors: 'Douglas Schenck, Peter Wilson',
+    publisher: 'Oxford University Press, 1994',
+    links: [
+      { label: 'Oxford Academic', url: 'https://academic.oup.com/book/40825' },
+      { label: 'Amazon', url: 'https://www.amazon.com/dp/0195087143?lv=shuf&linkCode=osi&psc=1&th=1&tag=oxacglobal-20&channelId=1&plpRedirect=mhFallback' },
+      { label: 'Google Books', url: 'https://books.google.com.hk/books?id=8avPlxCVFLEC&hl=zh-TW&source=gbs_citations_module_r&cad=5' },
+    ],
+  },
 ]
 ---
 
-<BaseLayout title="Standards & References" description="ISO 10303 standards, BNF grammar references, and key publications for the EXPRESS language family.">
+<BaseLayout title="Standards & References" description="ELF standards and directives, ISO 10303 standards, BNF grammar references, and key publications for the EXPRESS language family.">
   <PageHero
     eyebrow="Specifications"
     title="Standards & References"
-    lead="ISO 10303 standards, BNF grammar references, and key publications for the EXPRESS language family."
+    lead="ELF standards and directives, ISO 10303 standards, BNF grammar references, and key publications for the EXPRESS language family."
     crumbs={[{ label: 'Home', to: '/' }, { label: 'Standards & References' }]}
   />
 
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+    <!-- ELF standards -->
+    <section class="mb-16">
+      <h2 class="text-xl font-serif font-bold text-gray-900 dark:text-white mb-2">ELF Standards</h2>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mb-8">Published by the EXPRESS Language Foundation — authoritative specifications supporting the EXPRESS language family.</p>
+      <div class="space-y-4">
+        {
+          elfStandards.map((std, i) => (
+            <AnimatedSection delay={i * 40}>
+              <a
+                href={std.href}
+                class={`flex items-start gap-4 p-5 rounded-xl border border-gray-200/80 dark:border-gray-700/60 bg-white dark:bg-navy-light ${std.href ? 'hover:border-elf-blue/30 dark:hover:border-elf-blue/30 hover:shadow-md transition-all duration-200' : ''}`}
+              >
+                <div class="shrink-0 w-20 text-center">
+                  <span class="font-mono text-[0.65rem] font-bold text-elf-blue dark:text-elf-blue tracking-wide">{std.num}</span>
+                </div>
+                <div>
+                  <h3 class="font-serif font-bold text-gray-900 dark:text-white">{std.title}</h3>
+                  <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">{std.desc}</p>
+                </div>
+              </a>
+            </AnimatedSection>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- ELF directives -->
+    <section class="mb-16">
+      <h2 class="text-xl font-serif font-bold text-gray-900 dark:text-white mb-2">ELF Directives</h2>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mb-8">The Foundation's rules for developing and publishing standards — process, document requirements, and intellectual property. Also listed on the <a href="/governance" class="text-elf-blue dark:text-elf-blue hover:underline">governance</a> page.</p>
+      <div class="space-y-4">
+        {
+          elfDirectives.map((std, i) => (
+            <AnimatedSection delay={i * 40}>
+              <a
+                href={std.href}
+                class="flex items-start gap-4 p-5 rounded-xl border border-gray-200/80 dark:border-gray-700/60 bg-white dark:bg-navy-light hover:border-elf-blue/30 dark:hover:border-elf-blue/30 hover:shadow-md transition-all duration-200"
+              >
+                <div class="shrink-0 w-20 text-center">
+                  <span class="font-mono text-[0.65rem] font-bold text-elf-blue dark:text-elf-blue tracking-wide">{std.num}</span>
+                </div>
+                <div>
+                  <h3 class="font-serif font-bold text-gray-900 dark:text-white">{std.title}</h3>
+                  <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">{std.desc}</p>
+                </div>
+              </a>
+            </AnimatedSection>
+          ))
+        }
+      </div>
+    </section>
+
     <!-- ISO Standards -->
     <section class="mb-16">
       <h2 class="text-xl font-serif font-bold text-gray-900 dark:text-white mb-6">ISO 10303 Standards</h2>
@@ -99,16 +174,23 @@ const references = [
         {
           references.map((ref, i) => (
             <AnimatedSection delay={i * 50}>
-              <div class="flex items-start gap-4 p-5 rounded-xl border border-gray-200/80 dark:border-gray-700/60 bg-white dark:bg-navy-light hover:border-elf-blue/30 dark:hover:border-elf-blue/30 hover:shadow-md transition-all duration-200">
+              <div class="flex items-center gap-4 p-5 rounded-xl border border-gray-200/80 dark:border-gray-700/60 bg-white dark:bg-navy-light">
                 <div class="shrink-0">
                   <div class="w-10 h-10 rounded-lg bg-elf-blue/8 dark:bg-elf-blue/8 flex items-center justify-center">
-                    <svg class="w-5 h-5 text-elf-blue dark:text-elf-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                    <svg aria-hidden="true" class="w-5 h-5 text-elf-blue dark:text-elf-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                   </div>
                 </div>
-                <div>
+                <div class="flex-1 min-w-0">
                   <h3 class="font-serif font-bold text-gray-900 dark:text-white">{ref.title}</h3>
                   <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{ref.authors}</p>
                   <p class="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{ref.publisher}</p>
+                </div>
+                <div class="shrink-0 flex flex-col sm:flex-row gap-2">
+                  {ref.links.map((link) => (
+                    <a href={link.url} target="_blank" rel="noopener" class="font-mono text-xs text-elf-blue dark:text-elf-blue hover:underline border border-elf-blue/30 dark:border-elf-blue/30 rounded px-2.5 py-1.5">
+                      {link.label}
+                    </a>
+                  ))}
                 </div>
               </div>
             </AnimatedSection>
