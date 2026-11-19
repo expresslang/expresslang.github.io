@@ -1,0 +1,393 @@
+---
+// Interactive orthographic globe of ELF members.
+// Server: renders the first frame (initial rotation) so content is visible
+// without JS. Client: versor (quaternion) inertial drag, auto-rotation with
+// prefers-reduced-motion support, cursor tooltip, rotate-to-country legend
+// buttons, and click-to-highlight member cards via data-member-country.
+import { geoOrthographic, geoPath, geoGraticule10 } from 'd3-geo'
+import { feature } from 'topojson-client'
+import world from 'world-atlas/countries-110m.json'
+
+interface Props {
+  stats: Array<{ name: string; code: string | null; id: string; members: string[] }>
+}
+
+const { stats } = Astro.props
+
+const INITIAL_ROTATE: [number, number] = [20, -12] // centers ~(-20°, 12°): Atlantic view
+const SIZE = 640
+const PAD = 20
+
+const label = (s: { name: string; code: string | null }) => (s.code ? `${s.name} (${s.code})` : s.name)
+
+const worldShapes = feature(world, world.objects.countries)
+const projection = geoOrthographic()
+  .rotate(INITIAL_ROTATE)
+  .fitExtent(
+    [
+      [PAD, PAD],
+      [SIZE - PAD, SIZE - PAD],
+    ],
+    { type: 'Sphere' },
+  )
+const pathGen = geoPath(projection)
+
+const memberById = new Map(stats.map((s) => [s.id, s]))
+const countryPaths = worldShapes.features.map((f) => {
+  const id = String(f.id).padStart(3, '0')
+  return {
+    id,
+    d: pathGen(f),
+    stat: memberById.get(id),
+  }
+})
+const graticuleD = pathGen(geoGraticule10())
+const sphereD = pathGen({ type: 'Sphere' })
+
+const serialized = JSON.stringify(stats.map((s) => ({ ...s, members: s.members })))
+const serializedRotate = JSON.stringify(INITIAL_ROTATE)
+---
+
+<section
+  class="mb-16"
+  aria-label="Interactive globe of member countries"
+  data-globe-section
+  data-globe-members={serialized}
+  data-globe-rotate={serializedRotate}
+  data-globe-size={String(SIZE)}
+  data-globe-pad={String(PAD)}
+>
+  <div class="relative max-w-[540px] mx-auto" data-globe-wrap>
+    <svg
+      id="members-globe"
+      viewBox={`0 0 ${SIZE} ${SIZE}`}
+      class="w-full h-auto rounded-full select-none"
+      style="touch-action: pan-y;"
+      role="group"
+      aria-label={`Rotatable globe showing ELF members: ${stats.map((s) => label(s)).join(', ')}`}
+      data-globe-svg
+    >
+      <path d={sphereD} class="globe-sphere" />
+      <path d={graticuleD} class="globe-graticule" />
+      {
+        countryPaths.map((p) => (
+          <path
+            d={p.d}
+            class={p.stat ? 'map-country map-country--member' : 'map-country'}
+            data-country={p.stat?.name}
+            data-feature-id={p.id}
+            tabindex={p.stat ? 0 : undefined}
+            aria-label={p.stat ? `${label(p.stat)} — ${p.stat.members.length} member${p.stat.members.length === 1 ? '' : 's'}` : undefined}
+          >
+            {p.stat && <title>{`${label(p.stat)}: ${p.stat.members.join(' · ')}`}</title>}
+          </path>
+        ))
+      }
+    </svg>
+    <div
+      data-globe-tooltip
+      aria-hidden="true"
+      class="hidden absolute z-10 pointer-events-none rounded-lg border border-gray-200/80 dark:border-gray-700/60 bg-white dark:bg-navy-light shadow-lg px-3 py-2 max-w-[240px]"
+    >
+      <p class="font-serif font-bold text-sm text-gray-900 dark:text-white" data-globe-tooltip-title></p>
+      <p class="mt-1 text-xs text-gray-500 dark:text-gray-400 leading-relaxed" data-globe-tooltip-body></p>
+    </div>
+  </div>
+
+  <ul class="mt-8 flex flex-wrap justify-center gap-2" data-globe-legend>
+    {
+      stats.map((s) => (
+        <li>
+          <button
+            type="button"
+            data-globe-rotate={s.name}
+            title={`Rotate the globe to ${s.name}`}
+            class="font-mono text-xs text-elf-blue dark:text-elf-blue border border-elf-blue/30 dark:border-elf-blue/30 rounded-full px-3 py-1.5 hover:bg-elf-blue/8 dark:hover:bg-elf-blue/10 hover:border-elf-blue/60 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-elf-blue/50"
+          >
+            {label(s)} — {s.members.length}
+          </button>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<script>
+  import { geoOrthographic, geoPath, geoGraticule10, geoCentroid } from 'd3-geo'
+  import { feature } from 'topojson-client'
+  import versor from 'versor'
+  import worldUrl from 'world-atlas/countries-110m.json?url'
+
+  const AUTO_RESUME_MS = 3000
+  const AUTO_SPEED = 3.2 // degrees per second
+
+  for (const section of document.querySelectorAll<HTMLElement>('[data-globe-section]')) {
+    const svg = section.querySelector<SVGSVGElement>('[data-globe-svg]')
+    if (!svg) continue
+
+    const size = Number(section.dataset.globeSize)
+    const pad = Number(section.dataset.globePad)
+    const initial = JSON.parse(section.dataset.globeRotate!) as [number, number]
+    const stats = JSON.parse(section.dataset.globeMembers!) as Array<{
+      name: string
+      code: string | null
+      id: string
+      members: string[]
+    }>
+
+    const projection = geoOrthographic()
+      .rotate(initial)
+      .fitExtent(
+        [
+          [pad, pad],
+          [size - pad, size - pad],
+        ],
+        { type: 'Sphere' },
+      )
+    const pathGen = geoPath(projection)
+    const graticuleObj = geoGraticule10()
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    const graticuleEl = svg.querySelector<SVGPathElement>('.globe-graticule')!
+    const paths = new Map<string, SVGPathElement>()
+    svg.querySelectorAll<SVGPathElement>('path.map-country').forEach((el) => {
+      paths.set(el.dataset.featureId!, el)
+      // The custom tooltip takes over; native titles would double up.
+      el.querySelector('title')?.remove()
+    })
+    const memberPaths = svg.querySelectorAll<SVGPathElement>('path.map-country--member')
+
+    const featuresById = new Map<string, object>()
+    const centroids = new Map<string, [number, number]>()
+
+    let loaded = false
+    fetch(worldUrl)
+      .then((r) => r.json())
+      .then((topo) => {
+        for (const f of feature(topo, topo.objects.countries).features) {
+          const id = String((f as { id?: string }).id).padStart(3, '0')
+          featuresById.set(id, f)
+          if (paths.has(id)) centroids.set(id, geoCentroid(f as object))
+        }
+        loaded = true
+      })
+
+    const rotation: [number, number, number] = [...initial, 0]
+    const setRotation = () => {
+      projection.rotate(rotation)
+      if (!loaded) return
+      graticuleEl.setAttribute('d', pathGen(graticuleObj) ?? '')
+      for (const [id, el] of paths) {
+        el.setAttribute('d', pathGen(featuresById.get(id) as object) ?? '')
+      }
+    }
+
+    // --- versor drag with inertia -------------------------------------------
+    let dragging = false
+    let v0: number[][] | null = null
+    let r0: [number, number, number] = [0, 0, 0]
+    let lastT = 0
+    let vel = 0 // degrees per second around λ
+    let lastInteraction = 0
+
+    const point = (e: PointerEvent): [number, number] => {
+      const rect = svg.getBoundingClientRect()
+      return [((e.clientX - rect.left) * size) / rect.width, ((e.clientY - rect.top) * size) / rect.height]
+    }
+
+    svg.addEventListener('pointerdown', (e) => {
+      dragging = true
+      vel = 0
+      lastT = performance.now()
+      lastInteraction = lastT
+      svg.setPointerCapture(e.pointerId)
+      v0 = versor(point(e)) as unknown as number[][]
+      r0 = [...rotation] as [number, number, number]
+    })
+
+    svg.addEventListener('pointermove', (e) => {
+      if (!dragging || !v0) return
+      const now = performance.now()
+      const dt = Math.max(now - lastT, 1)
+      const v1 = versor(point(e)) as unknown as number[][]
+      const q = versor.delta(r0, v0, v1)
+      const r = versor.rotation(q) as [number, number, number]
+      vel = ((r[0] - rotation[0]) / dt) * 1000
+      rotation[0] = r[0]
+      rotation[1] = Math.max(-89, Math.min(89, r[1]))
+      rotation[2] = 0
+      lastT = now
+      lastInteraction = now
+      setRotation()
+    })
+
+    const endDrag = () => {
+      dragging = false
+      v0 = null
+      lastInteraction = performance.now()
+    }
+    svg.addEventListener('pointerup', endDrag)
+    svg.addEventListener('pointercancel', endDrag)
+
+    // --- tooltip -------------------------------------------------------------
+    const tooltip = section.querySelector<HTMLElement>('[data-globe-tooltip]')!
+    const tooltipTitle = tooltip.querySelector('[data-globe-tooltip-title]')!
+    const tooltipBody = tooltip.querySelector('[data-globe-tooltip-body]')!
+    const wrap = section.querySelector<HTMLElement>('[data-globe-wrap]')!
+
+    const showTooltip = (el: SVGPathElement, e: PointerEvent) => {
+      const stat = stats.find((s) => s.name === el.dataset.country)
+      if (!stat) return
+      const name = stat.code ? `${stat.name} (${stat.code})` : stat.name
+      tooltipTitle.textContent = name
+      tooltipBody.textContent = `${stat.members.length} member${stat.members.length === 1 ? '' : 's'}: ${stat.members.join(' · ')}`
+      tooltip.classList.remove('hidden')
+      moveTooltip(e)
+    }
+    const moveTooltip = (e: PointerEvent) => {
+      const rect = wrap.getBoundingClientRect()
+      const x = e.clientX - rect.left
+      const y = e.clientY - rect.top
+      tooltip.style.left = `${Math.min(Math.max(x + 14, 0), rect.width - tooltip.offsetWidth)}px`
+      tooltip.style.top = `${Math.max(y - tooltip.offsetHeight - 10, 0)}px`
+    }
+    svg.addEventListener('pointerover', (e) => {
+      const target = (e.target as Element).closest('path.map-country--member')
+      if (target) showTooltip(target as SVGPathElement, e)
+    })
+    svg.addEventListener('pointermove', (e) => {
+      if (!tooltip.classList.contains('hidden')) moveTooltip(e)
+    })
+    svg.addEventListener('pointerout', (e) => {
+      const from = (e.target as Element).closest('path.map-country--member')
+      const to = (e.relatedTarget as Element | null)?.closest?.('path.map-country--member')
+      if (from && from !== to) tooltip.classList.add('hidden')
+    })
+
+    // --- highlight member cards ---------------------------------------------
+    const flashCards = (name: string) => {
+      const cards = document.querySelectorAll<HTMLElement>(`[data-member-country="${CSS.escape(name)}"]`)
+      cards.forEach((c) => c.classList.add('ring-2', 'ring-elf-blue', 'ring-offset-2'))
+      window.setTimeout(() => cards.forEach((c) => c.classList.remove('ring-2', 'ring-elf-blue', 'ring-offset-2')), 2200)
+    }
+
+    svg.addEventListener('click', (e) => {
+      const target = (e.target as Element).closest('path.map-country--member') as SVGPathElement | null
+      if (target?.dataset.country) flashCards(target.dataset.country)
+    })
+
+    // --- rotate to a country -------------------------------------------------
+    let animating = false
+    const rotateTo = (name: string, then?: () => void) => {
+      const stat = stats.find((s) => s.name === name)
+      const c = stat && centroids.get(stat.id)
+      if (!c) return
+      let dλ = -c[0] - rotation[0]
+      dλ = ((dλ + 540) % 360) - 180
+      const from: [number, number] = [rotation[0], rotation[1]]
+      const to: [number, number] = [rotation[0] + dλ, Math.max(-89, Math.min(89, -c[1]))]
+      vel = 0
+      if (reducedMotion) {
+        rotation[0] = to[0]
+        rotation[1] = to[1]
+        setRotation()
+        then?.()
+        return
+      }
+      const t0 = performance.now()
+      const duration = 700
+      lastInteraction = t0 + duration
+      animating = true
+      const step = (t: number) => {
+        const p = Math.min((t - t0) / duration, 1)
+        const e = 1 - Math.pow(1 - p, 3)
+        rotation[0] = from[0] + (to[0] - from[0]) * e
+        rotation[1] = from[1] + (to[1] - from[1]) * e
+        setRotation()
+        if (p < 1) requestAnimationFrame(step)
+        else {
+          animating = false
+          then?.()
+        }
+      }
+      requestAnimationFrame(step)
+    }
+
+    for (const btn of section.querySelectorAll<HTMLButtonElement>('[data-globe-rotate]')) {
+      btn.addEventListener('click', () => rotateTo(btn.dataset.globeRotate!, () => flashCards(btn.dataset.globeRotate!)))
+    }
+    memberPaths.forEach((el) => {
+      el.addEventListener('focus', () => rotateTo(el.dataset.country!))
+      el.addEventListener('keydown', (e) => {
+        if ((e as KeyboardEvent).key === 'Enter' || (e as KeyboardEvent).key === ' ') {
+          e.preventDefault()
+          if (el.dataset.country) flashCards(el.dataset.country)
+        }
+      })
+    })
+
+    // --- animation loop (paused offscreen) -----------------------------------
+    let visible = true
+    new IntersectionObserver(([entry]) => (visible = entry.isIntersecting)).observe(svg)
+
+    let lastFrame = performance.now()
+    const loop = (t: number) => {
+      const dt = Math.min(t - lastFrame, 100)
+      lastFrame = t
+      if (visible && loaded && !dragging && !animating) {
+        if (Math.abs(vel) > 1) {
+          rotation[0] += (vel * dt) / 1000
+          vel *= Math.pow(0.94, dt / 16.7)
+          lastInteraction = t
+          setRotation()
+        } else if (!reducedMotion && t - lastInteraction > AUTO_RESUME_MS) {
+          rotation[0] += (AUTO_SPEED * dt) / 1000
+          setRotation()
+        }
+      }
+      requestAnimationFrame(loop)
+    }
+    requestAnimationFrame(loop)
+  }
+</script>
+
+<style>
+  .globe-sphere {
+    fill: var(--globe-ocean, #dce6f1);
+  }
+  :global(.dark) .globe-sphere {
+    fill: #1f2c42;
+  }
+  .globe-graticule {
+    fill: none;
+    stroke: var(--globe-graticule, #ffffff);
+    stroke-width: 0.5;
+  }
+  :global(.dark) .globe-graticule {
+    stroke: #2b3d59;
+  }
+  .map-country {
+    fill: var(--map-land, #d8dde4);
+    stroke: var(--map-border, #ffffff);
+    stroke-width: 0.5;
+  }
+  :global(.dark) .map-country {
+    fill: #31445e;
+    stroke: #1e293b;
+  }
+  .map-country--member {
+    fill: var(--elf-blue, #2f6bbf);
+    cursor: pointer;
+  }
+  :global(.dark) .map-country--member {
+    fill: #5b8dd9;
+  }
+  .map-country--member:hover,
+  .map-country--member:focus-visible {
+    fill: #1e4f9e;
+  }
+  .map-country--member:focus-visible {
+    outline: 2px solid #1e4f9e;
+    outline-offset: 1px;
+  }
+</style>

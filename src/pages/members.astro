@@ -4,12 +4,10 @@ import AnimatedSection from '@/components/AnimatedSection.astro'
 import PageHero from '@/components/PageHero.astro'
 import MemberCard from '@/components/MemberCard.astro'
 import PersonCard from '@/components/PersonCard.astro'
-import { geoNaturalEarth1, geoPath } from 'd3-geo'
-import { feature } from 'topojson-client'
-import world from 'world-atlas/countries-110m.json'
 import countries from 'i18n-iso-countries'
 import en from 'i18n-iso-countries/langs/en.json'
 import { members, peopleByRank, countryCode } from '@/lib/content'
+import MembersGlobe from '@/components/MembersGlobe.astro'
 
 const orgs = members.filter((m) => m.category !== 'individual')
 const individuals = peopleByRank('founder')
@@ -27,24 +25,13 @@ const stats = [...byCountry.entries()]
 // Display label "United Kingdom (GB)"; falls back to the bare name if unresolved.
 const label = (s: { name: string; code: string | null }) => (s.code ? `${s.name} (${s.code})` : s.name)
 
-// Build-time map: project once, bake paths into HTML — zero client JS for rendering.
 countries.registerLocale(en)
-const worldShapes = feature(world, world.objects.countries)
-const projection = geoNaturalEarth1().fitExtent([[10, 10], [990, 490]], worldShapes)
-const geoPathGen = geoPath(projection)
-// ISO 3166-1 numeric codes are derived from country names via i18n-iso-countries
-// (alpha-2 first — v7 exposes no getNumericCode(name)); alpha2ToNumeric returns
-// zero-padded strings ("040"), matching world-atlas feature ids exactly.
-const statByNumeric = new Map(
-  stats.map((s) => {
-    const a2 = countries.getAlpha2Code(s.name, 'en')
-    return [countries.alpha2ToNumeric(a2), s]
-  }),
-)
-const countryPaths = worldShapes.features.map((f) => ({
-  d: geoPathGen(f),
-  stat: statByNumeric.get(String(f.id).padStart(3, '0')),
-}))
+// ISO 3166 numeric ids are derived from country names (alpha-2 -> numeric) at
+// build time; zero-padded ("040"), matching world-atlas feature ids exactly.
+const globeStats = stats.map((s) => {
+  const a2 = countries.getAlpha2Code(s.name, 'en')
+  return { ...s, id: countries.alpha2ToNumeric(a2) }
+})
 ---
 
 <BaseLayout
@@ -60,34 +47,7 @@ const countryPaths = worldShapes.features.map((f) => ({
 
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
     <AnimatedSection>
-      <section class="mb-16" aria-label="World map of member countries">
-        <svg
-          id="members-map"
-          viewBox="0 0 1000 500"
-          class="w-full h-auto rounded-xl border border-gray-200/80 dark:border-gray-700/60 bg-slate-50 dark:bg-navy-light"
-          role="group"
-          aria-label={`World map of ELF members: ${stats.map((s) => label(s)).join(', ')}`}
-        >
-          {countryPaths.map((p) => (
-            <path
-              d={p.d}
-              class={p.stat ? 'map-country map-country--member' : 'map-country'}
-              data-country={p.stat?.name}
-              tabindex={p.stat ? 0 : undefined}
-              aria-label={p.stat ? `${p.stat.name} — ${p.stat.members.length} member${p.stat.members.length === 1 ? '' : 's'}` : undefined}
-            >
-              {p.stat && <title>{`${label(p.stat)}: ${p.stat.members.join(' · ')}`}</title>}
-            </path>
-          ))}
-        </svg>
-        <ul class="mt-4 flex flex-wrap justify-center gap-x-6 gap-y-1 text-xs text-gray-500 dark:text-gray-400">
-          {stats.map((s) => (
-            <li>
-              <span class="font-medium text-gray-700 dark:text-gray-200">{label(s)}</span> — {s.members.length}
-            </li>
-          ))}
-        </ul>
-      </section>
+      <MembersGlobe stats={globeStats} />
     </AnimatedSection>
 
     <section class="mb-20">
@@ -154,54 +114,3 @@ const countryPaths = worldShapes.features.map((f) => ({
     })),
   })} />
 </BaseLayout>
-
-<style>
-  .map-country {
-    fill: var(--map-land, #d8dde4);
-    stroke: var(--map-border, #ffffff);
-    stroke-width: 0.5;
-  }
-  :global(.dark) .map-country {
-    fill: var(--map-land-dark, #31445e);
-    stroke: var(--map-border-dark, #1e293b);
-  }
-  .map-country--member {
-    fill: var(--elf-blue, #2f6bbf);
-    cursor: pointer;
-  }
-  :global(.dark) .map-country--member {
-    fill: #5b8dd9;
-  }
-  .map-country--member:hover,
-  .map-country--member:focus-visible {
-    fill: #1e4f9e;
-  }
-  .map-country--member:focus-visible {
-    outline: 2px solid #1e4f9e;
-    outline-offset: 1px;
-  }
-</style>
-
-<script>
-  document.querySelectorAll<SVGPathElement>('#members-map .map-country--member').forEach((el) => {
-    let timer: number | undefined
-    const highlight = () => {
-      const name = el.dataset.country
-      if (!name) return
-      const cards = document.querySelectorAll<HTMLElement>(`[data-member-country="${CSS.escape(name)}"]`)
-      cards.forEach((c) => c.classList.add('ring-2', 'ring-elf-blue', 'ring-offset-2'))
-      if (timer !== undefined) window.clearTimeout(timer)
-      timer = window.setTimeout(() => {
-        cards.forEach((c) => c.classList.remove('ring-2', 'ring-elf-blue', 'ring-offset-2'))
-        timer = undefined
-      }, 2000)
-    }
-    el.addEventListener('click', highlight)
-    el.addEventListener('keydown', (e) => {
-      if ((e as KeyboardEvent).key === 'Enter' || (e as KeyboardEvent).key === ' ') {
-        e.preventDefault()
-        highlight()
-      }
-    })
-  })
-</script>
