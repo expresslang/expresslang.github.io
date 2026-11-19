@@ -32,13 +32,20 @@ const projection = geoOrthographic()
   )
 const pathGen = geoPath(projection)
 
+// Hong Kong has no polygon in Natural Earth 110m — it is part of the CN
+// feature. Highlight the containing polygon alongside the member country.
+const FEATURE_FALLBACKS: Record<string, string> = { '344': '156' }
 const memberById = new Map(stats.map((s) => [s.id, s]))
+// reverse: feature id -> stat for member countries without their own polygon
+const memberByFeatureFallback = new Map(
+  Object.entries(FEATURE_FALLBACKS).map(([memberId, featureId]) => [featureId, memberById.get(memberId)]),
+)
 const countryPaths = worldShapes.features.map((f) => {
   const id = String(f.id).padStart(3, '0')
   return {
     id,
     d: pathGen(f),
-    stat: memberById.get(id),
+    stat: memberById.get(id) ?? memberByFeatureFallback.get(id),
   }
 })
 const graticuleD = pathGen(geoGraticule10())
@@ -61,7 +68,7 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
     <svg
       id="members-globe"
       viewBox={`0 0 ${SIZE} ${SIZE}`}
-      class="w-full h-auto rounded-full select-none"
+      class="globe-svg w-full h-auto rounded-full select-none"
       style="touch-action: pan-y;"
       role="group"
       aria-label={`Rotatable globe showing ELF members: ${stats.map((s) => label(s)).join(', ')}`}
@@ -173,22 +180,27 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
       })
 
     const rotation: [number, number, number] = [...initial, 0]
-    const setRotation = () => {
+    const renderFrame = () => {
       projection.rotate(rotation)
-      if (!loaded) return
       graticuleEl.setAttribute('d', pathGen(graticuleObj) ?? '')
       for (const [id, el] of paths) {
         el.setAttribute('d', pathGen(featuresById.get(id) as object) ?? '')
       }
     }
+    const setRotation = () => {
+      dirty = true
+      if (loaded) renderFrame()
+    }
 
-    // --- versor drag (Fil's canonical versor-dragging) with inertia ----------
+    // --- versor drag (Fil's canonical versor-dragging), rAF-coalesced --------
+    // Math runs per pointermove; DOM writes happen once per frame in the loop.
     let dragging = false
     let q0: number[] | null = null // quaternion at drag start / last move
     let v0: [number, number, number] | null = null // cartesian on sphere at last move
     let lastMoveT = 0
-    let vel = 0 // degrees per second around λ
+    let vel = 0 // smoothed degrees per second around λ
     let lastInteraction = 0
+    let dirty = false
 
     const point = (e: PointerEvent): [number, number] => {
       const rect = svg.getBoundingClientRect()
@@ -215,7 +227,8 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
       const r = versor.rotation(q1 as unknown as [number, number, number]) as [number, number, number]
       const now = performance.now()
       const dt = Math.max(now - lastMoveT, 1)
-      vel = ((r[0] - rotation[0]) / dt) * 1000
+      const instant = ((r[0] - rotation[0]) / dt) * 1000
+      vel = Math.abs(instant) > 4000 ? instant : vel * 0.6 + instant * 0.4 // low-pass; bypass on teleports
       rotation[0] = r[0]
       rotation[1] = Math.max(-89, Math.min(89, r[1]))
       rotation[2] = 0
@@ -223,7 +236,7 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
       q0 = q1
       lastMoveT = now
       lastInteraction = now
-      setRotation()
+      dirty = true
     })
 
     const endDrag = () => {
@@ -234,6 +247,14 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
     }
     svg.addEventListener('pointerup', endDrag)
     svg.addEventListener('pointercancel', endDrag)
+
+    // --- hover pauses auto-rotation so the globe never spins under the cursor
+    let hovering = false
+    svg.addEventListener('pointerenter', () => (hovering = true))
+    svg.addEventListener('pointerleave', () => {
+      hovering = false
+      lastInteraction = performance.now()
+    })
 
     // --- tooltip -------------------------------------------------------------
     const tooltip = section.querySelector<HTMLElement>('[data-globe-tooltip]')!
@@ -286,7 +307,7 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
     let animating = false
     const rotateTo = (name: string, then?: () => void) => {
       const stat = stats.find((s) => s.name === name)
-      const c = stat && centroids.get(stat.id)
+      const c = stat && (centroids.get(stat.id) ?? centroids.get(FEATURE_FALLBACKS[stat.id]))
       if (!c) return
       let dλ = -c[0] - rotation[0]
       dλ = ((dλ + 540) % 360) - 180
@@ -342,17 +363,23 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
     const loop = (t: number) => {
       const dt = Math.min(t - lastFrame, 100)
       lastFrame = t
-      if (visible && loaded && !dragging && !animating) {
-        if (Math.abs(vel) > 1) {
-          rotation[0] += (vel * dt) / 1000
-          vel *= Math.pow(0.95, dt / 16.7)
-          lastInteraction = t
-          setRotation()
-        } else if (!reducedMotion && t - lastInteraction > AUTO_RESUME_MS) {
-          const since = t - lastInteraction - AUTO_RESUME_MS
-          const ramp = Math.min(since / 1200, 1) // ease auto-rotation in
-          rotation[0] += (AUTO_SPEED * ramp * dt) / 1000
-          setRotation()
+      if (visible && loaded) {
+        if (dirty) {
+          renderFrame() // one DOM write per frame, however often events fire
+          dirty = false
+        }
+        if (!dragging && !animating && !hovering) {
+          if (Math.abs(vel) > 1) {
+            rotation[0] += (vel * dt) / 1000
+            vel *= Math.pow(0.95, dt / 16.7)
+            lastInteraction = t
+            dirty = true
+          } else if (!reducedMotion && t - lastInteraction > AUTO_RESUME_MS) {
+            const since = t - lastInteraction - AUTO_RESUME_MS
+            const ramp = Math.min(since / 1200, 1) // ease auto-rotation in
+            rotation[0] += (AUTO_SPEED * ramp * dt) / 1000
+            dirty = true
+          }
         }
       }
       requestAnimationFrame(loop)
@@ -362,6 +389,12 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
 </script>
 
 <style>
+  .globe-svg {
+    cursor: grab;
+  }
+  .globe-svg:active {
+    cursor: grabbing;
+  }
   .globe-sphere {
     fill: var(--globe-ocean, #dce6f1);
   }
