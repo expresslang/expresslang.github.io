@@ -21,6 +21,7 @@
     "i18n-iso-countries": "^7.14.0",
     "js-yaml": "^5.4.1",
     "topojson-client": "^3.1.0",
+    "versor": "^0.2.0",
     "vue": "^3.4.38",
     "world-atlas": "^2.0.2"
   },
