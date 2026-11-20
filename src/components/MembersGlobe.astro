@@ -91,6 +91,15 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
         ))
       }
     </svg>
+    <button
+      type="button"
+      data-globe-reset
+      title="Reset view"
+      aria-label="Reset globe view"
+      class="absolute top-3 right-3 z-10 p-2 rounded-full border border-gray-200/80 dark:border-gray-700/60 bg-white/90 dark:bg-navy-light/90 text-gray-500 dark:text-gray-400 hover:text-elf-blue dark:hover:text-elf-blue hover:border-elf-blue/40 transition-colors shadow-sm"
+    >
+      <svg aria-hidden="true" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h5M20 20v-5h-5M20 9A8 8 0 005.6 5.6L4 9m16 10a8 8 0 01-14.4 3.4L4 15"/></svg>
+    </button>
     <div
       data-globe-tooltip
       aria-hidden="true"
@@ -338,22 +347,17 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
       (e) => {
         if (suppressClick) return // drag ended here; not a click
         const target = (e.target as Element).closest('path.map-country--member') as SVGPathElement | null
-        if (target?.dataset.country) flashCards(target.dataset.country)
+        const name = target?.dataset.country
+        if (name) rotateTo(name, () => flashCards(name))
       },
       true,
     )
 
     // --- rotate to a country (quaternion slerp) --------------------------------
     let animating = false
-    const rotateTo = (name: string, then?: () => void) => {
-      const stat = stats.find((s) => s.name === name)
-      const c = stat && (centroids.get(stat.id) ?? centroids.get(FEATURE_FALLBACKS[stat.id]))
-      if (!c) return
+    const animateTo = (target: [number, number, number], then?: () => void) => {
       vel = 0
       const current = versor.rotation(Q as unknown as [number, number, number]) as [number, number, number]
-      let dλ = -c[0] - current[0]
-      dλ = ((dλ + 540) % 360) - 180
-      const target: [number, number, number] = [current[0] + dλ, Math.max(-89, Math.min(89, -c[1])), 0]
       if (reducedMotion) {
         Q = versor(target) as unknown as number[]
         dirty = true
@@ -379,10 +383,21 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
       }
       requestAnimationFrame(step)
     }
+    const rotateTo = (name: string, then?: () => void) => {
+      const stat = stats.find((s) => s.name === name)
+      const c = stat && (centroids.get(stat.id) ?? centroids.get(FEATURE_FALLBACKS[stat.id]))
+      if (!c) return
+      let dλ = -c[0] - versor.rotation(Q as unknown as [number, number, number])[0]
+      dλ = ((dλ + 540) % 360) - 180
+      const current = versor.rotation(Q as unknown as [number, number, number]) as [number, number, number]
+      animateTo([current[0] + dλ, Math.max(-89, Math.min(89, -c[1])), 0], then)
+    }
+    const resetView = (then?: () => void) => animateTo([initial[0], initial[1], 0], then)
 
     for (const btn of section.querySelectorAll<HTMLButtonElement>('[data-globe-rotate]')) {
       btn.addEventListener('click', () => rotateTo(btn.dataset.globeRotate!, () => flashCards(btn.dataset.globeRotate!)))
     }
+    section.querySelector('[data-globe-reset]')?.addEventListener('click', () => resetView())
     memberPaths.forEach((el) => {
       el.addEventListener('focus', () => rotateTo(el.dataset.country!))
       el.addEventListener('keydown', (e) => {
