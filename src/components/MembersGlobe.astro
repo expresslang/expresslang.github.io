@@ -32,13 +32,54 @@ const projection = geoOrthographic()
   )
 const pathGen = geoPath(projection)
 
+// Hong Kong has no polygon in Natural Earth 110m — it is part of the CN
+// feature. Highlight the containing polygon alongside the member country.
+const FEATURE_FALLBACKS: Record<string, string> = { '344': '156' }
 const memberById = new Map(stats.map((s) => [s.id, s]))
-const countryPaths = worldShapes.features.map((f) => {
+// reverse: feature id -> stat for member countries without their own polygon
+const memberByFeatureFallback = new Map(
+  Object.entries(FEATURE_FALLBACKS).map(([memberId, featureId]) => [featureId, memberById.get(memberId)]),
+)
+
+// UN compliance: Natural Earth ships de-facto states without ISO 3166-1 codes
+// (Somaliland, N. Cyprus, Kosovo). Fold their geometry into the UN member state
+// they belong to, so they never appear as countries on the map.
+const UN_INTO: Record<string, string> = {
+  'N. Cyprus': '196', // Cyprus
+  Somaliland: '706', // Somalia
+  Kosovo: '688', // Serbia (UNSCR 1244)
+}
+const unMerge = (features: Array<Record<string, unknown>>) => {
+  const byId = new Map<string, Record<string, unknown>>()
+  for (const f of features) {
+    if (f.id != null) byId.set(String(f.id).padStart(3, '0'), f)
+  }
+  const merged = new Map<string, Record<string, unknown>>()
+  for (const f of features) {
+    if (f.id != null) {
+      merged.set(String(f.id).padStart(3, '0'), f)
+      continue
+    }
+    const parentId = UN_INTO[(f.properties as { name?: string })?.name ?? '']
+    const parent = parentId ? merged.get(parentId) : undefined
+    if (!parent) continue // unknown entity: excluded rather than shown as a country
+    appendGeometry(parent, f)
+  }
+  return [...merged.values()]
+}
+const appendGeometry = (parent: Record<string, unknown>, child: Record<string, unknown>) => {
+  const ringsOf = (g: Record<string, unknown>) =>
+    (g.type === 'MultiPolygon' ? g.coordinates : g.type === 'Polygon' ? [g.coordinates] : []) as unknown[][]
+  const coords = [...ringsOf(parent.geometry), ...ringsOf(child.geometry)]
+  parent.geometry = { type: 'MultiPolygon', coordinates: coords }
+}
+const displayFeatures = unMerge(worldShapes.features)
+const countryPaths = displayFeatures.map((f) => {
   const id = String(f.id).padStart(3, '0')
   return {
     id,
     d: pathGen(f),
-    stat: memberById.get(id),
+    stat: memberById.get(id) ?? memberByFeatureFallback.get(id),
   }
 })
 const graticuleD = pathGen(geoGraticule10())
@@ -61,7 +102,7 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
     <svg
       id="members-globe"
       viewBox={`0 0 ${SIZE} ${SIZE}`}
-      class="w-full h-auto rounded-full select-none"
+      class="globe-svg w-full h-auto rounded-full select-none"
       style="touch-action: pan-y;"
       role="group"
       aria-label={`Rotatable globe showing ELF members: ${stats.map((s) => label(s)).join(', ')}`}
@@ -84,6 +125,15 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
         ))
       }
     </svg>
+    <button
+      type="button"
+      data-globe-reset
+      title="Reset view"
+      aria-label="Reset globe view"
+      class="absolute top-3 right-3 z-10 p-2 rounded-full border border-gray-200/80 dark:border-gray-700/60 bg-white/90 dark:bg-navy-light/90 text-gray-500 dark:text-gray-400 hover:text-elf-blue dark:hover:text-elf-blue hover:border-elf-blue/40 transition-colors shadow-sm"
+    >
+      <svg aria-hidden="true" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h5M20 20v-5h-5M20 9A8 8 0 005.6 5.6L4 9m16 10a8 8 0 01-14.4 3.4L4 15"/></svg>
+    </button>
     <div
       data-globe-tooltip
       aria-hidden="true"
@@ -113,13 +163,73 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
 </section>
 
 <script>
-  import { geoOrthographic, geoPath, geoGraticule10, geoCentroid } from 'd3-geo'
+  import { geoOrthographic, geoPath, geoGraticule10, geoCentroid, geoArea } from 'd3-geo'
   import { feature } from 'topojson-client'
   import versor from 'versor'
   import worldUrl from 'world-atlas/countries-110m.json?url'
 
   const AUTO_RESUME_MS = 3000
-  const AUTO_SPEED = 3.2 // degrees per second
+  const AUTO_SPEED = 3.2 // degrees per second, eased in
+  const DRAG_SUPPRESS_PX = 6
+  const DEG_PER_RAD = 180 / Math.PI
+
+  // Canonical versor-dragging (Bostock/Fil): screen -> invert -> earth cartesian,
+  // incremental quaternion composition. Screen-frame hand-mapping is precisely
+  // what breaks this projection — do not replace invert with manual sphere math.
+
+  // UN compliance: fold Natural Earth's de-facto states (no ISO 3166-1 code)
+  // into the UN member state they belong to — identical to the SSR merge.
+  const UN_INTO: Record<string, string> = {
+    'N. Cyprus': '196', // Cyprus
+    Somaliland: '706', // Somalia
+    Kosovo: '688', // Serbia (UNSCR 1244)
+  }
+  const FEATURE_FALLBACKS: Record<string, string> = { '344': '156' } // Hong Kong -> CN polygon
+  const appendGeometry = (parent: Record<string, unknown>, child: Record<string, unknown>) => {
+    const ringsOf = (g: Record<string, unknown>) =>
+      (g.type === 'MultiPolygon' ? g.coordinates : g.type === 'Polygon' ? [g.coordinates] : []) as unknown[][]
+    parent.geometry = {
+      type: 'MultiPolygon',
+      coordinates: [...ringsOf(parent.geometry), ...ringsOf(child.geometry)],
+    }
+  }
+  const unMerge = (features: Array<Record<string, unknown>>) => {
+    const byId = new Map<string, Record<string, unknown>>()
+    for (const f of features) {
+      if (f.id != null) byId.set(String(f.id).padStart(3, '0'), f)
+    }
+    const merged = new Map<string, Record<string, unknown>>()
+    for (const f of features) {
+      if (f.id != null) {
+        merged.set(String(f.id).padStart(3, '0'), f)
+        continue
+      }
+      const parentId = UN_INTO[(f.properties as { name?: string })?.name ?? '']
+      const parent = parentId ? merged.get(parentId) : undefined
+      if (!parent) continue // unknown entity: excluded rather than shown as a country
+      appendGeometry(parent, f)
+    }
+    return [...merged.values()]
+  }
+
+  // Centroid of the largest polygon of a feature — the "main location".
+  // Multipolygons bundle distant territories (France includes French Guiana,
+  // the US includes Alaska), which drag the raw centroid off the mainland.
+  const mainLandmassCentroid = (f: object): [number, number] => {
+    const geometry = (f as { geometry?: { type?: string; coordinates?: unknown } }).geometry
+    if (geometry?.type !== 'MultiPolygon') return geoCentroid(f)
+    let best: { type: string; coordinates: unknown } | null = null
+    let bestArea = -1
+    for (const polygon of geometry.coordinates as unknown[][]) {
+      const g = { type: 'Polygon', coordinates: polygon }
+      const a = geoArea(g as never)
+      if (a > bestArea) {
+        bestArea = a
+        best = g
+      }
+    }
+    return best ? geoCentroid(best) : geoCentroid(f)
+  }
 
   for (const section of document.querySelectorAll<HTMLElement>('[data-globe-section]')) {
     const svg = section.querySelector<SVGSVGElement>('[data-globe-svg]')
@@ -152,7 +262,6 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
     const paths = new Map<string, SVGPathElement>()
     svg.querySelectorAll<SVGPathElement>('path.map-country').forEach((el) => {
       paths.set(el.dataset.featureId!, el)
-      // The custom tooltip takes over; native titles would double up.
       el.querySelector('title')?.remove()
     })
     const memberPaths = svg.querySelectorAll<SVGPathElement>('path.map-country--member')
@@ -161,80 +270,126 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
     const centroids = new Map<string, [number, number]>()
 
     let loaded = false
+    let dirty = false
     fetch(worldUrl)
       .then((r) => r.json())
       .then((topo) => {
-        for (const f of feature(topo, topo.objects.countries).features) {
-          const id = String((f as { id?: string }).id).padStart(3, '0')
+        const shapeList = unMerge(feature(topo, topo.objects.countries).features as Array<Record<string, unknown>>)
+        for (const f of shapeList) {
+          const id = String(f.id).padStart(3, '0')
           featuresById.set(id, f)
-          if (paths.has(id)) centroids.set(id, geoCentroid(f as object))
+          if (paths.has(id)) centroids.set(id, mainLandmassCentroid(f as object))
         }
         loaded = true
+        dirty = true
       })
 
-    const rotation: [number, number, number] = [...initial, 0]
-    const setRotation = () => {
-      projection.rotate(rotation)
-      if (!loaded) return
+    // Orientation: one quaternion, converted to Euler angles only for render
+    // and idle motions. Never clamped mid-gesture.
+    let Q = versor(initial) as unknown as number[]
+    const applyQ = () => {
+      projection.rotate(versor.rotation(Q as unknown as [number, number, number]) as [number, number, number])
       graticuleEl.setAttribute('d', pathGen(graticuleObj) ?? '')
       for (const [id, el] of paths) {
         el.setAttribute('d', pathGen(featuresById.get(id) as object) ?? '')
       }
     }
 
-    // --- versor drag with inertia -------------------------------------------
+    // --- yaw-only drag (left/right spin; the poles stay put) -------------------
+    // Pure yaw is a single longitude rotation — absolute from drag start,
+    // no incremental state, cannot drift or jitter. Vertical drags do nothing.
     let dragging = false
-    let v0: number[][] | null = null
-    let r0: [number, number, number] = [0, 0, 0]
-    let lastT = 0
-    let vel = 0 // degrees per second around λ
+    let startClientX = 0
+    let startAngles: [number, number, number] | null = null
+    let vel = 0
+    let lastYaw = versor.rotation(Q as unknown as [number, number, number])[0]
+    let lastMoveT = 0
     let lastInteraction = 0
+    let moved = 0
+    let lastX: number | null = null
+    let suppressClick = false
 
     const point = (e: PointerEvent): [number, number] => {
       const rect = svg.getBoundingClientRect()
       return [((e.clientX - rect.left) * size) / rect.width, ((e.clientY - rect.top) * size) / rect.height]
     }
-
-    svg.addEventListener('pointerdown', (e) => {
-      dragging = true
-      vel = 0
-      lastT = performance.now()
-      lastInteraction = lastT
-      svg.setPointerCapture(e.pointerId)
-      v0 = versor(point(e)) as unknown as number[][]
-      r0 = [...rotation] as [number, number, number]
-    })
-
-    svg.addEventListener('pointermove', (e) => {
-      if (!dragging || !v0) return
-      const now = performance.now()
-      const dt = Math.max(now - lastT, 1)
-      const v1 = versor(point(e)) as unknown as number[][]
-      const q = versor.delta(r0, v0, v1)
-      const r = versor.rotation(q) as [number, number, number]
-      vel = ((r[0] - rotation[0]) / dt) * 1000
-      rotation[0] = r[0]
-      rotation[1] = Math.max(-89, Math.min(89, r[1]))
-      rotation[2] = 0
-      lastT = now
-      lastInteraction = now
-      setRotation()
-    })
+    const insideGlobe = (p: [number, number]) =>
+      Math.hypot(p[0] - projection.translate()[0], p[1] - projection.translate()[1]) <= projection.scale()
 
     const endDrag = () => {
+      if (!dragging) return
       dragging = false
-      v0 = null
+      startAngles = null
+      svg.classList.remove('is-dragging')
+      suppressClick = moved > DRAG_SUPPRESS_PX
       lastInteraction = performance.now()
+      window.removeEventListener('pointermove', onWindowMove)
+      window.removeEventListener('pointerup', endDrag)
+      window.removeEventListener('pointercancel', endDrag)
     }
-    svg.addEventListener('pointerup', endDrag)
-    svg.addEventListener('pointercancel', endDrag)
+    const onWindowMove = (e: PointerEvent) => {
+      if (!dragging || !startAngles) return
+      const now = performance.now()
+      const dt = Math.max(now - lastMoveT, 1)
+      const degPerPx = DEG_PER_RAD / projection.scale() // surface-true at the equator
+      const yaw = startAngles[0] + (e.clientX - startClientX) * degPerPx
+      const instant = ((yaw - lastYaw) / dt) * 1000
+      if (Number.isFinite(instant) && Math.abs(instant) < 4000) vel = vel * 0.5 + instant * 0.5
+      lastYaw = yaw
+      Q = versor([yaw, startAngles[1], 0]) as unknown as number[]
+      moved += Math.abs(e.clientX - (lastX ?? e.clientX))
+      lastX = e.clientX
+      lastMoveT = now
+      lastInteraction = now
+      dirty = true
+    }
 
-    // --- tooltip -------------------------------------------------------------
+    svg.addEventListener('pointerdown', (e) => {
+      if (dragging) return
+      const p = point(e)
+      if (!insideGlobe(p)) return
+      // gesture state first — nothing after this point may throw before it lands
+      dragging = true
+      suppressClick = false
+      moved = 0
+      vel = 0
+      lastX = e.clientX
+      startClientX = e.clientX
+      lastMoveT = performance.now()
+      lastInteraction = lastMoveT
+      startAngles = versor.rotation(Q as unknown as [number, number, number]) as [number, number, number]
+      svg.classList.add('is-dragging')
+      try {
+        svg.setPointerCapture(e.pointerId)
+      } catch {
+        // Safari/older Chrome: capture unavailable — window listeners still track
+      }
+      window.addEventListener('pointermove', onWindowMove)
+      window.addEventListener('pointerup', endDrag)
+      window.addEventListener('pointercancel', endDrag)
+    })
+
+    // --- hover pauses auto-rotation; cursor handled by CSS --------------------
+    let hovering = false
+    svg.addEventListener('pointerenter', () => (hovering = true))
+    svg.addEventListener('pointerleave', () => {
+      hovering = false
+      lastInteraction = performance.now()
+    })
+
+    // --- tooltip ---------------------------------------------------------------
     const tooltip = section.querySelector<HTMLElement>('[data-globe-tooltip]')!
     const tooltipTitle = tooltip.querySelector('[data-globe-tooltip-title]')!
     const tooltipBody = tooltip.querySelector('[data-globe-tooltip-body]')!
     const wrap = section.querySelector<HTMLElement>('[data-globe-wrap]')!
 
+    const moveTooltip = (e: PointerEvent) => {
+      const rect = wrap.getBoundingClientRect()
+      const x = e.clientX - rect.left
+      const y = e.clientY - rect.top
+      tooltip.style.left = `${Math.min(Math.max(x + 14, 0), rect.width - tooltip.offsetWidth)}px`
+      tooltip.style.top = `${Math.max(y - tooltip.offsetHeight - 10, 0)}px`
+    }
     const showTooltip = (el: SVGPathElement, e: PointerEvent) => {
       const stat = stats.find((s) => s.name === el.dataset.country)
       if (!stat) return
@@ -243,13 +398,6 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
       tooltipBody.textContent = `${stat.members.length} member${stat.members.length === 1 ? '' : 's'}: ${stat.members.join(' · ')}`
       tooltip.classList.remove('hidden')
       moveTooltip(e)
-    }
-    const moveTooltip = (e: PointerEvent) => {
-      const rect = wrap.getBoundingClientRect()
-      const x = e.clientX - rect.left
-      const y = e.clientY - rect.top
-      tooltip.style.left = `${Math.min(Math.max(x + 14, 0), rect.width - tooltip.offsetWidth)}px`
-      tooltip.style.top = `${Math.max(y - tooltip.offsetHeight - 10, 0)}px`
     }
     svg.addEventListener('pointerover', (e) => {
       const target = (e.target as Element).closest('path.map-country--member')
@@ -264,46 +412,46 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
       if (from && from !== to) tooltip.classList.add('hidden')
     })
 
-    // --- highlight member cards ---------------------------------------------
+    // --- highlight member cards ------------------------------------------------
     const flashCards = (name: string) => {
       const cards = document.querySelectorAll<HTMLElement>(`[data-member-country="${CSS.escape(name)}"]`)
       cards.forEach((c) => c.classList.add('ring-2', 'ring-elf-blue', 'ring-offset-2'))
       window.setTimeout(() => cards.forEach((c) => c.classList.remove('ring-2', 'ring-elf-blue', 'ring-offset-2')), 2200)
     }
 
-    svg.addEventListener('click', (e) => {
-      const target = (e.target as Element).closest('path.map-country--member') as SVGPathElement | null
-      if (target?.dataset.country) flashCards(target.dataset.country)
-    })
+    svg.addEventListener(
+      'click',
+      (e) => {
+        if (suppressClick) return // drag ended here; not a click
+        const target = (e.target as Element).closest('path.map-country--member') as SVGPathElement | null
+        const name = target?.dataset.country
+        if (name) rotateTo(name, () => flashCards(name))
+      },
+      true,
+    )
 
-    // --- rotate to a country -------------------------------------------------
+    // --- rotate to a country (quaternion slerp) --------------------------------
     let animating = false
-    const rotateTo = (name: string, then?: () => void) => {
-      const stat = stats.find((s) => s.name === name)
-      const c = stat && centroids.get(stat.id)
-      if (!c) return
-      let dλ = -c[0] - rotation[0]
-      dλ = ((dλ + 540) % 360) - 180
-      const from: [number, number] = [rotation[0], rotation[1]]
-      const to: [number, number] = [rotation[0] + dλ, Math.max(-89, Math.min(89, -c[1]))]
+    const animateTo = (target: [number, number, number], then?: () => void) => {
       vel = 0
+      const current = versor.rotation(Q as unknown as [number, number, number]) as [number, number, number]
       if (reducedMotion) {
-        rotation[0] = to[0]
-        rotation[1] = to[1]
-        setRotation()
+        Q = versor(target) as unknown as number[]
+        dirty = true
         then?.()
         return
       }
+      const interpolate = versor.interpolate(current, target)
       const t0 = performance.now()
-      const duration = 700
+      const duration = 850
       lastInteraction = t0 + duration
       animating = true
       const step = (t: number) => {
         const p = Math.min((t - t0) / duration, 1)
-        const e = 1 - Math.pow(1 - p, 3)
-        rotation[0] = from[0] + (to[0] - from[0]) * e
-        rotation[1] = from[1] + (to[1] - from[1]) * e
-        setRotation()
+        const eased = 1 - Math.pow(1 - p, 3)
+        Q = interpolate(eased) as unknown as number[]
+        lastYaw = versor.rotation(Q as unknown as [number, number, number])[0]
+        dirty = true
         if (p < 1) requestAnimationFrame(step)
         else {
           animating = false
@@ -312,10 +460,23 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
       }
       requestAnimationFrame(step)
     }
+    // Navigation spins only — longitude animates to face the country's
+    // meridian; the tilt stays exactly where the user left it.
+    const rotateTo = (name: string, then?: () => void) => {
+      const stat = stats.find((s) => s.name === name)
+      const c = stat && (centroids.get(stat.id) ?? centroids.get(FEATURE_FALLBACKS[stat.id]))
+      if (!c) return
+      const current = versor.rotation(Q as unknown as [number, number, number]) as [number, number, number]
+      let dλ = -c[0] - current[0]
+      dλ = ((dλ + 540) % 360) - 180
+      animateTo([current[0] + dλ, current[1], 0], then)
+    }
+    const resetView = (then?: () => void) => animateTo([initial[0], initial[1], 0], then)
 
     for (const btn of section.querySelectorAll<HTMLButtonElement>('[data-globe-rotate]')) {
       btn.addEventListener('click', () => rotateTo(btn.dataset.globeRotate!, () => flashCards(btn.dataset.globeRotate!)))
     }
+    section.querySelector('[data-globe-reset]')?.addEventListener('click', () => resetView())
     memberPaths.forEach((el) => {
       el.addEventListener('focus', () => rotateTo(el.dataset.country!))
       el.addEventListener('keydown', (e) => {
@@ -326,7 +487,7 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
       })
     })
 
-    // --- animation loop (paused offscreen) -----------------------------------
+    // --- animation loop (paused offscreen; one DOM flush per frame) ------------
     let visible = true
     new IntersectionObserver(([entry]) => (visible = entry.isIntersecting)).observe(svg)
 
@@ -334,15 +495,28 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
     const loop = (t: number) => {
       const dt = Math.min(t - lastFrame, 100)
       lastFrame = t
-      if (visible && loaded && !dragging && !animating) {
-        if (Math.abs(vel) > 1) {
-          rotation[0] += (vel * dt) / 1000
-          vel *= Math.pow(0.94, dt / 16.7)
-          lastInteraction = t
-          setRotation()
-        } else if (!reducedMotion && t - lastInteraction > AUTO_RESUME_MS) {
-          rotation[0] += (AUTO_SPEED * dt) / 1000
-          setRotation()
+      if (visible && loaded) {
+        if (!dragging && !animating && !hovering) {
+          const angles = versor.rotation(Q as unknown as [number, number, number]) as [number, number, number]
+          if (Math.abs(vel) > 1) {
+            angles[0] += (vel * dt) / 1000
+            vel *= Math.pow(0.95, dt / 16.7)
+            angles[2] *= Math.pow(0.98, dt / 16.7) // gently self-level
+            lastInteraction = t
+            Q = versor(angles) as unknown as number[]
+            dirty = true
+          } else if (!reducedMotion && t - lastInteraction > AUTO_RESUME_MS) {
+            const since = t - lastInteraction - AUTO_RESUME_MS
+            const ramp = Math.min(since / 1200, 1)
+            angles[0] += (AUTO_SPEED * ramp * dt) / 1000
+            angles[2] *= Math.pow(0.995, dt / 16.7)
+            Q = versor(angles) as unknown as number[]
+            dirty = true
+          }
+        }
+        if (dirty) {
+          applyQ()
+          dirty = false
         }
       }
       requestAnimationFrame(loop)
@@ -352,6 +526,13 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
 </script>
 
 <style>
+  .globe-svg {
+    cursor: grab;
+  }
+  .globe-svg:active,
+  .globe-svg.is-dragging {
+    cursor: grabbing;
+  }
   .globe-sphere {
     fill: var(--globe-ocean, #dce6f1);
   }
@@ -386,8 +567,13 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
   .map-country--member:focus-visible {
     fill: #1e4f9e;
   }
+  /* SVG outlines render as a rectangle around the path's bounding box — use a
+     shape-following stroke for the keyboard focus indicator instead. */
   .map-country--member:focus-visible {
-    outline: 2px solid #1e4f9e;
-    outline-offset: 1px;
+    stroke: #1e4f9e;
+    stroke-width: 1.6;
+  }
+  :global(.dark) .map-country--member:focus-visible {
+    stroke: #d7e5f7;
   }
 </style>

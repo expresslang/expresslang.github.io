@@ -10,7 +10,7 @@ countries.registerLocale(en)
 const read = (p: string) => loadYaml(readFileSync(resolve(__dirname, '..', p), 'utf-8'))
 
 const ORG_CATEGORIES = ['founding', 'corporate', 'small', 'nonprofit', 'university']
-const COUNTRIES = ['United States', 'France', 'Norway', 'Japan', 'United Kingdom', 'Austria']
+const COUNTRIES = ['United States', 'France', 'Norway', 'Japan', 'United Kingdom', 'Austria', 'Hong Kong']
 
 describe('members data', () => {
   const members = read('src/data/members.yaml') as any[]
