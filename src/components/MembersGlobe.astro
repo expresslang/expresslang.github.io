@@ -40,8 +40,10 @@ const memberById = new Map(stats.map((s) => [s.id, s]))
 const memberByFeatureFallback = new Map(
   Object.entries(FEATURE_FALLBACKS).map(([memberId, featureId]) => [featureId, memberById.get(memberId)]),
 )
-const countryPaths = worldShapes.features.map((f) => {
-  const id = String(f.id).padStart(3, '0')
+const countryPaths = worldShapes.features.map((f, idx) => {
+  // Some Natural Earth countries have no ISO id (Somaliland, N. Cyprus) —
+  // give them a synthetic key so they don't collide into one map entry.
+  const id = f.id != null ? String(f.id).padStart(3, '0') : `i${idx}`
   return {
     id,
     d: pathGen(f),
@@ -205,11 +207,12 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
     fetch(worldUrl)
       .then((r) => r.json())
       .then((topo) => {
-        for (const f of feature(topo, topo.objects.countries).features) {
-          const id = String((f as { id?: string }).id).padStart(3, '0')
+        const shapeList = feature(topo, topo.objects.countries).features
+        shapeList.forEach((f, idx) => {
+          const id = f.id != null ? String(f.id).padStart(3, '0') : `i${idx}`
           featuresById.set(id, f)
           if (paths.has(id)) centroids.set(id, mainLandmassCentroid(f as object))
-        }
+        })
         loaded = true
         dirty = true
       })
@@ -497,8 +500,13 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
   .map-country--member:focus-visible {
     fill: #1e4f9e;
   }
+  /* SVG outlines render as a rectangle around the path's bounding box — use a
+     shape-following stroke for the keyboard focus indicator instead. */
   .map-country--member:focus-visible {
-    outline: 2px solid #1e4f9e;
-    outline-offset: 1px;
+    stroke: #1e4f9e;
+    stroke-width: 1.6;
+  }
+  :global(.dark) .map-country--member:focus-visible {
+    stroke: #d7e5f7;
   }
 </style>
