@@ -40,10 +40,42 @@ const memberById = new Map(stats.map((s) => [s.id, s]))
 const memberByFeatureFallback = new Map(
   Object.entries(FEATURE_FALLBACKS).map(([memberId, featureId]) => [featureId, memberById.get(memberId)]),
 )
-const countryPaths = worldShapes.features.map((f, idx) => {
-  // Some Natural Earth countries have no ISO id (Somaliland, N. Cyprus) —
-  // give them a synthetic key so they don't collide into one map entry.
-  const id = f.id != null ? String(f.id).padStart(3, '0') : `i${idx}`
+
+// UN compliance: Natural Earth ships de-facto states without ISO 3166-1 codes
+// (Somaliland, N. Cyprus, Kosovo). Fold their geometry into the UN member state
+// they belong to, so they never appear as countries on the map.
+const UN_INTO: Record<string, string> = {
+  'N. Cyprus': '196', // Cyprus
+  Somaliland: '706', // Somalia
+  Kosovo: '688', // Serbia (UNSCR 1244)
+}
+const unMerge = (features: Array<Record<string, unknown>>) => {
+  const byId = new Map<string, Record<string, unknown>>()
+  for (const f of features) {
+    if (f.id != null) byId.set(String(f.id).padStart(3, '0'), f)
+  }
+  const merged = new Map<string, Record<string, unknown>>()
+  for (const f of features) {
+    if (f.id != null) {
+      merged.set(String(f.id).padStart(3, '0'), f)
+      continue
+    }
+    const parentId = UN_INTO[(f.properties as { name?: string })?.name ?? '']
+    const parent = parentId ? merged.get(parentId) : undefined
+    if (!parent) continue // unknown entity: excluded rather than shown as a country
+    appendGeometry(parent, f)
+  }
+  return [...merged.values()]
+}
+const appendGeometry = (parent: Record<string, unknown>, child: Record<string, unknown>) => {
+  const ringsOf = (g: Record<string, unknown>) =>
+    (g.type === 'MultiPolygon' ? g.coordinates : g.type === 'Polygon' ? [g.coordinates] : []) as unknown[][]
+  const coords = [...ringsOf(parent.geometry), ...ringsOf(child.geometry)]
+  parent.geometry = { type: 'MultiPolygon', coordinates: coords }
+}
+const displayFeatures = unMerge(worldShapes.features)
+const countryPaths = displayFeatures.map((f) => {
+  const id = String(f.id).padStart(3, '0')
   return {
     id,
     d: pathGen(f),
@@ -145,6 +177,40 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
   // incremental quaternion composition. Screen-frame hand-mapping is precisely
   // what breaks this projection — do not replace invert with manual sphere math.
 
+  // UN compliance: fold Natural Earth's de-facto states (no ISO 3166-1 code)
+  // into the UN member state they belong to — identical to the SSR merge.
+  const UN_INTO: Record<string, string> = {
+    'N. Cyprus': '196', // Cyprus
+    Somaliland: '706', // Somalia
+    Kosovo: '688', // Serbia (UNSCR 1244)
+  }
+  const appendGeometry = (parent: Record<string, unknown>, child: Record<string, unknown>) => {
+    const ringsOf = (g: Record<string, unknown>) =>
+      (g.type === 'MultiPolygon' ? g.coordinates : g.type === 'Polygon' ? [g.coordinates] : []) as unknown[][]
+    parent.geometry = {
+      type: 'MultiPolygon',
+      coordinates: [...ringsOf(parent.geometry), ...ringsOf(child.geometry)],
+    }
+  }
+  const unMerge = (features: Array<Record<string, unknown>>) => {
+    const byId = new Map<string, Record<string, unknown>>()
+    for (const f of features) {
+      if (f.id != null) byId.set(String(f.id).padStart(3, '0'), f)
+    }
+    const merged = new Map<string, Record<string, unknown>>()
+    for (const f of features) {
+      if (f.id != null) {
+        merged.set(String(f.id).padStart(3, '0'), f)
+        continue
+      }
+      const parentId = UN_INTO[(f.properties as { name?: string })?.name ?? '']
+      const parent = parentId ? merged.get(parentId) : undefined
+      if (!parent) continue // unknown entity: excluded rather than shown as a country
+      appendGeometry(parent, f)
+    }
+    return [...merged.values()]
+  }
+
   // Centroid of the largest polygon of a feature — the "main location".
   // Multipolygons bundle distant territories (France includes French Guiana,
   // the US includes Alaska), which drag the raw centroid off the mainland.
@@ -207,12 +273,12 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
     fetch(worldUrl)
       .then((r) => r.json())
       .then((topo) => {
-        const shapeList = feature(topo, topo.objects.countries).features
-        shapeList.forEach((f, idx) => {
-          const id = f.id != null ? String(f.id).padStart(3, '0') : `i${idx}`
+        const shapeList = unMerge(feature(topo, topo.objects.countries).features as Array<Record<string, unknown>>)
+        for (const f of shapeList) {
+          const id = String(f.id).padStart(3, '0')
           featuresById.set(id, f)
           if (paths.has(id)) centroids.set(id, mainLandmassCentroid(f as object))
-        })
+        }
         loaded = true
         dirty = true
       })
