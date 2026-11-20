@@ -129,7 +129,7 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
 </section>
 
 <script>
-  import { geoOrthographic, geoPath, geoGraticule10, geoCentroid } from 'd3-geo'
+  import { geoOrthographic, geoPath, geoGraticule10, geoCentroid, geoArea } from 'd3-geo'
   import { feature } from 'topojson-client'
   import versor from 'versor'
   import worldUrl from 'world-atlas/countries-110m.json?url'
@@ -142,6 +142,25 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
   // Canonical versor-dragging (Bostock/Fil): screen -> invert -> earth cartesian,
   // incremental quaternion composition. Screen-frame hand-mapping is precisely
   // what breaks this projection — do not replace invert with manual sphere math.
+
+  // Centroid of the largest polygon of a feature — the "main location".
+  // Multipolygons bundle distant territories (France includes French Guiana,
+  // the US includes Alaska), which drag the raw centroid off the mainland.
+  const mainLandmassCentroid = (f: object): [number, number] => {
+    const geometry = (f as { geometry?: { type?: string; coordinates?: unknown } }).geometry
+    if (geometry?.type !== 'MultiPolygon') return geoCentroid(f)
+    let best: { type: string; coordinates: unknown } | null = null
+    let bestArea = -1
+    for (const polygon of geometry.coordinates as unknown[][]) {
+      const g = { type: 'Polygon', coordinates: polygon }
+      const a = geoArea(g as never)
+      if (a > bestArea) {
+        bestArea = a
+        best = g
+      }
+    }
+    return best ? geoCentroid(best) : geoCentroid(f)
+  }
 
   for (const section of document.querySelectorAll<HTMLElement>('[data-globe-section]')) {
     const svg = section.querySelector<SVGSVGElement>('[data-globe-svg]')
@@ -189,7 +208,7 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
         for (const f of feature(topo, topo.objects.countries).features) {
           const id = String((f as { id?: string }).id).padStart(3, '0')
           featuresById.set(id, f)
-          if (paths.has(id)) centroids.set(id, geoCentroid(f as object))
+          if (paths.has(id)) centroids.set(id, mainLandmassCentroid(f as object))
         }
         loaded = true
         dirty = true
@@ -371,13 +390,16 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
       }
       requestAnimationFrame(step)
     }
-    // Navigation tilts only — longitude is the user's to change via dragging.
+    // Navigation spins only — longitude animates to face the country's
+    // meridian; the tilt stays exactly where the user left it.
     const rotateTo = (name: string, then?: () => void) => {
       const stat = stats.find((s) => s.name === name)
       const c = stat && (centroids.get(stat.id) ?? centroids.get(FEATURE_FALLBACKS[stat.id]))
       if (!c) return
       const current = versor.rotation(Q as unknown as [number, number, number]) as [number, number, number]
-      animateTo([current[0], Math.max(-89, Math.min(89, -c[1])), 0], then)
+      let dλ = -c[0] - current[0]
+      dλ = ((dλ + 540) % 360) - 180
+      animateTo([current[0] + dλ, current[1], 0], then)
     }
     const resetView = (then?: () => void) => animateTo([initial[0], initial[1], 0], then)
 
