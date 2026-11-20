@@ -137,6 +137,7 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
   const AUTO_RESUME_MS = 3000
   const AUTO_SPEED = 3.2 // degrees per second, eased in
   const DRAG_SUPPRESS_PX = 6
+  const DEG_PER_RAD = 180 / Math.PI
 
   // Canonical versor-dragging (Bostock/Fil): screen -> invert -> earth cartesian,
   // incremental quaternion composition. Screen-frame hand-mapping is precisely
@@ -205,17 +206,18 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
       }
     }
 
-    // --- canonical versor drag, rAF-coalesced ---------------------------------
+    // --- yaw-only drag (left/right spin; the poles stay put) -------------------
+    // Pure yaw is a single longitude rotation — absolute from drag start,
+    // no incremental state, cannot drift or jitter. Vertical drags do nothing.
     let dragging = false
-    let v0: [number, number, number] | null = null
-    let q0: number[] | null = null
+    let startClientX = 0
+    let startAngles: [number, number, number] | null = null
     let vel = 0
     let lastYaw = versor.rotation(Q as unknown as [number, number, number])[0]
     let lastMoveT = 0
     let lastInteraction = 0
     let moved = 0
     let lastX: number | null = null
-    let lastY: number | null = null
     let suppressClick = false
 
     const point = (e: PointerEvent): [number, number] => {
@@ -225,13 +227,10 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
     const insideGlobe = (p: [number, number]) =>
       Math.hypot(p[0] - projection.translate()[0], p[1] - projection.translate()[1]) <= projection.scale()
 
-    // Window-level move/up listeners: no setPointerCapture (throws on SVG in
-    // some browsers), and the gesture keeps tracking outside the SVG bounds.
     const endDrag = () => {
       if (!dragging) return
       dragging = false
-      v0 = null
-      q0 = null
+      startAngles = null
       svg.classList.remove('is-dragging')
       suppressClick = moved > DRAG_SUPPRESS_PX
       lastInteraction = performance.now()
@@ -240,26 +239,17 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
       window.removeEventListener('pointercancel', endDrag)
     }
     const onWindowMove = (e: PointerEvent) => {
-      if (!dragging || !v0 || !q0) return
-      const p = point(e)
-      const spherical = projection.invert(p)
-      if (!spherical) return // left the sphere: hold the gesture state
-      const v1 = versor.cartesian(spherical) as unknown as [number, number, number]
-      const q1 = versor.multiply(versor.delta(v0, v1), q0) as unknown as number[]
+      if (!dragging || !startAngles) return
       const now = performance.now()
       const dt = Math.max(now - lastMoveT, 1)
-      const yaw = versor.rotation(q1 as unknown as [number, number, number])[0]
-      let dYaw = yaw - lastYaw
-      dYaw = ((dYaw + 540) % 360) - 180
-      const instant = (dYaw / dt) * 1000
+      const degPerPx = DEG_PER_RAD / projection.scale() // surface-true at the equator
+      const yaw = startAngles[0] + (e.clientX - startClientX) * degPerPx
+      const instant = ((yaw - lastYaw) / dt) * 1000
       if (Number.isFinite(instant) && Math.abs(instant) < 4000) vel = vel * 0.5 + instant * 0.5
       lastYaw = yaw
-      Q = q1
-      v0 = v1
-      q0 = q1
-      moved += Math.hypot(e.clientX - (lastX ?? e.clientX), e.clientY - (lastY ?? e.clientY))
+      Q = versor([yaw, startAngles[1], 0]) as unknown as number[]
+      moved += Math.abs(e.clientX - (lastX ?? e.clientX))
       lastX = e.clientX
-      lastY = e.clientY
       lastMoveT = now
       lastInteraction = now
       dirty = true
@@ -275,12 +265,10 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
       moved = 0
       vel = 0
       lastX = e.clientX
-      lastY = e.clientY
+      startClientX = e.clientX
       lastMoveT = performance.now()
       lastInteraction = lastMoveT
-      const spherical = projection.invert(p)
-      v0 = spherical ? (versor.cartesian(spherical) as unknown as [number, number, number]) : null
-      q0 = [...Q]
+      startAngles = versor.rotation(Q as unknown as [number, number, number]) as [number, number, number]
       svg.classList.add('is-dragging')
       try {
         svg.setPointerCapture(e.pointerId)
