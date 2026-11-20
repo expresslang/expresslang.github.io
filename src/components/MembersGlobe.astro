@@ -371,14 +371,13 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
       }
       requestAnimationFrame(step)
     }
+    // Navigation tilts only — longitude is the user's to change via dragging.
     const rotateTo = (name: string, then?: () => void) => {
       const stat = stats.find((s) => s.name === name)
       const c = stat && (centroids.get(stat.id) ?? centroids.get(FEATURE_FALLBACKS[stat.id]))
       if (!c) return
-      let dλ = -c[0] - versor.rotation(Q as unknown as [number, number, number])[0]
-      dλ = ((dλ + 540) % 360) - 180
       const current = versor.rotation(Q as unknown as [number, number, number]) as [number, number, number]
-      animateTo([current[0] + dλ, Math.max(-89, Math.min(89, -c[1])), 0], then)
+      animateTo([current[0], Math.max(-89, Math.min(89, -c[1])), 0], then)
     }
     const resetView = (then?: () => void) => animateTo([initial[0], initial[1], 0], then)
 
