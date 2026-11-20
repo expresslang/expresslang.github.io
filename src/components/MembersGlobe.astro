@@ -184,6 +184,7 @@ const serializedRotate = JSON.stringify(INITIAL_ROTATE)
     Somaliland: '706', // Somalia
     Kosovo: '688', // Serbia (UNSCR 1244)
   }
+  const FEATURE_FALLBACKS: Record<string, string> = { '344': '156' } // Hong Kong -> CN polygon
   const appendGeometry = (parent: Record<string, unknown>, child: Record<string, unknown>) => {
     const ringsOf = (g: Record<string, unknown>) =>
       (g.type === 'MultiPolygon' ? g.coordinates : g.type === 'Polygon' ? [g.coordinates] : []) as unknown[][]
