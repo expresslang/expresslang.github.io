@@ -26,7 +26,7 @@
   country: United States
   photo: /images/people/peter-wilson.jpg
   founder: 3
-  highlight: Project Leader, ISO 10303-11:2004 (with David Loffredo)
+  highlight: Project Editor, ISO 10303-11:2004
   blurb: 'Designer of EXPRESS-G (graphical notation) and EXPRESS-X (schema mapping). Co-author of "Information Modelling: The EXPRESS Way". Author of the EXPRESS Tutorial.'
 
 - slug: thomas-thurman
@@ -84,7 +84,7 @@
   country: United States
   photo: /images/people/stuart-galt.jpg
   founder: 9
-  highlight: Convenor, ISO/TC 184/SC 4/WG 12
+  highlight: Project Leader, ISO 10303-2:2024 · Convenor, ISO/TC 184/SC 4/WG 12
   blurb: Associate Technical Fellow at Boeing with 25+ years in visualization and data exchange standards. Convenor of WG 12 at ISO/TC 184/SC 4, project lead of ISO/CD 14739-1 (PRC), and former Chair of OASIS WebCGM 2.1.
   linkedin: https://www.linkedin.com/in/stuart-galt-94740256/
 
